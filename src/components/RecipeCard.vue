@@ -1,5 +1,5 @@
 <template>
-  <div class="card" @click="$emit('click')">
+  <div class="card" @click="viewDetails">
     <img :src="recipe.image" :alt="recipe.name" />
     <h3>{{ recipe.name }}</h3>
     <p>{{ recipe.description }}</p>
@@ -8,9 +8,14 @@
 
 <script>
 export default {
-  name: 'RecipeCard',
+  name: "RecipeCard",
   props: {
-    recipe: Object
-  }
+    recipe: Object,
+  },
+  methods: {
+    viewDetails() {
+      this.$emit("click"); // Emit click event to parent
+    },
+  },
 };
 </script>

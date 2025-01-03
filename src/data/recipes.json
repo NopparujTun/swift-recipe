@@ -1,52 +1,115 @@
 [
-    {
-      "id": 1,
-      "name": "Spaghetti Bolognese",
-      "description": "A classic Italian dish with rich, meaty sauce.",
-      "image": "./assets/spaghetti-bolognese.jpg",
-      "ingredients": [
-        "400g spaghetti",
-        "2 tbsp olive oil",
-        "1 onion, finely chopped",
-        "500g minced beef",
-        "400g canned tomatoes",
-        "2 tbsp tomato paste",
-        "1 tsp dried oregano",
-        "Salt and pepper to taste"
-      ],
-      "instructions": [
-        "Cook the spaghetti according to the package instructions. Drain and set aside.",
-        "Heat olive oil in a large skillet over medium heat. Add the chopped onion and garlic, and sauté until softened.",
-        "Add the minced beef and cook until browned.",
-        "Stir in the canned tomatoes, tomato paste, and dried oregano. Simmer for 20 minutes.",
-        "Season with salt and pepper to taste.",
-        "Serve the sauce over the spaghetti and enjoy!"
-      ],
-      "category": "Main Course"
-    },
-    {
-      "id": 2,
-      "name": "Chocolate Cake",
-      "description": "Decadent and moist with creamy frosting.",
-      "image": "./assets/chocolate-cake.jpg",
-      "ingredients": [
-        "200g dark chocolate",
-        "200g butter",
-        "200g sugar",
-        "4 eggs",
-        "200g flour",
-        "1 tsp baking powder",
-        "100ml milk"
-      ],
-      "instructions": [
-        "Preheat the oven to 180°C (350°F).",
-        "Melt the chocolate and butter together.",
-        "Mix the sugar and eggs in a bowl until fluffy.",
-        "Gradually add the melted chocolate mixture.",
-        "Sift in the flour and baking powder, and mix well.",
-        "Pour into a greased baking tin and bake for 25-30 minutes."
-      ],
-      "category": "Dessert"
-    }
-  ]
-  
+  {
+    "id": 1,
+    "name": "Spaghetti Bolognese",
+    "description": "A classic Italian dish with rich, meaty sauce.",
+    "image": "./assets/spaghetti-bolognese.jpg",
+    "ingredients": [
+      "400g spaghetti",
+      "2 tbsp olive oil",
+      "1 onion, finely chopped",
+      "500g minced beef",
+      "400g canned tomatoes",
+      "2 tbsp tomato paste",
+      "1 tsp dried oregano",
+      "Salt and pepper to taste"
+    ],
+    "instructions": [
+      "Cook the spaghetti according to the package instructions. Drain and set aside.",
+      "Heat olive oil in a large skillet over medium heat. Add the chopped onion and garlic, and sauté until softened.",
+      "Add the minced beef and cook until browned.",
+      "Stir in the canned tomatoes, tomato paste, and dried oregano. Simmer for 20 minutes.",
+      "Season with salt and pepper to taste.",
+      "Serve the sauce over the spaghetti and enjoy!"
+    ],
+    "category": "Main Course"
+  },
+  {
+    "id": 2,
+    "name": "Chocolate Cake",
+    "description": "Decadent and moist with creamy frosting.",
+    "image": "./assets/chocolate-cake.jpg",
+    "ingredients": [
+      "200g dark chocolate",
+      "200g butter",
+      "200g sugar",
+      "4 eggs",
+      "200g flour",
+      "1 tsp baking powder",
+      "100ml milk"
+    ],
+    "instructions": [
+      "Preheat the oven to 180°C (350°F).",
+      "Melt the chocolate and butter together.",
+      "Mix the sugar and eggs in a bowl until fluffy.",
+      "Gradually add the melted chocolate mixture.",
+      "Sift in the flour and baking powder, and mix well.",
+      "Pour into a greased baking tin and bake for 25-30 minutes."
+    ],
+    "category": "Dessert"
+  },
+  {
+    "id": 3,
+    "name": "Caesar Salad",
+    "description": "A healthy and delicious salad with a creamy dressing.",
+    "image": "./assets/caesar-salad.jpg",
+    "ingredients": [
+      "1 romaine lettuce",
+      "100g croutons",
+      "50g Parmesan cheese",
+      "2 boiled eggs",
+      "2 tbsp Caesar dressing"
+    ],
+    "instructions": [
+      "Wash and chop the romaine lettuce.",
+      "Add croutons, grated Parmesan, and sliced boiled eggs.",
+      "Drizzle Caesar dressing on top and toss well.",
+      "Serve chilled."
+    ],
+    "category": "Salad"
+  },
+  {
+    "id": 4,
+    "name": "Chicken Curry",
+    "description": "A flavorful and spicy Indian curry.",
+    "image": "./assets/chicken-curry.jpg",
+    "ingredients": [
+      "500g chicken",
+      "2 onions, finely chopped",
+      "2 tomatoes, pureed",
+      "3 tbsp curry powder",
+      "200ml coconut milk",
+      "2 tbsp vegetable oil"
+    ],
+    "instructions": [
+      "Heat oil in a pan and sauté onions until golden brown.",
+      "Add curry powder and stir for 1 minute.",
+      "Add chicken pieces and cook until browned.",
+      "Pour in the tomato puree and coconut milk.",
+      "Simmer for 25 minutes until the chicken is cooked through.",
+      "Serve hot with rice."
+    ],
+    "category": "Main Course"
+  },
+  {
+    "id": 5,
+    "name": "Pancakes",
+    "description": "Fluffy pancakes perfect for breakfast.",
+    "image": "./assets/pancakes.jpg",
+    "ingredients": [
+      "200g flour",
+      "2 eggs",
+      "300ml milk",
+      "2 tbsp sugar",
+      "1 tsp vanilla extract",
+      "1 tsp baking powder"
+    ],
+    "instructions": [
+      "Mix all the ingredients in a bowl until smooth.",
+      "Heat a non-stick pan and pour in the batter.",
+      "Cook each side for 2-3 minutes until golden brown.",
+      "Serve with syrup, fruits, or toppings of choice."
+    ],
+    "category": "Breakfast"
+  }
+]
