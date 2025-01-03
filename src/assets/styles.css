@@ -9,7 +9,7 @@ body {
 header {
   background: linear-gradient(to right, #ff914d, #ff6f61, #ff9370);
   color:  #333;
-  padding: 2rem;
+  padding: 5rem 5rem;
   text-align: center;
   font-family: 'Georgia', serif;
   font-size: 1.8rem;
@@ -27,23 +27,53 @@ header p {
   font-style: italic; 
 }
 
-nav {
+/* Navbar Styling */
+.navbar {
   display: flex;
-  justify-content: center;
-  background: linear-gradient(to right, #ff6f61, #ff914d); 
-  padding: 0.8rem;
-  font-family: 'Montserrat', sans-serif;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-nav a {
-  margin: 0 1.5rem;
+.nav-logo {
+  display: flex;
+  align-items: center;
+  margin-left: 4rem;
+  
+}
+
+.nav-logo img {
+  height: 50px;
+  margin-right: 0.5rem;
+}
+
+.nav-logo span {
+  font-size: 1.8rem;
+  font-family: "Georgia", serif;
+  font-weight: bold;
+  color: #333;
+   
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  margin-right: 4rem;
+}
+
+.nav-links a {
   text-decoration: none;
-  color: white;
-  font-weight: 600; 
-  font-size: 1.1rem;
-  text-transform: uppercase;
-  transition: color 0.3s ease, transform 0.3s ease; 
+  font-size: 1rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+  color: #333;
+  transition: color 0.3s ease;
+  
 }
 
 nav a:hover {

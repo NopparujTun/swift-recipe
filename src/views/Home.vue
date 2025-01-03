@@ -1,17 +1,22 @@
 <template>
   <div>
+    <nav class="navbar">
+      <div class="nav-logo">
+        <img src="/src/assets/logo.jpg" alt="Swift Recipe Logo" />
+        <span>Swift Recipe</span>
+      </div>
+      <div class="nav-links">
+        <a href="/" @click.prevent="goToHome">Home</a>
+        <a href="#">Recipes</a>
+        <a href="#">Favorites</a>
+        <a href="#">About</a>
+      </div>
+    </nav>
     <header>
-      <h1>Swift Recipe</h1>
+      <h1>Welcome to Swift Recipe</h1>
       <p>Your simplest and quickest food recipes, all in one place.</p>
     </header>
-    <nav>
-      <a href="#">Home</a>
-      <a href="#">Add Recipe</a>
-      <a href="#">Search</a>
-      <a href="#">Favorites</a>
-    </nav>
     <main>
-   
       <div class="filter">
         <label for="category">Filter by Type:</label>
         <select id="category" v-model="selectedCategory" @change="filterRecipes">
@@ -47,14 +52,13 @@ export default {
   },
   data() {
     return {
-      recipes, 
-      selectedCategory: "All", 
-      filteredRecipes: recipes, 
+      recipes,
+      selectedCategory: "All",
+      filteredRecipes: recipes,
     };
   },
   computed: {
     uniqueCategories() {
-     
       return [...new Set(this.recipes.map((recipe) => recipe.category))];
     },
   },
@@ -71,12 +75,16 @@ export default {
     viewRecipe(id) {
       this.$router.push({ name: "RecipeDetails", params: { id } });
     },
+    goToHome() {
+      this.$router.push("/");
+    },
   },
 };
 </script>
 
-<style>
+<style scoped>
 
+/* Filter Section */
 .filter {
   margin: 1rem 0;
   display: flex;
@@ -87,7 +95,7 @@ export default {
   margin-top: 3px;
   font-size: 1rem;
   font-weight: bold;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .filter select {
@@ -96,5 +104,4 @@ export default {
   border-radius: 5px;
   border: 1px solid #ccc;
 }
-
 </style>

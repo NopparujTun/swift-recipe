@@ -1,46 +1,62 @@
 <template>
-  <div v-if="recipe" class="recipe-details">
-    <header>
-      <h1>{{ recipe.name }}</h1>
-      <p class="description">{{ recipe.description }}</p>
-    </header>
-    <img :src="recipe.image" :alt="recipe.name" />
-    <section>
-      <h3>Ingredients</h3>
-      <ul>
-        <li v-for="(ingredient, index) in recipe.ingredients" :key="index">
-          {{ ingredient }}
-        </li>
-      </ul>
-    </section>
-    <section>
-      <h3>Instructions</h3>
-      <ol>
-        <li v-for="(step, index) in recipe.instructions" :key="index">
-          {{ step }}
-        </li>
-      </ol>
-    </section>
-    <!-- Updated Back Button -->
-    <button @click="goBack">
-      <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1024 1024">
-        <path
-          d="M874.690416 495.52477c0 11.2973-9.168824 20.466124-20.466124 20.466124l-604.773963 0 188.083679 188.083679c7.992021 7.992021 7.992021 20.947078 0 28.939099-4.001127 3.990894-9.240455 5.996574-14.46955 5.996574-5.239328 0-10.478655-1.995447-14.479783-5.996574l-223.00912-223.00912c-3.837398-3.837398-5.996574-9.046027-5.996574-14.46955 0-5.433756 2.159176-10.632151 5.996574-14.46955l223.019353-223.029586c7.992021-7.992021 20.957311-7.992021 28.949332 0 7.992021 8.002254 7.992021 20.957311 0 28.949332l-188.073446 188.073446 604.753497 0C865.521592 475.058646 874.690416 484.217237 874.690416 495.52477z"
-        ></path>
-      </svg>
-      <span>Back</span>
-    </button>
-  </div>
-  <div v-else>
-    <p>Recipe not found.</p>
-    <button @click="goBack">
-      <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1024 1024">
-        <path
-          d="M874.690416 495.52477c0 11.2973-9.168824 20.466124-20.466124 20.466124l-604.773963 0 188.083679 188.083679c7.992021 7.992021 7.992021 20.947078 0 28.939099-4.001127 3.990894-9.240455 5.996574-14.46955 5.996574-5.239328 0-10.478655-1.995447-14.479783-5.996574l-223.00912-223.00912c-3.837398-3.837398-5.996574-9.046027-5.996574-14.46955 0-5.433756 2.159176-10.632151 5.996574-14.46955l223.019353-223.029586c7.992021-7.992021 20.957311-7.992021 28.949332 0 7.992021 8.002254 7.992021 20.957311 0 28.949332l-188.073446 188.073446 604.753497 0C865.521592 475.058646 874.690416 484.217237 874.690416 495.52477z"
-        ></path>
-      </svg>
-      <span>Back</span>
-    </button>
+  <div>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <div class="nav-logo">
+        <img src="/src/assets/logo.jpg" alt="Swift Recipe Logo" />
+        <span>Swift Recipe</span>
+      </div>
+      <div class="nav-links">
+        <a href="/" @click.prevent="goToHome">Home</a>
+        <a href="#">Recipes</a>
+        <a href="#">Favorites</a>
+        <a href="#">About</a>
+      </div>
+    </nav>
+      <header>
+        <h1>{{ recipe.name }}</h1>
+        <p class="description">{{ recipe.description }}</p>
+      </header>
+    <div v-if="recipe" class="recipe-details">
+
+      <img :src="recipe.image" :alt="recipe.name" />
+      <section>
+        <h3>Ingredients</h3>
+        <ul>
+          <li v-for="(ingredient, index) in recipe.ingredients" :key="index">
+            {{ ingredient }}
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h3>Instructions</h3>
+        <ol>
+          <li v-for="(step, index) in recipe.instructions" :key="index">
+            {{ step }}
+          </li>
+        </ol>
+      </section>
+      <!-- Updated Back Button -->
+      <button @click="goBack">
+        <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1024 1024">
+          <path
+            d="M874.690416 495.52477c0 11.2973-9.168824 20.466124-20.466124 20.466124l-604.773963 0 188.083679 188.083679c7.992021 7.992021 7.992021 20.947078 0 28.939099-4.001127 3.990894-9.240455 5.996574-14.46955 5.996574-5.239328 0-10.478655-1.995447-14.479783-5.996574l-223.00912-223.00912c-3.837398-3.837398-5.996574-9.046027-5.996574-14.46955 0-5.433756 2.159176-10.632151 5.996574-14.46955l223.019353-223.029586c7.992021-7.992021 20.957311-7.992021 28.949332 0 7.992021 8.002254 7.992021 20.957311 0 28.949332l-188.073446 188.073446 604.753497 0C865.521592 475.058646 874.690416 484.217237 874.690416 495.52477z"
+          ></path>
+        </svg>
+        <span>Back</span>
+      </button>
+    </div>
+    <div v-else>
+      <p>Recipe not found.</p>
+      <button @click="goBack">
+        <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1024 1024">
+          <path
+            d="M874.690416 495.52477c0 11.2973-9.168824 20.466124-20.466124 20.466124l-604.773963 0 188.083679 188.083679c7.992021 7.992021 7.992021 20.947078 0 28.939099-4.001127 3.990894-9.240455 5.996574-14.46955 5.996574-5.239328 0-10.478655-1.995447-14.479783-5.996574l-223.00912-223.00912c-3.837398-3.837398-5.996574-9.046027-5.996574-14.46955 0-5.433756 2.159176-10.632151 5.996574-14.46955l223.019353-223.029586c7.992021-7.992021 20.957311-7.992021 28.949332 0 7.992021 8.002254 7.992021 20.957311 0 28.949332l-188.073446 188.073446 604.753497 0C865.521592 475.058646 874.690416 484.217237 874.690416 495.52477z"
+          ></path>
+        </svg>
+        <span>Back</span>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -64,13 +80,18 @@ export default {
     goBack() {
       this.$router.push("/");
     },
+    goToHome() {
+      this.$router.push("/");
+    },
   },
 };
 </script>
 
 <style scoped>
+
+
 .recipe-details {
-  max-width: 800px;
+  max-width: 1150px;
   margin: 0 auto;
   padding: 20px;
   text-align: left;
@@ -79,7 +100,7 @@ export default {
 }
 
 .recipe-details img {
-  width: 100%; 
+  width: 50%; 
   object-fit: cover; 
   height: 400px; 
   display: block; 
@@ -103,6 +124,7 @@ export default {
   margin: 20px 0;
   padding-left: 20px;
 }
+
 button {
   display: flex;
   height: 3em;
@@ -134,6 +156,5 @@ button:hover {
   box-shadow: 9px 9px 33px #d1d1d1, -9px -9px 33px #ffffff;
   transform: translateY(-2px);
 }
-
 
 </style>
