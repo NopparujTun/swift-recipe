@@ -1,0 +1,52 @@
+[
+    {
+      "id": 1,
+      "name": "Spaghetti Bolognese",
+      "description": "A classic Italian dish with rich, meaty sauce.",
+      "image": "./assets/spaghetti-bolognese.jpg",
+      "ingredients": [
+        "400g spaghetti",
+        "2 tbsp olive oil",
+        "1 onion, finely chopped",
+        "500g minced beef",
+        "400g canned tomatoes",
+        "2 tbsp tomato paste",
+        "1 tsp dried oregano",
+        "Salt and pepper to taste"
+      ],
+      "instructions": [
+        "Cook the spaghetti according to the package instructions. Drain and set aside.",
+        "Heat olive oil in a large skillet over medium heat. Add the chopped onion and garlic, and sauté until softened.",
+        "Add the minced beef and cook until browned.",
+        "Stir in the canned tomatoes, tomato paste, and dried oregano. Simmer for 20 minutes.",
+        "Season with salt and pepper to taste.",
+        "Serve the sauce over the spaghetti and enjoy!"
+      ],
+      "category": "Main Course"
+    },
+    {
+      "id": 2,
+      "name": "Chocolate Cake",
+      "description": "Decadent and moist with creamy frosting.",
+      "image": "./assets/chocolate-cake.jpg",
+      "ingredients": [
+        "200g dark chocolate",
+        "200g butter",
+        "200g sugar",
+        "4 eggs",
+        "200g flour",
+        "1 tsp baking powder",
+        "100ml milk"
+      ],
+      "instructions": [
+        "Preheat the oven to 180°C (350°F).",
+        "Melt the chocolate and butter together.",
+        "Mix the sugar and eggs in a bowl until fluffy.",
+        "Gradually add the melted chocolate mixture.",
+        "Sift in the flour and baking powder, and mix well.",
+        "Pour into a greased baking tin and bake for 25-30 minutes."
+      ],
+      "category": "Dessert"
+    }
+  ]
+  
