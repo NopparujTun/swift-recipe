@@ -2,8 +2,8 @@
   {
     "id": 1,
     "name": "Spaghetti Bolognese",
-    "description": "A classic Italian dish with rich, meaty sauce.",
-    "image": "./assets/spaghetti-bolognese.jpg",
+    "description": "A simple and fast spaghetti with rich meat sauce.",
+    "image": "/src/assets/spaghetti.jpg",
     "ingredients": [
       "400g spaghetti",
       "2 tbsp olive oil",
@@ -27,8 +27,8 @@
   {
     "id": 2,
     "name": "Chocolate Cake",
-    "description": "Decadent and moist with creamy frosting.",
-    "image": "./assets/chocolate-cake.jpg",
+    "description": "A simple and quick chocolate cake that's rich and moist.",
+    "image": "/src/assets/chocolate-cake.jpg",
     "ingredients": [
       "200g dark chocolate",
       "200g butter",
@@ -51,8 +51,8 @@
   {
     "id": 3,
     "name": "Caesar Salad",
-    "description": "A healthy and delicious salad with a creamy dressing.",
-    "image": "./assets/caesar-salad.jpg",
+    "description": "A simple and fresh salad with creamy dressing.",
+    "image": "/src/assets/caesar-salad.jpg",
     "ingredients": [
       "1 romaine lettuce",
       "100g croutons",
@@ -71,8 +71,8 @@
   {
     "id": 4,
     "name": "Chicken Curry",
-    "description": "A flavorful and spicy Indian curry.",
-    "image": "./assets/chicken-curry.jpg",
+    "description": "A simple and spicy curry for a quick meal.",
+    "image": "/src/assets/chicken-curry.jpg",
     "ingredients": [
       "500g chicken",
       "2 onions, finely chopped",
@@ -94,8 +94,8 @@
   {
     "id": 5,
     "name": "Pancakes",
-    "description": "Fluffy pancakes perfect for breakfast.",
-    "image": "./assets/pancakes.jpg",
+    "description": "A simple and fluffy breakfast pancake.",
+    "image": "/src/assets/pancakes.jpg",
     "ingredients": [
       "200g flour",
       "2 eggs",
@@ -111,5 +111,28 @@
       "Serve with syrup, fruits, or toppings of choice."
     ],
     "category": "Breakfast"
+  },
+  {
+    "id": 6,
+    "name": "Vegetable Stir-Fry",
+    "description": "A quick and healthy stir-fried vegetable dish.",
+    "image": "/src/assets/vegetable-stir-fry.jpg",
+    "ingredients": [
+      "2 cups mixed vegetables (carrots, broccoli, bell peppers)",
+      "2 tbsp soy sauce",
+      "1 tbsp oyster sauce",
+      "1 tsp sesame oil",
+      "2 cloves garlic, minced",
+      "1 tbsp vegetable oil"
+    ],
+    "instructions": [
+      "Heat the vegetable oil in a wok or large skillet over medium-high heat.",
+      "Add minced garlic and stir-fry for 30 seconds until fragrant.",
+      "Add the mixed vegetables and stir-fry for 3-5 minutes.",
+      "Stir in soy sauce, oyster sauce, and sesame oil.",
+      "Cook for another 2 minutes until vegetables are tender-crisp.",
+      "Serve hot with rice or noodles."
+    ],
+    "category": "Vegetarian"
   }
 ]

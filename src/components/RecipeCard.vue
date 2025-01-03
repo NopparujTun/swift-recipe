@@ -14,8 +14,16 @@ export default {
   },
   methods: {
     viewDetails() {
-      this.$emit("click"); // Emit click event to parent
+      this.$emit("click");
     },
   },
 };
 </script>
+<style>
+.card h3{
+  font-family: 'Montserrat', sans-serif;
+}
+.card p{
+  font-family: 'Montserrat', sans-serif;
+}
+</style>
