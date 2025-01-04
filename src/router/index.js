@@ -12,8 +12,14 @@ const routes = [
     path: "/recipe/:id",
     name: "RecipeDetails",
     component: RecipeDetails,
-    props: (route) => ({ id: parseInt(route.params.id) }), // Pass `id` as a prop
+    props: (route) => ({ id: parseInt(route.params.id) }), 
   },
+  {
+    path: "/admin",
+    name: "AdminPage",
+    component: () => import("@/views/AdminPage.vue"),
+  },
+  
 ];
 
 const router = createRouter({

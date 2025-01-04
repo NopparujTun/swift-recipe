@@ -43,8 +43,6 @@ header p {
 .nav-logo {
   display: flex;
   align-items: center;
-  margin-left: 4rem;
-  
 }
 
 .nav-logo img {
@@ -57,13 +55,11 @@ header p {
   font-family: "Georgia", serif;
   font-weight: bold;
   color: #333;
-   
 }
 
 .nav-links {
   display: flex;
   gap: 1.5rem;
-  margin-right: 4rem;
 }
 
 .nav-links a {
@@ -73,12 +69,59 @@ header p {
   font-weight: bold;
   color: #333;
   transition: color 0.3s ease;
-  
 }
 
-nav a:hover {
-  color: #333; 
-  transform: scale(1.1); 
+.nav-links a:hover {
+  color: #ff6f61;
+}
+
+/* Hamburger Menu for Small Screens */
+.nav-toggle {
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.nav-links.dropdown {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.nav-links.dropdown a {
+  color: #333;
+  font-size: 1rem;
+  text-align: left;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column; 
+    width: 100%; 
+    background-color: #ffffff;
+    padding: 1rem;
+    position: absolute;
+    top: 60px; 
+    left: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav-toggle {
+    display: block;
+    color: #333;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
 }
 
 

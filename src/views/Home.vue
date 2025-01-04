@@ -1,17 +1,19 @@
 <template>
   <div>
     <nav class="navbar">
-      <div class="nav-logo">
-        <img src="/src/assets/logo.jpg" alt="Swift Recipe Logo" />
-        <span>Swift Recipe</span>
-      </div>
-      <div class="nav-links">
-        <a href="/" @click.prevent="goToHome">Home</a>
-        <a href="#">Recipes</a>
-        <a href="#">Favorites</a>
-        <a href="#">About</a>
-      </div>
-    </nav>
+  <div class="nav-logo">
+    <img src="/src/assets/logo.jpg" alt="Swift Recipe Logo" />
+    <span>Swift Recipe</span>
+  </div>
+  <div class="nav-toggle" @click="toggleMenu">&#9776;</div>
+  <div :class="['nav-links', { show: isMenuOpen }]">
+    <a href="/" @click.prevent="goToHome">Home</a>
+    <a href="#">Recipes</a>
+    <a href="#">Favorites</a>
+    <a href="#">About</a>
+  </div>
+</nav>
+
     <header>
       <h1>Welcome to Swift Recipe</h1>
       <p>Your simplest and quickest food recipes, all in one place.</p>
@@ -43,7 +45,6 @@
 
 <script>
 import RecipeCard from "@/components/RecipeCard.vue";
-import recipes from "@/data/recipes.json";
 
 export default {
   name: "Home",
@@ -52,9 +53,10 @@ export default {
   },
   data() {
     return {
-      recipes,
+      recipes: [], 
       selectedCategory: "All",
-      filteredRecipes: recipes,
+      filteredRecipes: [],
+      isMenuOpen: false,
     };
   },
   computed: {
@@ -63,6 +65,11 @@ export default {
     },
   },
   methods: {
+    loadRecipes() {
+      const savedRecipes = localStorage.getItem("recipes");
+      this.recipes = savedRecipes ? JSON.parse(savedRecipes) : [];
+      this.filterRecipes();
+    },
     filterRecipes() {
       if (this.selectedCategory === "All") {
         this.filteredRecipes = this.recipes;
@@ -78,9 +85,16 @@ export default {
     goToHome() {
       this.$router.push("/");
     },
+    toggleMenu() {
+      this.isMenuOpen = !this.isMenuOpen;
+    },
+  },
+  mounted() {
+    this.loadRecipes(); 
   },
 };
 </script>
+
 
 <style scoped>
 
@@ -104,4 +118,5 @@ export default {
   border-radius: 5px;
   border: 1px solid #ccc;
 }
+
 </style>

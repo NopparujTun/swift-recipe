@@ -2,17 +2,18 @@
   <div>
     <!-- Navigation Bar -->
     <nav class="navbar">
-      <div class="nav-logo">
-        <img src="/src/assets/logo.jpg" alt="Swift Recipe Logo" />
-        <span>Swift Recipe</span>
-      </div>
-      <div class="nav-links">
-        <a href="/" @click.prevent="goToHome">Home</a>
-        <a href="#">Recipes</a>
-        <a href="#">Favorites</a>
-        <a href="#">About</a>
-      </div>
-    </nav>
+  <div class="nav-logo">
+    <img src="/src/assets/logo.jpg" alt="Swift Recipe Logo" />
+    <span>Swift Recipe</span>
+  </div>
+  <div class="nav-toggle" @click="toggleMenu">&#9776;</div>
+  <div :class="['nav-links', { show: isMenuOpen }]">
+    <a href="/" @click.prevent="goToHome">Home</a>
+    <a href="#">Recipes</a>
+    <a href="#">Favorites</a>
+    <a href="#">About</a>
+  </div>
+</nav>
       <header>
         <h1>{{ recipe.name }}</h1>
         <p class="description">{{ recipe.description }}</p>
@@ -61,8 +62,6 @@
 </template>
 
 <script>
-import recipes from "@/data/recipes.json";
-
 export default {
   name: "RecipeDetails",
   props: {
@@ -71,17 +70,26 @@ export default {
   data() {
     return {
       recipe: null,
+      isMenuOpen: false,
     };
   },
   created() {
-    this.recipe = recipes.find((recipe) => recipe.id === this.id);
+    this.loadRecipe();
   },
   methods: {
+    loadRecipe() {
+      const savedRecipes = localStorage.getItem("recipes");
+      const recipes = savedRecipes ? JSON.parse(savedRecipes) : [];
+      this.recipe = recipes.find((recipe) => recipe.id === this.id);
+    },
     goBack() {
       this.$router.push("/");
     },
     goToHome() {
       this.$router.push("/");
+    },
+    toggleMenu() {
+      this.isMenuOpen = !this.isMenuOpen;
     },
   },
 };
