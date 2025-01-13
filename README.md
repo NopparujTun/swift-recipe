@@ -1,14 +1,46 @@
-<<<<<<< HEAD
-# Vue 3 + Vite
+# Swift Recipe
+> Quick and simple food recipe
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## Getting Started
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
-=======
-Project Setup
+### Prerequisites
+1. Node.js and npm installed.
+2. JSON Server installed globally:
+    ```bash
+    npm install -g json-server
+    ```
 
-Prerequisites
+# Setup Instructions
 
-Node.js and npm installed.
+To get started with the project, follow these steps:
 
-JSON Server installed globally:
+1. **Clone the Repository**: Open a terminal and run the following command to clone the repository.
+
+    ```bash
+    git clone https://github.com/NopparujTun/nopparujWEB.git
+    ```
+
+2. **Navigate to the Project Directory**: Change into the project directory using the `cd` command.
+
+    ```bash
+    cd ~/my-vue-app
+    ```
+
+3. **Install Project Dependencies**: Run the following command to install all the necessary dependencies.
+
+    ```bash
+    npm install
+    ```
+4. **Start the JSON Server**: Start the JSON server by running:
+
+    ```bash
+    json-server --watch src/data/recipes.json --port 3000
+    ```
+
+4. **Start the Development Server**: Start the development server by running:
+
+    ```bash
+    npm run dev
+    ```
+
+
