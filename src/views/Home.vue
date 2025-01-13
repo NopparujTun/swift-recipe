@@ -45,6 +45,7 @@
 
 <script>
 import RecipeCard from "@/components/RecipeCard.vue";
+import axios from "axios";
 
 export default {
   name: "Home",
@@ -65,10 +66,14 @@ export default {
     },
   },
   methods: {
-    loadRecipes() {
-      const savedRecipes = localStorage.getItem("recipes");
-      this.recipes = savedRecipes ? JSON.parse(savedRecipes) : [];
-      this.filterRecipes();
+    async loadRecipes() {
+      try {
+        const response = await axios.get("http://localhost:3000/recipes");
+        this.recipes = response.data;
+        this.filterRecipes(); // Filter the recipes after loading
+      } catch (error) {
+        console.error("Error fetching recipes:", error);
+      }
     },
     filterRecipes() {
       if (this.selectedCategory === "All") {
@@ -89,8 +94,8 @@ export default {
       this.isMenuOpen = !this.isMenuOpen;
     },
   },
-  mounted() {
-    this.loadRecipes(); 
+  async mounted() {
+    await this.loadRecipes(); 
   },
 };
 </script>

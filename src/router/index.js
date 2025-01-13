@@ -12,8 +12,9 @@ const routes = [
     path: "/recipe/:id",
     name: "RecipeDetails",
     component: RecipeDetails,
-    props: (route) => ({ id: parseInt(route.params.id) }), 
-  },
+    props: (route) => ({ id: parseInt(route.params.id) }), // Parse `id` as a number
+  }
+  ,
   {
     path: "/admin",
     name: "AdminPage",

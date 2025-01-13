@@ -62,14 +62,16 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "RecipeDetails",
   props: {
-    id: Number,
+    id: Number, // ID of the recipe passed as a prop
   },
   data() {
     return {
-      recipe: null,
+      recipe: null, // Holds the fetched recipe
       isMenuOpen: false,
     };
   },
@@ -77,10 +79,14 @@ export default {
     this.loadRecipe();
   },
   methods: {
-    loadRecipe() {
-      const savedRecipes = localStorage.getItem("recipes");
-      const recipes = savedRecipes ? JSON.parse(savedRecipes) : [];
-      this.recipe = recipes.find((recipe) => recipe.id === this.id);
+    async loadRecipe() {
+      try {
+        const response = await axios.get(`http://localhost:3000/recipes/${this.id}`);
+        this.recipe = response.data;
+      } catch (error) {
+        console.error("Error fetching the recipe:", error);
+        this.recipe = null; // Ensure fallback if the recipe is not found
+      }
     },
     goBack() {
       this.$router.push("/");
