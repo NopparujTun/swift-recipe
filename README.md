@@ -1,5 +1,5 @@
 # Swift Recipe
-> Quick and simple food recipe
+Quick and simple food recipe
 
 ## Getting Started
 
