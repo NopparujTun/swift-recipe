@@ -5,5 +5,10 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 
 Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
 =======
-# nopparujWEB
->>>>>>> f55814ab2e9d817667d5b671e64632e9549ee93b
+Project Setup
+
+Prerequisites
+
+Node.js and npm installed.
+
+JSON Server installed globally:
