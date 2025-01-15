@@ -17,7 +17,7 @@ To get started with the project, follow these steps:
 1. **Clone the Repository**: Open a terminal and run the following command to clone the repository.
 
     ```bash
-    git clone https://github.com/NopparujTun/nopparujWEB.git
+    git clone https://github.com/NopparujTun/swift-recipe.git
     ```
 
 2. **Navigate to the Project Directory**: Change into the project directory using the `cd` command.
