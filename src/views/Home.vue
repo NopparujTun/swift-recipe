@@ -1,18 +1,24 @@
 <template>
-  <div>
-    <nav class="navbar">
+<nav class="navbar">
   <div class="nav-logo">
     <img src="/src/assets/logo.jpg" alt="Swift Recipe Logo" />
     <span>Swift Recipe</span>
   </div>
-  <div class="nav-toggle" @click="toggleMenu">&#9776;</div>
-  <div :class="['nav-links', { show: isMenuOpen }]">
-    <a href="/" @click.prevent="goToHome">Home</a>
-    <a href="#">Recipes</a>
-    <a href="#">Favorites</a>
-    <a href="#">About</a>
-  </div>
+  <ul class="nav-links">
+    <li><a href="/" @click.prevent="goToHome">Home</a></li>
+    <li>
+      <a href="#" class="dropdown-btn">Recipes</a>
+      <ul class="dropdown">
+        <li v-for="category in uniqueCategories" :key="category" @click="filterByCategory(category)">
+          <a href="#">{{ category }}</a>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#">Favorites</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
 </nav>
+
 
     <header>
       <h1>Welcome to Swift Recipe</h1>
@@ -40,7 +46,7 @@
     <footer>
       <p>© 2025 Recipe Manager. All rights reserved.</p>
     </footer>
-  </div>
+
 </template>
 
 <script>
@@ -123,5 +129,6 @@ export default {
   border-radius: 5px;
   border: 1px solid #ccc;
 }
+
 
 </style>
