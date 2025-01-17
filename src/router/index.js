@@ -4,11 +4,18 @@ import RecipeDetails from "@/views/RecipeDetails.vue";
 import AllRecipes from "@/views/AllRecipes.vue";
 import CategoryRecipes from "@/views/CategoryRecipes.vue";
 import RecipeDetails_Christmas from "@/views/RecipeDetails_Christmas.vue";
+import AdminPage from "@/views/AdminPage.vue";
+import Login from "@/views/Login.vue";
 const routes = [
   {
     path: "/",
     name: "Home",
     component: Home,
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
   },
   {
     path: "/recipe/:id",
@@ -20,7 +27,16 @@ const routes = [
   {
     path: "/admin",
     name: "AdminPage",
-    component: () => import("@/views/AdminPage.vue"),
+    component: AdminPage,
+    beforeEnter: (to, from, next) => {
+      // Check if user is authenticated
+      const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+      if (isAuthenticated) {
+        next(); // Allow access
+      } else {
+        next("/login"); // Redirect to login page
+      }
+    },
   },
   {
     path: "/recipes/all",
@@ -42,10 +58,8 @@ const routes = [
   
   
 ];
-
 const router = createRouter({
   history: createWebHistory(),
   routes,
 });
-
 export default router;

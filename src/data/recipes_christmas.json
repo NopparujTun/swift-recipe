@@ -34,8 +34,7 @@
         "1/3 cup sugar",
         "2 cups milk",
         "1 cup heavy cream",
-        "1/2 tsp nutmeg",
-        "1/2 cup rum (optional)"
+        "1/2 tsp nutmeg"
       ],
       "instructions": [
         "Whisk egg yolks and sugar together until creamy.",
@@ -45,7 +44,7 @@
         "Remove from heat, stir in nutmeg, and optionally add rum.",
         "Serve chilled or warm."
       ],
-      "category": "Beverage"
+      "category": "Dessert"
     },
     {
       "id": "c",

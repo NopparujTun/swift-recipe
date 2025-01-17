@@ -64,6 +64,8 @@
       <button @click="cancelEdit">Cancel</button>
     </div>
   </div>
+  <button class="logout-button" @click="logout">Log Out</button>
+  <button @click="goHome">Go to Home</button>
 </template>
 
 <script>
@@ -171,6 +173,13 @@ export default {
       } catch (error) {
         console.error("Error deleting recipe:", error);
       }
+    },
+    logout() {
+      localStorage.removeItem("isAuthenticated");
+      this.$router.push("/login");
+    },
+    goHome() {
+      this.$router.push("/");
     },
   },
   async mounted() {

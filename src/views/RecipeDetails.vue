@@ -54,7 +54,7 @@
       <button @click="goBack" class="back-button">← Back</button>
     </div>
 
-    <!-- Fallback if recipe not found -->
+    
     <div v-else>
       <p>Recipe not found.</p>
       <button @click="goBack">← Back</button>

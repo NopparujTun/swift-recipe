@@ -47,7 +47,7 @@
       </div>
     </main>
     <footer>
-      <p>© 2025 Recipe Manager. All rights reserved.</p>
+      <p>© 2025 Swift Recipe. All rights reserved.</p>
     </footer>
   </template>
   
