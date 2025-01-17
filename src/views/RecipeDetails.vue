@@ -2,18 +2,29 @@
   <div>
     <!-- Navigation Bar -->
     <nav class="navbar">
-      <div class="nav-logo">
-        <img src="/src/assets/logo.jpg" alt="Swift Recipe Logo" />
-        <span>Swift Recipe</span>
-      </div>
-      <div class="nav-toggle" @click="toggleMenu">&#9776;</div>
-      <div :class="['nav-links', { show: isMenuOpen }]">
-        <a href="/" @click.prevent="goToHome">Home</a>
-        <a href="#">Recipes</a>
-        <a href="#">Favorites</a>
-        <a href="#">About</a>
-      </div>
-    </nav>
+    <div class="nav-logo">
+      <img src="/src/assets/logo.jpg" alt="Swift Recipe Logo" />
+      <span>Swift Recipe</span>
+    </div>
+    <button class="hamburger" @click="toggleMenu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul class="nav-links" :class="{ 'open': isMenuOpen }">
+      <li><a href="/" @click.prevent="goToHome">Home</a></li>
+      <li>
+        <a href="#" class="dropdown-btn">Recipes</a>
+        <ul class="dropdown">
+          <li v-for="category in uniqueCategories" :key="category" @click="filterByCategory(category)">
+            <a href="#">{{ category }}</a>
+          </li>
+        </ul>
+      </li>
+      <li><a href="#">Favorites</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+  </nav>
 
  
     <header class="recipe-header">
@@ -113,6 +124,7 @@ export default {
   background: white;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 
 }
 section h3 {
@@ -131,7 +143,7 @@ ol {
   padding-left: 20px;
 }
 
-button {
+.back-button button {
   display: flex;
   height: 3em;
   width: 100px;
@@ -146,19 +158,19 @@ button {
   background: #fff;
 }
 
-button > svg {
+.back-button button > svg {
   margin-right: 5px;
   margin-left: 5px;
   font-size: 20px;
   transition: all 0.4s ease-in;
 }
 
-button:hover > svg {
+.back-button button:hover > svg {
   font-size: 1.2em;
   transform: translateX(-5px);
 }
 
-button:hover {
+.back-button button:hover {
   box-shadow: 9px 9px 33px #d1d1d1, -9px -9px 33px #ffffff;
   transform: translateY(-2px);
 }

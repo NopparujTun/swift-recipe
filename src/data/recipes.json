@@ -3,7 +3,7 @@
     {
       "id": "1",
       "name": "Spaghetti Bolognese",
-      "description": "A simple and fast spaghetti with rich meat sauce.",
+      "description": "Simple spaghetti with rich meat sauce",
       "image": "/src/assets/spaghetti.jpg",
       "ingredients": [
         "400g spaghetti",
@@ -28,7 +28,7 @@
     {
       "id": "2",
       "name": "Chocolate Cake",
-      "description": "A simple and quick chocolate cake that's rich and moist.",
+      "description": "Simple rich and moist chocolate cake",
       "image": "/src/assets/chocolate-cake.jpg",
       "ingredients": [
         "200g dark chocolate",
@@ -52,7 +52,7 @@
     {
       "id": "3",
       "name": "Caesar Salad",
-      "description": "A simple and fresh salad with creamy dressing.",
+      "description": "Simple salad with creamy dressing",
       "image": "/src/assets/caesar-salad.jpg",
       "ingredients": [
         "1 romaine lettuce",
@@ -72,7 +72,7 @@
     {
       "id": "4",
       "name": "Chicken Curry",
-      "description": "A simple and spicy curry for a quick meal.",
+      "description": "Simplecurry for a quick meal",
       "image": "/src/assets/chicken-curry.jpg",
       "ingredients": [
         "500g chicken",
@@ -95,7 +95,7 @@
     {
       "id": "5",
       "name": "Pancakes",
-      "description": "A simple and fluffy breakfast pancake.",
+      "description": "Simple and fluffy breakfast pancake.",
       "image": "/src/assets/pancakes.jpg",
       "ingredients": [
         "200g flour",
@@ -116,7 +116,7 @@
     {
       "id": "6",
       "name": "Vegetable Stir-Fry",
-      "description": "A quick and healthy stir-fried vegetable dish.",
+      "description": "Simple healthy stir-fried vegetable dish",
       "image": "/src/assets/vegetable-stir-fry.jpg",
       "ingredients": [
         "2 cups mixed vegetables (carrots",

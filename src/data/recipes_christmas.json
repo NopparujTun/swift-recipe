@@ -1,0 +1,70 @@
+{
+  "recipes": [
+    {
+      "id": "a",
+      "name": "Gingerbread Men Cookies",
+      "description": "Simple classic cookies for holiday",
+      "image": "/src/assets/gingerbread-men.jpg",
+      "ingredients": [
+        "350g plain flour",
+        "1 tsp baking soda",
+        "2 tsp ground ginger",
+        "100g butter",
+        "175g brown sugar",
+        "4 tbsp golden syrup",
+        "1 egg"
+      ],
+      "instructions": [
+        "Preheat the oven to 180°C (350°F) and line a baking tray with parchment paper.",
+        "Mix flour, baking soda, and ginger in a bowl.",
+        "Rub in butter until the mixture resembles breadcrumbs.",
+        "Stir in sugar and add the syrup and egg to form a dough.",
+        "Roll out the dough, cut into shapes, and place on the tray.",
+        "Bake for 10-12 minutes until golden."
+      ],
+      "category": "Dessert"
+    },
+    {
+      "id": "b",
+      "name": "Eggnog",
+      "description": "Simple creamy and fresh holiday milk",
+      "image": "/src/assets/eggnog.jpg",
+      "ingredients": [
+        "4 egg yolks",
+        "1/3 cup sugar",
+        "2 cups milk",
+        "1 cup heavy cream",
+        "1/2 tsp nutmeg",
+        "1/2 cup rum (optional)"
+      ],
+      "instructions": [
+        "Whisk egg yolks and sugar together until creamy.",
+        "In a saucepan, heat milk and heavy cream until warm (do not boil).",
+        "Slowly whisk the warm milk into the egg yolks.",
+        "Return the mixture to the saucepan and heat until thickened.",
+        "Remove from heat, stir in nutmeg, and optionally add rum.",
+        "Serve chilled or warm."
+      ],
+      "category": "Beverage"
+    },
+    {
+      "id": "c",
+      "name": "Candy Cane Bark",
+      "description": "Simple chocolate for your holiday",
+      "image": "/src/assets/candy-cane-bark.jpg",
+      "ingredients": [
+        "200g white chocolate",
+        "200g dark chocolate",
+        "1/2 cup crushed candy canes"
+      ],
+      "instructions": [
+        "Melt the dark chocolate and spread it evenly on a baking sheet lined with parchment paper.",
+        "Allow the dark chocolate layer to set.",
+        "Melt the white chocolate and spread it on top of the dark chocolate.",
+        "Sprinkle the crushed candy canes over the white chocolate.",
+        "Let the bark set completely, then break it into pieces."
+      ],
+      "category": "Dessert"
+    }
+  ]
+}

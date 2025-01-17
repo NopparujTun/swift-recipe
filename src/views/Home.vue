@@ -1,52 +1,75 @@
 <template>
-<nav class="navbar">
-  <div class="nav-logo">
-    <img src="/src/assets/logo.jpg" alt="Swift Recipe Logo" />
-    <span>Swift Recipe</span>
-  </div>
-  <ul class="nav-links">
-    <li><a href="/" @click.prevent="goToHome">Home</a></li>
-    <li>
-      <a href="#" class="dropdown-btn">Recipes</a>
-      <ul class="dropdown">
-        <li v-for="category in uniqueCategories" :key="category" @click="filterByCategory(category)">
-          <a href="#">{{ category }}</a>
+  <div>
+    <nav class="navbar">
+      <div class="nav-logo">
+        <img src="/src/assets/logo.jpg" alt="Swift Recipe Logo" />
+        <span>Swift Recipe</span>
+      </div>
+      <button class="hamburger" @click="toggleMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links" :class="{ 'open': isMenuOpen }">
+        <li><a href="/" @click.prevent="goToHome">Home</a></li>
+        <li>
+          <a href="/recipes/all" class="dropdown-btn">Recipes</a>
+          <ul class="dropdown">
+            <li v-for="category in uniqueCategories" :key="category" @click="filterByCategory(category)">
+              <a href="#">{{ category }}</a>
+            </li>
+          </ul>
         </li>
+        <li><a href="#">About</a></li>
       </ul>
-    </li>
-    <li><a href="#">Favorites</a></li>
-    <li><a href="#">About</a></li>
-  </ul>
-</nav>
-
+    </nav>
 
     <header>
       <h1>Welcome to Swift Recipe</h1>
       <p>Your simplest and quickest food recipes, all in one place.</p>
     </header>
+
     <main>
-      <div class="filter">
-        <label for="category">Filter by Type:</label>
-        <select id="category" v-model="selectedCategory" @change="filterRecipes">
-          <option value="All">All</option>
-          <option v-for="category in uniqueCategories" :key="category" :value="category">
-            {{ category }}
-          </option>
-        </select>
-      </div>
-      <div class="recipes">
-        <RecipeCard
-          v-for="recipe in filteredRecipes"
-          :key="recipe.id"
-          :recipe="recipe"
-          @click="viewRecipe(recipe.id)"
-        />
-      </div>
+      <!-- Christmas Recipes Section -->
+      <section>
+        <h2 class="christmas">🎄 Christmas Edition 🎄</h2>
+        <div class="recipes">
+          <RecipeCard
+            v-for="recipe in christmasRecipes"
+            :key="recipe.id"
+            :recipe="recipe"
+            @click="viewRecipe(recipe.id)"
+          />
+        </div>
+      </section>
+
+      <!-- All Recipes Section -->
+      <section>
+        <h2>All Recipes</h2>
+        <div class="filter">
+          <label for="category">Filter by Type:</label>
+          <select id="category" v-model="selectedCategory" @change="filterRecipes">
+            <option value="All">All</option>
+            <option v-for="category in uniqueCategories" :key="category" :value="category">
+              {{ category }}
+            </option>
+          </select>
+        </div>
+        <div class="recipes">
+          <RecipeCard
+            v-for="recipe in filteredRecipes"
+            :key="recipe.id"
+            :recipe="recipe"
+            @click="viewRecipe(recipe.id)"
+          />
+        </div>
+      </section>
     </main>
+
     <footer>
       <p>© 2025 Recipe Manager. All rights reserved.</p>
     </footer>
-
+  </div>
 </template>
 
 <script>
@@ -63,6 +86,7 @@ export default {
       recipes: [], 
       selectedCategory: "All",
       filteredRecipes: [],
+      christmasRecipes: [], 
       isMenuOpen: false,
     };
   },
@@ -73,12 +97,27 @@ export default {
   },
   methods: {
     async loadRecipes() {
+    try {
+      // Load all recipes
+      const allResponse = await axios.get("/src/data/recipes.json");
+      this.recipes = allResponse.data.recipes;
+
+      // Load Christmas recipes
+      const christmasResponse = await axios.get("/src/data/recipes_christmas.json");
+      this.christmasRecipes = christmasResponse.data.recipes;
+
+      this.filterRecipes(); 
+    } catch (error) {
+      console.error("Error fetching recipes:", error);
+    }
+  },
+    async loadChristmasRecipes() {
       try {
-        const response = await axios.get("http://localhost:3000/recipes");
-        this.recipes = response.data;
-        this.filterRecipes(); // Filter the recipes after loading
+        const response = await axios.get("/src/data/recipes_christmas.json");
+
+        this.christmasRecipes = response.data.recipes;
       } catch (error) {
-        console.error("Error fetching recipes:", error);
+        console.error("Error fetching Christmas recipes:", error);
       }
     },
     filterRecipes() {
@@ -91,8 +130,15 @@ export default {
       }
     },
     viewRecipe(id) {
-      this.$router.push({ name: "RecipeDetails", params: { id } });
-    },
+  if (isNaN(id)) {
+ 
+    this.$router.push({ name: "RecipeDetails_Christmas", params: { id } });
+  } else {
+ 
+    this.$router.push({ name: "RecipeDetails", params: { id } });
+  }
+},
+
     goToHome() {
       this.$router.push("/");
     },
@@ -101,15 +147,32 @@ export default {
     },
   },
   async mounted() {
-    await this.loadRecipes(); 
+    await this.loadRecipes();
+    await this.loadChristmasRecipes(); 
   },
 };
 </script>
 
 
 <style scoped>
+section h2.christmas {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #d9534f;
+  font-family: "Montserrat", sans-serif;
+}
+section h2{
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #333;
+  font-family: "Montserrat", sans-serif;
+}
+.recipes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
 
-/* Filter Section */
 .filter {
   margin: 1rem 0;
   display: flex;
@@ -129,6 +192,4 @@ export default {
   border-radius: 5px;
   border: 1px solid #ccc;
 }
-
-
 </style>
