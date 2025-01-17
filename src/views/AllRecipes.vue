@@ -24,8 +24,7 @@
     </nav>
   
     <header>
-      <h1>Welcome to Swift Recipe</h1>
-      <p>Your simplest and quickest food recipes, all in one place.</p>
+      <h1>All recipes</h1>
     </header>
     <main>
       <div class="filter">

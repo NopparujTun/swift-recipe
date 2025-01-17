@@ -140,6 +140,205 @@
         "Serve hot with rice or noodles."
       ],
       "category": "Vegetarian"
+    },
+    {
+      "id": "7",
+      "name": "Tom Yum Kung",
+      "description": "Simple thai hot and sour soup with shrimp",
+      "image": "/src/assets/tom-yum-kung.jpg",
+      "ingredients": [
+        "500g shrimp",
+        "3 stalks lemongrass",
+        "5 lime leaves",
+        "50g galangal",
+        "3 bird's eye chilies",
+        "3 tbsp fish sauce",
+        "2 tbsp lime juice",
+        "200g mushrooms"
+      ],
+      "instructions": [
+        "Boil water in a pot and add smashed lemongrass, lime leaves, and galangal.",
+        "Add shrimp and mushrooms to the boiling broth.",
+        "Season the soup with fish sauce and lime juice.",
+        "Taste and adjust seasoning as desired.",
+        "Serve hot and garnish with fresh coriander leaves."
+      ],
+      "category": "Main Course"
+    },
+    {
+      "id": "8",
+      "name": "Som Tum Thai",
+      "description": "Simple but spicy Thai green papaya salad ",
+      "image": "/src/assets/som-tum-thai.jpg",
+      "ingredients": [
+        "300g green papaya",
+        "2 cloves garlic",
+        "2 bird's eye chilies",
+        "2 tbsp fish sauce",
+        "2 tbsp lime juice",
+        "1 tbsp palm sugar",
+        "50g roasted peanuts",
+        "100g cherry tomatoes"
+      ],
+      "instructions": [
+        "Peel and shred the green papaya into thin strips.",
+        "In a mortar, pound garlic and chilies together until coarse.",
+        "Add palm sugar, fish sauce, and lime juice, mixing until combined.",
+        "Toss the shredded papaya with cherry tomatoes and the dressing.",
+        "Top with roasted peanuts and serve fresh."
+      ],
+      "category": "Salad"
+    },
+    {
+      "id": "9",
+      "name": "Pad Kraphao",
+      "description": "Simple stir-fried Thai basil chicken",
+      "image": "/src/assets/pad-kraphao.jpg",
+      "ingredients": [
+        "300g ground chicken",
+        "4 cloves garlic",
+        "3 bird's eye chilies",
+        "2 tbsp soy sauce",
+        "2 tbsp fish sauce",
+        "1 tsp sugar",
+        "1 cup Thai basil leaves"
+      ],
+      "instructions": [
+        "Crush garlic and chilies together and fry in hot oil until fragrant.",
+        "Add ground chicken and stir-fry until cooked.",
+        "Season with soy sauce, fish sauce, and sugar, stirring well.",
+        "Add Thai basil leaves and cook until wilted.",
+        "Serve hot with steamed rice and a fried egg on top."
+      ],
+      "category": "Main Course"
+    },
+    {
+      "id": "10",
+      "name": "Thai Green Curry",
+      "description": "Simple creamy green curry with chicken",
+      "image": "/src/assets/thai-green-curry.jpg",
+      "ingredients": [
+        "300g chicken",
+        "2 tbsp green curry paste",
+        "400ml coconut milk",
+        "100g eggplant",
+        "50g bamboo shoots",
+        "1 cup Thai basil leaves",
+        "2 tbsp fish sauce",
+        "1 tbsp palm sugar"
+      ],
+      "instructions": [
+        "Heat a pan and fry green curry paste until fragrant.",
+        "Add coconut milk and stir until well combined.",
+        "Add chicken pieces, eggplant, and bamboo shoots, cooking until tender.",
+        "Season with fish sauce and palm sugar.",
+        "Garnish with Thai basil leaves and serve hot."
+      ],
+      "category": "Main Course"
+    },
+    {
+      "id": "11",
+      "name": "Kai Grata",
+      "description": "Simple traditional Thai pan eggs",
+      "image": "/src/assets/kai-grata.jpg",
+      "ingredients": [
+        "2 eggs",
+        "50g sausage, sliced",
+        "1 green onion, chopped",
+        "1 tsp soy sauce"
+      ],
+      "instructions": [
+        "Heat a small pan and crack eggs directly into it.",
+        "Add sausage slices and cook until the eggs are set.",
+        "Drizzle with soy sauce and sprinkle with chopped green onions.",
+        "Serve directly from the pan."
+      ],
+      "category": "Breakfast"
+    },
+    {
+      "id": "12",
+      "name": "Khao Tom",
+      "description": "Simple Thai rice soup for your breakfast",
+      "image": "/src/assets/khao-tom.jpg",
+      "ingredients": [
+        "1 cup cooked rice",
+        "100g ground pork",
+        "2 cloves garlic",
+        "2 cups chicken broth",
+        "1 tbsp fish sauce",
+        "Fresh cilantro for garnish"
+      ],
+      "instructions": [
+        "Heat chicken broth in a pot and add minced garlic.",
+        "Add ground pork and cook until fully done.",
+        "Stir in cooked rice and simmer for 5 minutes.",
+        "Season with fish sauce and garnish with fresh cilantro.",
+        "Serve warm as a hearty breakfast dish."
+      ],
+      "category": "Breakfast"
+    },
+    {
+      "id": "13",
+      "name": "Thai Omelette",
+      "description": "Simple fluffy Thai-style omelette",
+      "image": "/src/assets/thai-omelette.jpg",
+      "ingredients": [
+        "2 eggs",
+        "1 tbsp fish sauce",
+        "1 cup vegetable oil"
+      ],
+      "instructions": [
+        "Beat eggs with fish sauce until frothy.",
+        "Heat vegetable oil in a pan until hot.",
+        "Pour the egg mixture into the pan and fry until crispy.",
+        "Flip and cook the other side for 1-2 minutes.",
+        "Serve hot with steamed rice."
+      ],
+      "category": "Breakfast"
+    },
+    {
+      "id": "14",
+      "name": "Mango Sticky Rice",
+      "description": "Simple sweet sticky rice with mango",
+      "image": "/src/assets/mango-sticky-rice.jpg",
+      "ingredients": [
+        "1 cup glutinous rice",
+        "1 cup coconut milk",
+        "2 tbsp sugar",
+        "1 ripe mango, sliced",
+        "1 tsp sesame seeds"
+      ],
+      "instructions": [
+        "Cook glutinous rice until soft.",
+        "Heat coconut milk with sugar until dissolved.",
+        "Mix the coconut milk with the cooked rice and let it sit for 10 minutes.",
+        "Serve with ripe mango slices and sprinkle with sesame seeds."
+      ],
+      "category": "Dessert"
+    },
+    {
+      "id": "15",
+      "name": "Vegetarian Tom Yum",
+      "description": "Simple spicy and sour vegeterian soup",
+      "image": "/src/assets/vegetarian-tom-yum.jpg",
+      "ingredients": [
+        "3 stalks lemongrass",
+        "5 lime leaves",
+        "50g galangal",
+        "3 bird's eye chilies",
+        "200g mushrooms",
+        "2 tbsp lime juice",
+        "2 tbsp soy sauce",
+        "1 tsp sugar"
+      ],
+      "instructions": [
+        "Boil water in a pot and add smashed lemongrass, lime leaves, and galangal.",
+        "Add mushrooms to the boiling broth.",
+        "Season with lime juice, soy sauce, and sugar.",
+        "Taste and adjust seasoning as needed.",
+        "Serve hot with fresh cilantro garnish."
+      ],
+      "category": "Vegetarian"
     }
   ]
 }
