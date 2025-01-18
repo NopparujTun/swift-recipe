@@ -15,9 +15,11 @@
         <li>
           <a href="/recipes/all" class="dropdown-btn">Recipes</a>
           <ul class="dropdown">
-            <li v-for="category in uniqueCategories" :key="category" @click="filterByCategory(category)">
-              <a href="#">{{ category }}</a>
-            </li>
+            <li><a @click.prevent="navigateTo('/recipes/maincourse')">Main Course</a></li>
+            <li><a @click.prevent="navigateTo('/recipes/dessert')">Dessert</a></li>
+            <li><a @click.prevent="navigateTo('/recipes/salad')">Salad</a></li>
+            <li><a @click.prevent="navigateTo('/recipes/breakfast')">Breakfast</a></li>
+            <li><a @click.prevent="navigateTo('/recipes/vegetarian')">Vegetarian</a></li>
           </ul>
         </li>
         <li><a href="#">About</a></li>
@@ -64,6 +66,7 @@
           />
         </div>
       </section>
+      <BackToTop />
     </main>
 
     <footer>
@@ -74,11 +77,13 @@
 
 <script>
 import RecipeCard from "@/components/RecipeCard.vue";
+import BackToTop from "@/components/BackToTop.vue";
 import axios from "axios";
 
 export default {
   name: "Home",
   components: {
+    BackToTop,
     RecipeCard,
   },
   data() {
@@ -145,6 +150,9 @@ export default {
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
     },
+    navigateTo(path) {
+    this.$router.push(path);
+  },
   },
   async mounted() {
     await this.loadRecipes();

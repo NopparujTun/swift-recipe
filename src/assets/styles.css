@@ -160,6 +160,18 @@ footer {
   padding: 0.5rem 0.5rem;
   display: block;
 }
+.ingredient-item{
+  padding-bottom: 5px; 
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1.5;
+  font-size: 17px;
+}
+.step{
+  padding-bottom: 5px; 
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1.5;
+  font-size: 17px;
+}
 
 
 /* Dropdown menu styling */

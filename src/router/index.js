@@ -2,10 +2,14 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/views/Home.vue";
 import RecipeDetails from "@/views/RecipeDetails.vue";
 import AllRecipes from "@/views/AllRecipes.vue";
-import CategoryRecipes from "@/views/CategoryRecipes.vue";
 import RecipeDetails_Christmas from "@/views/RecipeDetails_Christmas.vue";
 import AdminPage from "@/views/AdminPage.vue";
 import Login from "@/views/Login.vue";
+import MainCourse from "@/views/MainCourse.vue";
+import Dessert from "@/views/Dessert.vue";
+import Salad from "@/views/Salad.vue"
+import Breakfast from "@/views/Breakfast.vue";
+import Vegetarian from "@/views/Vegetarian.vue";
 const routes = [
   {
     path: "/",
@@ -44,16 +48,35 @@ const routes = [
     component: AllRecipes,
   },
   {
-    path: "/recipes/:category",
-    name: "CategoryRecipes",
-    component: CategoryRecipes,
-    props: true,
-  },
-  {
     path: "/christmas-recipe/:id",
     name: "RecipeDetails_Christmas",
     component: RecipeDetails_Christmas,
     props: true,
+  },
+  {
+    path: "/recipes/maincourse",
+    name: "MainCourse",
+    component: MainCourse,
+  },
+  {
+    path: "/recipes/dessert",
+    name: "dessert",
+    component: Dessert,
+  },
+  {
+    path: "/recipes/salad",
+    name: "Salad",
+    component: Salad,
+  },
+  {
+    path: "/recipes/breakfast",
+    name: "Breakfast",
+    component: Breakfast,
+  },
+  {
+    path: "/recipes/vegetarian",
+    name: "Vegetarian",
+    component: Vegetarian,
   },
   
   
