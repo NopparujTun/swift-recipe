@@ -22,7 +22,7 @@
             <li><a @click.prevent="navigateTo('/recipes/vegetarian')">Vegetarian</a></li>
           </ul>
         </li>
-        <li><a href="#">About</a></li>
+        <li><a href="/about">About</a></li>
       </ul>
     </nav>
 

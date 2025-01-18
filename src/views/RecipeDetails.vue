@@ -90,16 +90,19 @@ export default {
         this.recipe = null; // Ensure fallback if the recipe is not found
       }
     },
-    goBack() {
-      this.$router.push("/");
-    },
     goToHome() {
       this.$router.push("/");
     },
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
     },
-    
+    navigateTo(path) {
+    this.$router.push(path);
+  },
+  },
+  async mounted() {
+    await this.loadRecipes();
+    await this.loadChristmasRecipes(); 
   },
 };
 </script>

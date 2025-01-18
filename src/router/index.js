@@ -10,6 +10,7 @@ import Dessert from "@/views/Dessert.vue";
 import Salad from "@/views/Salad.vue"
 import Breakfast from "@/views/Breakfast.vue";
 import Vegetarian from "@/views/Vegetarian.vue";
+import About from "@/views/About.vue";
 const routes = [
   {
     path: "/",
@@ -77,6 +78,11 @@ const routes = [
     path: "/recipes/vegetarian",
     name: "Vegetarian",
     component: Vegetarian,
+  },
+  {
+    path: "/about",
+    name: "About",
+    component: About,
   },
   
   
