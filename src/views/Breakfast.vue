@@ -59,8 +59,8 @@
     },
     data() {
       return {
-        recipes: [], // All recipes fetched
-        filteredRecipes: [], // Filtered by category
+        recipes: [], 
+        filteredRecipes: [], 
       };
     },
     methods: {

@@ -31,7 +31,7 @@
         <p class="description">{{ recipe.description }}</p>
       </header>
   
-      <!-- White Container -->
+      
       <div v-if="recipe" class="container">
         <img :src="recipe.image" :alt="recipe.name" class="recipe-image" />
         <section>
@@ -53,7 +53,7 @@
         <button @click="goBack" class="back-button">← Back</button>
       </div>
   
-      <!-- Fallback if recipe not found -->
+      
       <div v-else>
         <p>Recipe not found.</p>
         <button @click="goBack">← Back</button>
@@ -67,7 +67,7 @@
   export default {
     name: "RecipeDetails_Christmas",
     props: {
-      id: String, // Christmas recipe IDs are strings like 'a', 'b', 'c'
+      id: String, 
     },
     data() {
       return {

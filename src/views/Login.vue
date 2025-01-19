@@ -37,17 +37,17 @@
   </script>
   
   <style scoped>
-  /* Centering the page */
+  
   .page-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Full viewport height */
+    height: 100vh; 
     background-color: #f7f7f7;
     margin: 0;
   }
   
-  /* Form container styles */
+  
   .form-container {
     width: 350px;
     background-color: #fff;

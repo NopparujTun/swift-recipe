@@ -25,12 +25,12 @@
         </ul>
       </nav>
     <div class="about-container">
-      <!-- Logo Section -->
+      
       <div class="logo-section">
         <img src="/src/assets/logo.jpg" alt="Swift Recipe Logo" class="logo" />
       </div>
   
-      <!-- Description Section -->
+      
       <div class="description-section">
         <h1>About Swift Recipe</h1>
         <p>

@@ -32,7 +32,7 @@
       <p class="description">{{ recipe.description }}</p>
     </header>
 
-    <!-- White Container -->
+    
     <div v-if="recipe" class="container">
       <img :src="recipe.image" :alt="recipe.name" class="recipe-image" />
       <section>
@@ -69,11 +69,11 @@ import axios from "axios";
 export default {
   name: "RecipeDetails",
   props: {
-    id: Number, // ID of the recipe passed as a prop
+    id: Number,
   },
   data() {
     return {
-      recipe: null, // Holds the fetched recipe
+      recipe: null, 
       isMenuOpen: false,
     };
   },
@@ -87,7 +87,7 @@ export default {
         this.recipe = response.data;
       } catch (error) {
         console.error("Error fetching the recipe:", error);
-        this.recipe = null; // Ensure fallback if the recipe is not found
+        this.recipe = null; 
       }
     },
     goToHome() {
