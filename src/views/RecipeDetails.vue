@@ -1,30 +1,6 @@
 <template>
   <div>
-    <nav class="navbar">
-      <div class="nav-logo">
-        <img src="/src/assets/logo.jpg" alt="Swift Recipe Logo" />
-        <span>Swift Recipe</span>
-      </div>
-      <button class="hamburger" @click="toggleMenu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <ul class="nav-links" :class="{ 'open': isMenuOpen }">
-        <li><a href="/" @click.prevent="goToHome">Home</a></li>
-        <li>
-          <a href="/recipes/all" class="dropdown-btn">Recipes</a>
-          <ul class="dropdown">
-            <li><a @click.prevent="navigateTo('/recipes/maincourse')">Main Course</a></li>
-            <li><a @click.prevent="navigateTo('/recipes/dessert')">Dessert</a></li>
-            <li><a @click.prevent="navigateTo('/recipes/salad')">Salad</a></li>
-            <li><a @click.prevent="navigateTo('/recipes/breakfast')">Breakfast</a></li>
-            <li><a @click.prevent="navigateTo('/recipes/vegetarian')">Vegetarian</a></li>
-          </ul>
-        </li>
-        <li><a href="#">About</a></li>
-      </ul>
-    </nav>
+    <Navbar />
 
  
     <header class="recipe-header">
@@ -65,11 +41,15 @@
 
 <script>
 import axios from "axios";
+import Navbar from "@/components/Navbar.vue";
 
 export default {
   name: "RecipeDetails",
   props: {
     id: Number,
+  },
+  components: {
+    Navbar,
   },
   data() {
     return {
@@ -90,20 +70,11 @@ export default {
         this.recipe = null; 
       }
     },
-    goToHome() {
-      this.$router.push("/");
-    },
-    toggleMenu() {
-      this.isMenuOpen = !this.isMenuOpen;
-    },
-    navigateTo(path) {
-    this.$router.push(path);
+    goBack() {
+        this.$router.push("/");
+      },
   },
-  },
-  async mounted() {
-    await this.loadRecipes();
-    await this.loadChristmasRecipes(); 
-  },
+
 };
 </script>
 
@@ -138,14 +109,7 @@ section h3 {
   margin-bottom: 10px;
 }
 
-ul,
-ol {
-  font-size: 1rem;
-  font-family: "Roboto", sans-serif; 
-  color: #444;
-  margin: 20px 0;
-  padding-left: 20px;
-}
+
 
 .back-button button {
   display: flex;

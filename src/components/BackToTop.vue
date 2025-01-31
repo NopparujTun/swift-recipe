@@ -1,6 +1,6 @@
 <template>
     <button class="back-to-top" @click="scrollToTop">
-        ↑
+        ^
     </button>
   </template>
   
@@ -21,8 +21,8 @@
   
   <style scoped>
   .back-to-top {
-    padding: 10px 20px;
-  font-size: 16px;
+  padding: 10px 20px;
+  font-size: 20px;
   font-family: Arial, sans-serif;
   color: #ffffff;
   background-color: #007bff; 

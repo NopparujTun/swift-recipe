@@ -1,30 +1,6 @@
 <template>
   <div>
-    <nav class="navbar">
-      <div class="nav-logo">
-        <img src="/src/assets/logo.jpg" alt="Swift Recipe Logo" />
-        <span>Swift Recipe</span>
-      </div>
-      <button class="hamburger" @click="toggleMenu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <ul class="nav-links" :class="{ 'open': isMenuOpen }">
-        <li><a href="/" @click.prevent="goToHome">Home</a></li>
-        <li>
-          <a href="/recipes/all" class="dropdown-btn">Recipes</a>
-          <ul class="dropdown">
-            <li><a @click.prevent="navigateTo('/recipes/maincourse')">Main Course</a></li>
-            <li><a @click.prevent="navigateTo('/recipes/dessert')">Dessert</a></li>
-            <li><a @click.prevent="navigateTo('/recipes/salad')">Salad</a></li>
-            <li><a @click.prevent="navigateTo('/recipes/breakfast')">Breakfast</a></li>
-            <li><a @click.prevent="navigateTo('/recipes/vegetarian')">Vegetarian</a></li>
-          </ul>
-        </li>
-        <li><a href="/about">About</a></li>
-      </ul>
-    </nav>
+    <Navbar/>
 
     <header>
       <h1>Welcome to Swift Recipe</h1>
@@ -57,6 +33,16 @@
             </option>
           </select>
         </div>
+
+        <div class="InputContainer">
+        <input 
+        v-model="searchQuery" 
+        class="input" 
+        type="text" 
+        placeholder="Search for recipes..." 
+        />
+        </div>
+
         <div class="recipes">
           <RecipeCard
             v-for="recipe in filteredRecipes"
@@ -78,11 +64,13 @@
 <script>
 import RecipeCard from "@/components/RecipeCard.vue";
 import BackToTop from "@/components/BackToTop.vue";
+import Navbar from "@/components/Navbar.vue";
 import axios from "axios";
 
 export default {
   name: "Home",
   components: {
+    Navbar,
     BackToTop,
     RecipeCard,
   },
@@ -93,12 +81,18 @@ export default {
       filteredRecipes: [],
       christmasRecipes: [], 
       isMenuOpen: false,
+      searchQuery: "",
     };
   },
   computed: {
     uniqueCategories() {
       return [...new Set(this.recipes.map((recipe) => recipe.category))];
     },
+    filteredRecipes() {
+    return this.recipes.filter((recipe) =>
+      recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+    );
+  },
   },
   methods: {
     async loadRecipes() {
@@ -142,17 +136,7 @@ export default {
  
     this.$router.push({ name: "RecipeDetails", params: { id } });
   }
-},
-
-    goToHome() {
-      this.$router.push("/");
-    },
-    toggleMenu() {
-      this.isMenuOpen = !this.isMenuOpen;
-    },
-    navigateTo(path) {
-    this.$router.push(path);
-  },
+},    
   },
   async mounted() {
     await this.loadRecipes();
@@ -200,4 +184,35 @@ section h2{
   border-radius: 5px;
   border: 1px solid #ccc;
 }
+
+
+.InputContainer {
+  width: 300px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom, rgb(255, 225, 201), rgb(255, 231, 231));
+  border-radius: 30px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+}
+
+.input {
+  width: 280px;
+  height: 40px;
+  border: none;
+  outline: none;
+  caret-color: rgb(255, 81, 0);
+  background-color: rgb(255, 255, 255);
+  border-radius: 30px;
+  padding-left: 15px;
+  letter-spacing: 0.8px;
+  color: rgb(19, 19, 19);
+  font-size: 15px;
+}
+
+
 </style>
