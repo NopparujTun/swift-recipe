@@ -196,13 +196,16 @@ export default {
 max-width: 800px;
 margin: 0 auto;
 padding: 20px;
+font-family: "Poppins", sans-serif;
 }
 header {
   margin-bottom: 20px;
+  font-family: "Poppins", sans-serif;
 }
 header h1 {
 text-align: center;
 margin-bottom: 20px;
+font-family: "Poppins", sans-serif;
 }
 
 form {
@@ -210,6 +213,7 @@ display: flex;
 flex-direction: column;
 gap: 15px;
 margin-bottom: 20px;
+font-family: "Poppins", sans-serif;
 }
 
 form input,
@@ -220,12 +224,14 @@ padding: 0.8rem;
 border-radius: 6px; 
 border: 1px solid #ccc;
 width: 100%; 
-box-sizing: border-box; 
+box-sizing: border-box;
+font-family: "Poppins", sans-serif;
 }
 
 form textarea {
 resize: vertical; 
-min-height: 100px; 
+min-height: 100px;
+font-family: "Poppins", sans-serif;
 }
 
 form button {
@@ -308,6 +314,9 @@ border-radius: 6px;
 
 .modal button:hover {
 background-color: #ff5239;
+}
+* {
+  font-family: "Poppins", sans-serif;
 }
 </style>
 

@@ -104,7 +104,7 @@ export default {
 }
 section h3 {
   font-size: 1.8rem;
-  font-family: "Montserrat", sans-serif; 
+  font-family: "Poppins", sans-serif;
   color: #333;
   margin-bottom: 10px;
 }
@@ -142,5 +142,7 @@ section h3 {
   box-shadow: 9px 9px 33px #d1d1d1, -9px -9px 33px #ffffff;
   transform: translateY(-2px);
 }
-
+* {
+  font-family: "Poppins", sans-serif;
+}
 </style>

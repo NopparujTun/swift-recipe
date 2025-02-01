@@ -1,6 +1,6 @@
 /* General */
 body {
-  font-family: Arial, sans-serif;
+  font-family: "poppins", sans-serif;
   margin: 0;
   padding: 0;
   background-color: #ebebeb;
@@ -11,7 +11,7 @@ header {
   color:  #333;
   padding: 5rem 5rem;
   text-align: center;
-  font-family: 'Georgia', serif;
+  font-family: "poppins", sans-serif;
   font-size: 1.8rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
@@ -52,7 +52,7 @@ header p {
 
 .nav-logo span {
   font-size: 1.8rem;
-  font-family: "Georgia", serif;
+  font-family: "poppins", serif;
   font-weight: bold;
   color: #333;
 }
@@ -65,7 +65,7 @@ header p {
 .nav-links a {
   text-decoration: none;
   font-size: 1rem;
-  font-family: "Montserrat", sans-serif;
+  font-family: "poppins", sans-serif;
   font-weight: bold;
   color: #333;
   transition: color 0.3s ease;
@@ -238,4 +238,8 @@ ul li:hover ul.dropdown {
   .nav-links li {
     margin: 0.5rem 0;
   }
+}
+
+* {
+  font-family: "Poppins", sans-serif;
 }

@@ -28,10 +28,11 @@ export default {
 </script>
 <style>
 .card h3{
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 .card p{
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
 }
 
 button {
@@ -51,7 +52,7 @@ button {
   align-items: center;
   gap: 0.6em;
   font-weight: bold;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 button .arrow-wrapper {

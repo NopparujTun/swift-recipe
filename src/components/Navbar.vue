@@ -73,7 +73,7 @@
 
 .nav-logo span {
   font-size: 1.8rem;
-  font-family: "Georgia", serif;
+  font-family: "poppins", serif;
   font-weight: bold;
   color: #333;
 }
@@ -86,7 +86,7 @@
 .nav-links a {
   text-decoration: none;
   font-size: 1rem;
-  font-family: "Montserrat", sans-serif;
+  font-family: "poppins", sans-serif;
   font-weight: bold;
   color: #333;
   transition: color 0.3s ease;
@@ -188,6 +188,8 @@ ul li:hover ul.dropdown {
   }
 }
 
-
+* {
+  font-family: "Poppins", sans-serif;
+}
   </style>
   

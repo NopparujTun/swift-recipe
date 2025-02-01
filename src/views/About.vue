@@ -59,14 +59,14 @@
   }
   
   .description-section h1 {
-    font-family: "Montserrat", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 2rem;
     margin-bottom: 1rem;
     color: #333;
   }
   
   .description-section p {
-    font-family: "Roboto", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 1rem;
     line-height: 1.6;
     color: #555;

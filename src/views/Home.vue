@@ -151,13 +151,13 @@ section h2.christmas {
   font-size: 1.8rem;
   margin-bottom: 1rem;
   color: #d9534f;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 section h2{
   font-size: 1.8rem;
   margin-bottom: 1rem;
   color: #333;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 .recipes {
   display: flex;
@@ -175,7 +175,7 @@ section h2{
   margin-top: 3px;
   font-size: 1rem;
   font-weight: bold;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .filter select {
@@ -213,6 +213,8 @@ section h2{
   color: rgb(19, 19, 19);
   font-size: 15px;
 }
-
+* {
+  font-family: "Poppins", sans-serif;
+}
 
 </style>
