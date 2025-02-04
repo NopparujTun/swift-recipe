@@ -2,10 +2,16 @@
   <div>
     <Navbar/>
 
-    <header>
-      <h1>Welcome to Swift Recipe</h1>
-      <p>Your simplest and quickest food recipes, all in one place.</p>
-    </header>
+    <header class="home">
+  <div class="header-content">
+    <h1>Welcome To Swift Recipe</h1>
+    <p>Your simplest and quickest food recipes, all in one place.</p>
+  </div>
+  <div class="header-logo">
+    <img src="/src/assets/header.jpg" alt="Swift Recipe Logo" />
+  </div>
+</header>
+
 
     <main>
       <!-- Christmas Recipes Section -->

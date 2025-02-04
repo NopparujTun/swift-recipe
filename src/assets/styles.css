@@ -27,6 +27,52 @@ header p {
   font-style: italic; 
 }
 
+header.home {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to right, #ff914d, #ff6f61, #ff9370);
+  color: #333;
+  font-family: "Poppins", sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.header-content {
+  flex: 1;
+  text-align: left;
+  margin-left: 80px;
+}
+
+.header-content h1 {
+  margin: 0;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.header-content p {
+  margin: 0.5rem 0 0;
+  font-size: 1.2rem;
+  font-style: italic;
+}
+
+.header-logo {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.header-logo img {
+  width: 90%;
+  height: 90%;
+  object-fit: cover;
+}
+
+
+
 /* Navbar Styling */
 .navbar {
   display: flex;
