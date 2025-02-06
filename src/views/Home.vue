@@ -29,34 +29,19 @@
 
       <!-- All Recipes Section -->
       <section>
-        <h2>All Recipes</h2>
-        <div class="filter">
-          <label for="category">Filter by Type:</label>
-          <select id="category" v-model="selectedCategory" @change="filterRecipes">
-            <option value="All">All</option>
-            <option v-for="category in uniqueCategories" :key="category" :value="category">
-              {{ category }}
-            </option>
-          </select>
-        </div>
-
-        <div class="InputContainer">
-        <input 
-        v-model="searchQuery" 
-        class="input" 
-        type="text" 
-        placeholder="Search for recipes..." 
-        />
-        </div>
-
+        <h2>Latest Recipes</h2>
         <div class="recipes">
           <RecipeCard
-            v-for="recipe in filteredRecipes"
+            v-for="recipe in latestRecipes"
             :key="recipe.id"
             :recipe="recipe"
             @click="viewRecipe(recipe.id)"
           />
         </div>
+        <button class="view-all-button" @click="viewAllRecipes">
+          View All Recipes
+        </button>
+
       </section>
       <BackToTop />
     </main>
@@ -95,10 +80,28 @@ export default {
       return [...new Set(this.recipes.map((recipe) => recipe.category))];
     },
     filteredRecipes() {
-    return this.recipes.filter((recipe) =>
-      recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-    );
-  },
+      let filtered = this.recipes;
+
+      // Filter by category
+      if (this.selectedCategory !== "All") {
+        filtered = filtered.filter(
+          (recipe) => recipe.category === this.selectedCategory
+        );
+      }
+
+      // Filter by search query
+      if (this.searchQuery) {
+        filtered = filtered.filter((recipe) =>
+          recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      }
+
+      return filtered;
+    },
+    // Get the latest 6 recipes
+    latestRecipes() {
+      return this.recipes.slice(-6);
+    },
   },
   methods: {
     async loadRecipes() {
@@ -134,6 +137,7 @@ export default {
         );
       }
     },
+    
     viewRecipe(id) {
   if (isNaN(id)) {
  
@@ -142,7 +146,10 @@ export default {
  
     this.$router.push({ name: "RecipeDetails", params: { id } });
   }
-},    
+},
+viewAllRecipes() {
+    this.$router.push('/recipes/all');
+  },  
   },
   async mounted() {
     await this.loadRecipes();
@@ -171,25 +178,6 @@ section h2{
   gap: 20px;
 }
 
-.filter {
-  margin: 1rem 0;
-  display: flex;
-  gap: 10px;
-}
-
-.filter label {
-  margin-top: 3px;
-  font-size: 1rem;
-  font-weight: bold;
-  font-family: "Poppins", sans-serif;
-}
-
-.filter select {
-  padding: 0.2rem;
-  font-size: 1rem;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
 
 
 .InputContainer {
@@ -222,5 +210,46 @@ section h2{
 * {
   font-family: "Poppins", sans-serif;
 }
+.view-all-button {
+  margin-top: 30px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  background: linear-gradient(to right, #ff914d, #ff6f61, #ff9370);
+  border-radius: 20px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  border: 2px solid transparent;
+}
+
+.view-all-button:hover {
+  background: white;
+  color: #ff6f61;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+}
+
+.view-all-button:hover::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 20px;
+  background: linear-gradient(to right, #ff914d, #ff6f61, #ff9370);
+  z-index: -1;
+}
+
+
+
 
 </style>

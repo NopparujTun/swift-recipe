@@ -24,7 +24,6 @@ header h1 {
 header p {
   margin: 0.5rem 0 0;
   font-size: 1.2rem;
-  font-style: italic; 
 }
 
 header.home {
@@ -55,7 +54,6 @@ header.home {
 .header-content p {
   margin: 0.5rem 0 0;
   font-size: 1.2rem;
-  font-style: italic;
 }
 
 .header-logo {

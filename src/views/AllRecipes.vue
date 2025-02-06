@@ -63,15 +63,29 @@
       };
     },
     computed: {
-      uniqueCategories() {
-        return [...new Set(this.recipes.map((recipe) => recipe.category))];
-      },
-      filteredRecipes() {
-      return this.recipes.filter((recipe) =>
-        recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
+    uniqueCategories() {
+      return [...new Set(this.recipes.map((recipe) => recipe.category))];
     },
+    filteredRecipes() {
+      let filtered = this.recipes;
+
+      // Filter by category
+      if (this.selectedCategory !== "All") {
+        filtered = filtered.filter(
+          (recipe) => recipe.category === this.selectedCategory
+        );
+      }
+
+      // Filter by search query
+      if (this.searchQuery) {
+        filtered = filtered.filter((recipe) =>
+          recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      }
+
+      return filtered;
     },
+  },
     methods: {
       async loadRecipes() {
       try {
@@ -132,13 +146,14 @@
     margin: 1rem 0;
     display: flex;
     gap: 10px;
+    
   }
   
   .filter label {
     margin-top: 3px;
     font-size: 1rem;
     font-weight: bold;
-    font-family: "Montserrat", sans-serif;
+    font-family: "Poppins", sans-serif;
   }
   
   .filter select {
@@ -146,6 +161,7 @@
     font-size: 1rem;
     border-radius: 5px;
     border: 1px solid #ccc;
+    font-family: "Poppins", sans-serif;
   }
   
   .InputContainer {

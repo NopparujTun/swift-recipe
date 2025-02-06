@@ -53,6 +53,7 @@ button {
   gap: 0.6em;
   font-weight: bold;
   font-family: "Poppins", sans-serif;
+  cursor: pointer;
 }
 
 button .arrow-wrapper {

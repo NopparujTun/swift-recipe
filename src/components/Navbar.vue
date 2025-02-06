@@ -130,7 +130,8 @@ ul li ul.dropdown {
   top: 100%; 
   left: 0;
   z-index: 999;
-  display: none; 
+  display: none;
+  cursor: pointer;
 }
 
 ul li ul.dropdown li {
