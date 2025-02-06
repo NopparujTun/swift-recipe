@@ -179,34 +179,6 @@ section h2{
 }
 
 
-
-.InputContainer {
-  width: 300px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(to bottom, rgb(255, 225, 201), rgb(255, 231, 231));
-  border-radius: 30px;
-  overflow: hidden;
-  cursor: pointer;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  margin: 20px 0;
-}
-
-.input {
-  width: 280px;
-  height: 40px;
-  border: none;
-  outline: none;
-  caret-color: rgb(255, 81, 0);
-  background-color: rgb(255, 255, 255);
-  border-radius: 30px;
-  padding-left: 15px;
-  letter-spacing: 0.8px;
-  color: rgb(19, 19, 19);
-  font-size: 15px;
-}
 * {
   font-family: "Poppins", sans-serif;
 }

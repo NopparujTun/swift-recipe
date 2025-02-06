@@ -170,7 +170,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(to bottom, rgb(255, 225, 201), rgb(255, 231, 231));
+  background: linear-gradient(to bottom, rgb(255, 174, 108), rgb(255, 230, 191));
   border-radius: 30px;
   overflow: hidden;
   cursor: pointer;
