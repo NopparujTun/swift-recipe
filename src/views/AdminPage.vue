@@ -6,21 +6,20 @@
 
     <!-- Add Recipe Form -->
     <form @submit.prevent="addRecipe">
-
-  <input type="text" v-model="newRecipe.name" placeholder="Recipe Name" required />
-  <textarea v-model="newRecipe.description" placeholder="Description" required></textarea>
-  <textarea v-model="newRecipe.ingredients" placeholder="Ingredients (comma-separated)" required></textarea>
-  <textarea v-model="newRecipe.instructions" placeholder="Instructions (comma-separated)" required></textarea>
-  <select v-model="newRecipe.category" required>
-    <option disabled value="">Select Category</option>
-    <option v-for="category in uniqueCategories" :key="category" :value="category">
-      {{ category }}
-    </option>
-  </select>
-  <input type="file" @change="handleImageUpload" accept="image/*" required />
-  <button type="submit">Add Recipe</button>
-</form>
-
+      <input type="text" v-model="newRecipe.name" placeholder="Recipe Name" required />
+      <textarea v-model="newRecipe.description" placeholder="Description" required></textarea>
+      <textarea v-model="newRecipe.ingredients" placeholder="Ingredients (comma-separated)" required></textarea>
+      <textarea v-model="newRecipe.instructions" placeholder="Instructions (comma-separated)" required></textarea>
+      <select v-model="newRecipe.category" required>
+        <option disabled value="">Select Category</option>
+        <option v-for="category in uniqueCategories" :key="category" :value="category">
+          {{ category }}
+        </option>
+      </select>
+      <input type="file" @change="handleImageUpload" accept="image/*" required />
+      <p>Selected Image Path: {{ newRecipe.image }}</p> <!-- Display image path -->
+      <button type="submit">Add Recipe</button>
+    </form>
 
     <!-- Recipes Table -->
     <h3>Manage Recipes</h3>
@@ -45,119 +44,111 @@
         </tr>
       </tbody>
     </table>
-
-    <!-- Edit Modal -->
-    <div v-if="editingRecipe" class="modal">
-      <h3>Edit Recipe</h3>
-      <input type="text" v-model="editingRecipe.name" placeholder="Recipe Name" required />
-      <textarea v-model="editingRecipe.description" placeholder="Description" required></textarea>
-      <textarea v-model="editingRecipe.ingredients" placeholder="Ingredients (comma-separated)" required></textarea>
-      <textarea v-model="editingRecipe.instructions" placeholder="Instructions (comma-separated)" required></textarea>
-      <select v-model="editingRecipe.category" required>
-        <option disabled value="">Select Category</option>
-        <option v-for="category in uniqueCategories" :key="category" :value="category">
-          {{ category }}
-        </option>
-      </select>
-      <input type="file" @change="handleEditImageUpload" accept="image/*" />
-      <button @click="saveRecipe">Save Changes</button>
-      <button @click="cancelEdit">Cancel</button>
-    </div>
   </div>
-  <button class="logout-button" @click="logout">Log Out</button>
-  <button @click="goHome">Go to Home</button>
 </template>
 
+---
+
+### **Script Section**
+```js
 <script>
-import axios from "axios";
+import { supabase } from "@/supabase.js";
 
 export default {
-  name: "AdminPage",
   data() {
-  return {
-    recipes: [],
-    newRecipe: {
-      name: "",
-      description: "",
-      ingredients: "",
-      instructions: "",
-      category: "",
-      image: "",
-    },
-    editingRecipe: null,
-  };
-},
-
+    return {
+      recipes: [],
+      newRecipe: {
+        name: "",
+        description: "",
+        ingredients: "",
+        instructions: "",
+        category: "",
+        image: "",
+      },
+      imageFile: null,
+    };
+  },
   computed: {
     uniqueCategories() {
       return [...new Set(this.recipes.map((recipe) => recipe.category))];
     },
   },
   methods: {
-    async fetchRecipes() {
-      try {
-        const response = await axios.get("http://localhost:3000/recipes");
-        this.recipes = response.data;
-      } catch (error) {
-        console.error("Error fetching recipes:", error);
-      }
-    },
     handleImageUpload(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.newRecipe.image = reader.result; // Base64 string
-        };
-        reader.readAsDataURL(file);
+      this.imageFile = event.target.files[0];
+
+      if (this.imageFile) {
+        // Extract the image name without extension
+        const imageName = this.imageFile.name.split(".")[0]; // "newpics" if "newpics.jpg"
+        this.newRecipe.image = `/src/assets/${imageName}.jpg`; // Set the path to the image
+        console.log("Image path set to:", this.newRecipe.image);
       }
     },
     async addRecipe() {
-  try {
-    // Step 1: Fetch all recipes to determine the current highest `id`
-    const response = await axios.get("http://localhost:3000/recipes");
-    const recipes = response.data;
+      try {
+        const ingredientsArray = this.newRecipe.ingredients.split(",").map((item) => item.trim());
+        const instructionsArray = this.newRecipe.instructions.split(",").map((item) => item.trim());
 
-    // Step 2: Find the highest `id`
-    const maxId = recipes.length > 0 ? Math.max(...recipes.map((recipe) => recipe.id)) : 0;
+        const { data, error } = await supabase.from("recipes").insert([
+          {
+            name: this.newRecipe.name,
+            description: this.newRecipe.description,
+            image: this.newRecipe.image, // Store the constructed path (e.g., "/src/assets/newpics.jpg")
+            category: this.newRecipe.category,
+          },
+        ]).select();
 
-    // Step 3: Create the new recipe with `id = maxId + 1`
-    const ingredientsArray = this.newRecipe.ingredients.split(",").map((item) => item.trim());
-    const instructionsArray = this.newRecipe.instructions.split(",").map((item) => item.trim());
-    const newRecipe = {
-      id: maxId + 1, // Assign the next `id` manually
-      ...this.newRecipe,
-      ingredients: ingredientsArray,
-      instructions: instructionsArray,
-    };
+        if (error) {
+          console.error("Error adding recipe:", error);
+          return;
+        }
 
-    // Step 4: Send the new recipe to JSON Server
-    const postResponse = await axios.post("http://localhost:3000/recipes", newRecipe);
-    this.recipes.push(postResponse.data);
+        const recipeId = data[0].id;
+        await supabase.from("ingredients").insert(ingredientsArray.map((ingredient) => ({ recipe_id: recipeId, ingredient })));
+        await supabase.from("instructions").insert(instructionsArray.map((instruction, index) => ({ recipe_id: recipeId, step_number: index + 1, instruction })));
 
-    // Reset the form
-    this.newRecipe = { name: "", description: "", ingredients: "", instructions: "", category: "", image: "" };
-  } catch (error) {
-    console.error("Error adding recipe:", error);
-  }
-}
-,
-    editRecipe(recipe) {
-      this.editingRecipe = { ...recipe, ingredients: recipe.ingredients.join(", "), instructions: recipe.instructions.join(", ") };
+
+        await this.fetchRecipes(); // Refresh recipes to reflect the new addition
+        this.newRecipe = { name: "", description: "", ingredients: "", instructions: "", category: "", image: "" };
+      } catch (error) {
+        console.error("Error adding recipe:", error);
+      }
+    },
+    async fetchRecipes() {
+      const { data, error } = await supabase.from("recipes").select("*").order("id", { ascending: true });
+      if (error) {
+        console.error("Error fetching recipes:", error);
+      } else {
+        this.recipes = data;
+      }
+    },
+    async editRecipe(recipe) {
+      this.editingRecipe = {
+        ...recipe,
+        ingredients: recipe.ingredients.join(", "),
+        instructions: recipe.instructions.join(", "),
+      };
     },
     async saveRecipe() {
       try {
-        const updatedRecipe = {
-          ...this.editingRecipe,
-          ingredients: this.editingRecipe.ingredients.split(",").map((item) => item.trim()),
-          instructions: this.editingRecipe.instructions.split(",").map((item) => item.trim()),
-        };
+        const ingredientsArray = this.editingRecipe.ingredients.split(",").map((item) => item.trim());
+        const instructionsArray = this.editingRecipe.instructions.split(",").map((item) => item.trim());
 
-        await axios.put(`http://localhost:3000/recipes/${this.editingRecipe.id}`, updatedRecipe);
-        const index = this.recipes.findIndex((r) => r.id === this.editingRecipe.id);
-        if (index !== -1) {
-          this.recipes.splice(index, 1, updatedRecipe);
-        }
+        await supabase.from("recipes").update({
+          name: this.editingRecipe.name,
+          description: this.editingRecipe.description,
+          image: this.editingRecipe.image,
+          category: this.editingRecipe.category,
+        }).eq("id", this.editingRecipe.id);
+
+        await supabase.from("ingredients").delete().eq("recipe_id", this.editingRecipe.id);
+        await supabase.from("instructions").delete().eq("recipe_id", this.editingRecipe.id);
+
+        await supabase.from("ingredients").insert(ingredientsArray.map((ingredient) => ({ recipe_id: this.editingRecipe.id, ingredient })));
+        await supabase.from("instructions").insert(instructionsArray.map((instruction, index) => ({ recipe_id: this.editingRecipe.id, step_number: index + 1, instruction })));
+
+        await this.fetchRecipes();
         this.editingRecipe = null;
       } catch (error) {
         console.error("Error saving recipe:", error);
@@ -167,19 +158,10 @@ export default {
       this.editingRecipe = null;
     },
     async deleteRecipe(id) {
-      try {
-        await axios.delete(`http://localhost:3000/recipes/${id}`);
-        this.recipes = this.recipes.filter((recipe) => recipe.id !== id);
-      } catch (error) {
-        console.error("Error deleting recipe:", error);
-      }
-    },
-    logout() {
-      localStorage.removeItem("isAuthenticated");
-      this.$router.push("/login");
-    },
-    goHome() {
-      this.$router.push("/");
+      await supabase.from("recipes").delete().eq("id", id);
+      await supabase.from("ingredients").delete().eq("recipe_id", id);
+      await supabase.from("instructions").delete().eq("recipe_id", id);
+      await this.fetchRecipes();
     },
   },
   async mounted() {
@@ -187,8 +169,6 @@ export default {
   },
 };
 </script>
-
-
 
 
 <style scoped>
@@ -319,4 +299,3 @@ background-color: #ff5239;
   font-family: "Poppins", sans-serif;
 }
 </style>
-

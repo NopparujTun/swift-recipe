@@ -1,9 +1,9 @@
 <template>
   <div>
     <Navbar />
-  
+
     <header>
-      <h1>All recipes</h1>
+      <h1>All Recipes</h1>
     </header>
     <main>
       <div class="filter">
@@ -17,13 +17,14 @@
       </div>
 
       <div class="InputContainer">
-        <input 
-        v-model="searchQuery" 
-        class="input" 
-        type="text" 
-        placeholder="Search for recipes..." 
+        <input
+          v-model="searchQuery"
+          class="input"
+          type="text"
+          placeholder="Search for recipes..."
         />
-        </div>
+      </div>
+
       <div class="recipes">
         <RecipeCard
           v-for="recipe in filteredRecipes"
@@ -33,36 +34,34 @@
         />
       </div>
     </main>
+
     <footer>
       <p>© 2025 Swift Recipe. All rights reserved.</p>
     </footer>
   </div>
-  </template>
-  
-  <script>
-  import RecipeCard from "@/components/RecipeCard.vue";
-  import BackToTop from "@/components/BackToTop.vue";
-  import Navbar from "@/components/Navbar.vue";
-  import axios from "axios";
-  
-  export default {
-    name: "Home",
-    components: {
-      Navbar,
-      BackToTop,
-      RecipeCard,
-    },
-    data() {
-      return {
-        recipes: [], 
-        selectedCategory: "All",
-        filteredRecipes: [],
-        christmasRecipes: [], 
-        isMenuOpen: false,
-        searchQuery: "",
-      };
-    },
-    computed: {
+</template>
+
+<script>
+import RecipeCard from "@/components/RecipeCard.vue";
+import BackToTop from "@/components/BackToTop.vue";
+import Navbar from "@/components/Navbar.vue";
+import { supabase } from "../supabase.js"; // Import Supabase client
+
+export default {
+  name: "Home",
+  components: {
+    Navbar,
+    BackToTop,
+    RecipeCard,
+  },
+  data() {
+    return {
+      recipes: [],
+      selectedCategory: "All",
+      searchQuery: "",
+    };
+  },
+  computed: {
     uniqueCategories() {
       return [...new Set(this.recipes.map((recipe) => recipe.category))];
     },
@@ -71,9 +70,7 @@
 
       // Filter by category
       if (this.selectedCategory !== "All") {
-        filtered = filtered.filter(
-          (recipe) => recipe.category === this.selectedCategory
-        );
+        filtered = filtered.filter((recipe) => recipe.category === this.selectedCategory);
       }
 
       // Filter by search query
@@ -86,85 +83,58 @@
       return filtered;
     },
   },
-    methods: {
-      async loadRecipes() {
+  methods: {
+    async loadRecipes() {
       try {
-        // Load all recipes
-        const allResponse = await axios.get("/src/data/recipes.json");
-        this.recipes = allResponse.data.recipes;
-  
-        // Load Christmas recipes
-        const christmasResponse = await axios.get("/src/data/recipes_christmas.json");
-        this.christmasRecipes = christmasResponse.data.recipes;
-  
-        this.filterRecipes(); 
+        const { data: recipes, error } = await supabase
+          .from("recipes")
+          .select("*")
+          .order("id", { ascending: true }); // Ensure consistent order by `id`
+
+        if (error) {
+          console.error("Error fetching recipes:", error);
+          return;
+        }
+        this.recipes = recipes;
       } catch (error) {
-        console.error("Error fetching recipes:", error);
+        console.error("Error loading recipes:", error);
       }
     },
-      async loadChristmasRecipes() {
-        try {
-          const response = await axios.get("/src/data/recipes_christmas.json");
-  
-          this.christmasRecipes = response.data.recipes;
-        } catch (error) {
-          console.error("Error fetching Christmas recipes:", error);
-        }
-      },
-      filterRecipes() {
-        if (this.selectedCategory === "All") {
-          this.filteredRecipes = this.recipes;
-        } else {
-          this.filteredRecipes = this.recipes.filter(
-            (recipe) => recipe.category === this.selectedCategory
-          );
-        }
-      },
-      viewRecipe(id) {
-    if (isNaN(id)) {
-   
-      this.$router.push({ name: "RecipeDetails_Christmas", params: { id } });
-    } else {
-   
+    viewRecipe(id) {
       this.$router.push({ name: "RecipeDetails", params: { id } });
-    }
-  },    
     },
-    async mounted() {
-      await this.loadRecipes();
-      await this.loadChristmasRecipes(); 
-    },
-  };
-  </script>
-  
-  
-  
-  <style scoped>
-  
-  /* Filter Section */
-  .filter {
-    margin: 1rem 0;
-    display: flex;
-    gap: 10px;
-    
-  }
-  
-  .filter label {
-    margin-top: 3px;
-    font-size: 1rem;
-    font-weight: bold;
-    font-family: "Poppins", sans-serif;
-  }
-  
-  .filter select {
-    padding: 0.2rem;
-    font-size: 1rem;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-family: "Poppins", sans-serif;
-  }
-  
-  .InputContainer {
+  },
+  async mounted() {
+    await this.loadRecipes(); // Load recipes from Supabase
+  },
+};
+</script>
+
+
+<style scoped>
+/* Filter Section */
+.filter {
+  margin: 1rem 0;
+  display: flex;
+  gap: 10px;
+}
+
+.filter label {
+  margin-top: 3px;
+  font-size: 1rem;
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+}
+
+.filter select {
+  padding: 0.2rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-family: "Poppins", sans-serif;
+}
+
+.InputContainer {
   width: 300px;
   height: 50px;
   display: flex;
@@ -191,7 +161,8 @@
   color: rgb(19, 19, 19);
   font-size: 15px;
 }
+
 * {
   font-family: "Poppins", sans-serif;
 }
-  </style>
+</style>

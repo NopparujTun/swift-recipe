@@ -29,7 +29,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .card {
   text-align: left; /* Ensure all content aligns to the left */
   

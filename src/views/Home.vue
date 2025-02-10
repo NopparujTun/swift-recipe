@@ -1,18 +1,16 @@
 <template>
   <div>
-    <Navbar/>
+    <Navbar />
 
     <header class="home">
-  <div class="header-content">
-    <h1>Welcome To Swift Recipe</h1>
-    <p>Your simplest and quickest food recipes, all in one place.</p>
-  </div>
-  <div class="header-logo">
-    <img src="/src/assets/header.jpg" alt="Swift Recipe Logo" />
-  </div>
-</header>
-
-
+      <div class="header-content">
+        <h1>Welcome To Swift Recipe</h1>
+        <p>Your simplest and quickest food recipes, all in one place.</p>
+      </div>
+      <div class="header-logo">
+        <img src="/src/assets/header.jpg" alt="Swift Recipe Logo" />
+      </div>
+    </header>
 
     <main>
       <!-- Christmas Recipes Section -->
@@ -42,7 +40,6 @@
         <button class="view-all-button" @click="viewAllRecipes">
           View All Recipes
         </button>
-
       </section>
       <BackToTop />
     </main>
@@ -53,11 +50,16 @@
   </div>
 </template>
 
+---
+
+### **Script Section (Updated)**
+
+```js
 <script>
 import RecipeCard from "@/components/RecipeCard.vue";
 import BackToTop from "@/components/BackToTop.vue";
 import Navbar from "@/components/Navbar.vue";
-import axios from "axios";
+import { supabase } from "@/supabase.js"; // Import Supabase client
 
 export default {
   name: "Home",
@@ -68,96 +70,66 @@ export default {
   },
   data() {
     return {
-      recipes: [], 
-      selectedCategory: "All",
-      filteredRecipes: [],
-      christmasRecipes: [], 
-      isMenuOpen: false,
-      searchQuery: "",
+      recipes: [],
+      christmasRecipes: [],
     };
   },
   computed: {
-    uniqueCategories() {
-      return [...new Set(this.recipes.map((recipe) => recipe.category))];
-    },
-    filteredRecipes() {
-      let filtered = this.recipes;
-
-      // Filter by category
-      if (this.selectedCategory !== "All") {
-        filtered = filtered.filter(
-          (recipe) => recipe.category === this.selectedCategory
-        );
-      }
-
-      // Filter by search query
-      if (this.searchQuery) {
-        filtered = filtered.filter((recipe) =>
-          recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-        );
-      }
-
-      return filtered;
-    },
-    // Get the latest 6 recipes
     latestRecipes() {
-      return this.recipes.slice(-8).reverse();
+      // Return the latest 8 recipes and reverse them to show the newest at the top-left
+      return this.recipes.slice(0, 8);
     },
   },
   methods: {
     async loadRecipes() {
-    try {
-      // Load all recipes
-      const allResponse = await axios.get("/src/data/recipes.json");
-      this.recipes = allResponse.data.recipes;
+      try {
+        // Fetch the latest 8 recipes from the database
+        const { data: recipes, error } = await supabase
+          .from("recipes")
+          .select("*")
+          .order("id", { ascending: false }) // Fetch latest recipes first
+          .limit(8);
 
-      // Load Christmas recipes
-      const christmasResponse = await axios.get("/src/data/recipes_christmas.json");
-      this.christmasRecipes = christmasResponse.data.recipes;
-
-      this.filterRecipes(); 
-    } catch (error) {
-      console.error("Error fetching recipes:", error);
-    }
-  },
+        if (error) {
+          console.error("Error fetching recipes:", error);
+          return;
+        }
+        this.recipes = recipes; // Store fetched recipes
+      } catch (error) {
+        console.error("Error loading recipes:", error);
+      }
+    },
     async loadChristmasRecipes() {
       try {
-        const response = await axios.get("/src/data/recipes_christmas.json");
+        // Simulating fetching Christmas recipes from a special endpoint or database logic
+        const { data: christmasRecipes, error } = await supabase
+          .from("recipes")
+          .select("*")
+          .eq("category", "Christmas");
 
-        this.christmasRecipes = response.data.recipes;
+        if (error) {
+          console.error("Error fetching Christmas recipes:", error);
+          return;
+        }
+        this.christmasRecipes = christmasRecipes;
       } catch (error) {
         console.error("Error fetching Christmas recipes:", error);
       }
     },
-    filterRecipes() {
-      if (this.selectedCategory === "All") {
-        this.filteredRecipes = this.recipes;
-      } else {
-        this.filteredRecipes = this.recipes.filter(
-          (recipe) => recipe.category === this.selectedCategory
-        );
-      }
-    },
-    
     viewRecipe(id) {
-  if (isNaN(id)) {
- 
-    this.$router.push({ name: "RecipeDetails_Christmas", params: { id } });
-  } else {
- 
-    this.$router.push({ name: "RecipeDetails", params: { id } });
-  }
-},
-viewAllRecipes() {
-    this.$router.push('/recipes/all');
-  },  
+      this.$router.push({ name: "RecipeDetails", params: { id } });
+    },
+    viewAllRecipes() {
+      this.$router.push("/recipes/all");
+    },
   },
   async mounted() {
-    await this.loadRecipes();
-    await this.loadChristmasRecipes(); 
+    await this.loadRecipes(); // Load recipes from the database
+    await this.loadChristmasRecipes(); // Load Christmas recipes
   },
 };
 </script>
+
 
 
 <style scoped>
