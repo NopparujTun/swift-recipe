@@ -13,6 +13,7 @@
 </header>
 
 
+
     <main>
       <!-- Christmas Recipes Section -->
       <section>
@@ -100,7 +101,7 @@ export default {
     },
     // Get the latest 6 recipes
     latestRecipes() {
-      return this.recipes.slice(-6);
+      return this.recipes.slice(-8).reverse();
     },
   },
   methods: {
@@ -175,7 +176,7 @@ section h2{
 .recipes {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 10px;
 }
 
 
@@ -220,6 +221,7 @@ section h2{
   background: linear-gradient(to right, #ff914d, #ff6f61, #ff9370);
   z-index: -1;
 }
+
 
 
 
