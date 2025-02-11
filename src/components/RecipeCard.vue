@@ -58,11 +58,12 @@ export default {
 
 .card img {
   width: 100%;
-  height: 200px; 
+  height: 220px; 
   object-fit: cover; 
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   border: none;
+  margin-bottom: -13px;
 }
 
 .card h3 {
@@ -70,6 +71,7 @@ export default {
   color: #333;
   font-family: "Poppins", sans-serif;
   font-size: 1.3rem;
+  
 
 }
 
@@ -77,9 +79,10 @@ export default {
   font-family: "Poppins", sans-serif;
   font-size: 12px;
   margin: 0.5rem 0;
-  
+  margin-top: -5px;
   color: #555;
   font-weight: bold;
+  margin-bottom: 12px;
 }
 
 

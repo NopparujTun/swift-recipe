@@ -142,6 +142,10 @@ section h3 {
   color: #333;
   margin-bottom: 10px;
 }
+section ul li {
+  font-family: "Poppins", sans-serif;
+}
+
 
 button {
   --primary-color: linear-gradient(to right, #ff914d, #ff6f61, #ff9370);

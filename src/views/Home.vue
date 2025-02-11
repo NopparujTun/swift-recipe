@@ -13,18 +13,7 @@
     </header>
 
     <main>
-      <!-- Christmas Recipes Section -->
-      <section>
-        <h2 class="christmas">🎄 Christmas Edition 🎄</h2>
-        <div class="recipes">
-          <RecipeCard
-            v-for="recipe in christmasRecipes"
-            :key="recipe.id"
-            :recipe="recipe"
-            @click="viewRecipe(recipe.id)"
-          />
-        </div>
-      </section>
+      
 
       <!-- All Recipes Section -->
       <section>
@@ -146,8 +135,7 @@ section h2{
   font-family: "Poppins", sans-serif;
 }
 .recipes {
-  display: flex;
-  flex-wrap: wrap;
+
   gap: 10px;
 }
 

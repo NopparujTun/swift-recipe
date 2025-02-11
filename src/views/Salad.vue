@@ -1,71 +1,72 @@
 <template>
-    <div>
-      <Navbar/>
-  
+  <div>
+    <Navbar />
+
     <header>
       <h1>Salad</h1>
     </header>
-      <main>
-        <div class="recipes">
-          <RecipeCard
-            v-for="recipe in filteredRecipes"
-            :key="recipe.id"
-            :recipe="recipe"
-            @click="viewRecipe(recipe.id)"
-          />
-        </div>
-      </main>
-      <BackToTop />
-      <footer>
+
+    <main>
+      <div class="recipes">
+        <RecipeCard
+          v-for="recipe in filteredRecipes"
+          :key="recipe.id"
+          :recipe="recipe"
+          @click="viewRecipe(recipe.id)"
+        />
+      </div>
+    </main>
+
+    <BackToTop />
+    <footer>
       <p>© 2025 Swift Recipe. All rights reserved.</p>
     </footer>
   </div>
-  </template>
-  
-  <script>
-  import axios from "axios";
-  import RecipeCard from "@/components/RecipeCard.vue";
-  import BackToTop from "@/components/BackToTop.vue";
-  import Navbar from "@/components/Navbar.vue";
+</template>
 
-  
-  export default {
-    name: "MainCourse",
-    components: {
-      Navbar,
-        BackToTop,
-      RecipeCard,
-    },
-    data() {
-      return {
-        recipes: [], 
-        filteredRecipes: [], 
-      };
-    },
-    methods: {
-      async fetchRecipes() {
-        try {
-          const response = await axios.get("http://localhost:3000/recipes");
-          this.recipes = response.data;
-          this.filterRecipes();
-        } catch (error) {
+<script>
+import { supabase } from "@/supabase.js";
+import RecipeCard from "@/components/RecipeCard.vue";
+import BackToTop from "@/components/BackToTop.vue";
+import Navbar from "@/components/Navbar.vue";
+
+export default {
+  name: "Salad",
+  components: {
+    Navbar,
+    BackToTop,
+    RecipeCard,
+  },
+  data() {
+    return {
+      filteredRecipes: [], // Store only "Salad" recipes
+    };
+  },
+  methods: {
+    async fetchSaladRecipes() {
+      try {
+        const { data: recipes, error } = await supabase
+          .from("recipes")
+          .select("*")
+          .eq("category", "Salad");
+
+        if (error) {
           console.error("Error fetching recipes:", error);
+          return;
         }
-      },
-      filterRecipes() {
-  
-        this.filteredRecipes = this.recipes.filter(
-          (recipe) => recipe.category === "Salad"
-        );
-      },
-      viewRecipe(id) {
-        this.$router.push({ name: "RecipeDetails", params: { id } });
-      },
+        this.filteredRecipes = recipes;
+      } catch (error) {
+        console.error("Error fetching recipes:", error);
+      }
+    },
+    viewRecipe(id) {
+      this.$router.push({ name: "RecipeDetails", params: { id } });
+    },
+  },
+  async mounted() {
+    await this.fetchSaladRecipes(); // Fetch salad recipes on mount
+  },
+};
+</script>
 
-    },
-    async mounted() {
-      await this.fetchRecipes();
-    },
-  };
-  </script>
-  
+
