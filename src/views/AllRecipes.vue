@@ -2,56 +2,64 @@
   <div>
     <Navbar />
 
-    <header>
-      <h1>All Recipes</h1>
-    </header>
-    <main>
-      <div class="filter">
-        <label for="category">Filter by Type:</label>
-        <select id="category" v-model="selectedCategory" @change="filterRecipes">
-          <option value="All">All</option>
-          <option v-for="category in uniqueCategories" :key="category" :value="category">
-            {{ category }}
-          </option>
-        </select>
+    <div class="banner">
+      <img src="@/assets/banner.jpg" alt="Banner" class="banner-image" />
+      <h1 class="banner-text">All Recipes</h1>
+    </div>
+
+    <main class="container">
+      
+      <div class="search-filter-container">
+        <aside class="filter-section">
+          <h2>Filters</h2>
+          <div class="filter">
+            <label for="category">Filter by Type:</label>
+            <select id="category" v-model="selectedCategory" @change="filterRecipes">
+              <option value="All">All</option>
+              <option v-for="category in uniqueCategories" :key="category" :value="category">
+                {{ category }}
+              </option>
+            </select>
+          </div>
+        </aside>
+
+        <div class="search-bar">
+          <input
+            v-model="searchQuery"
+            class="search-input"
+            type="text"
+            placeholder="Search recipes..."
+          />
+        </div>
       </div>
 
-      <div class="InputContainer">
-        <input
-          v-model="searchQuery"
-          class="input"
-          type="text"
-          placeholder="Search for recipes..."
-        />
-      </div>
-
-      <div class="recipes">
+      <!-- Recipe List -->
+      <section class="recipe-list">
         <RecipeCard
           v-for="recipe in filteredRecipes"
           :key="recipe.id"
           :recipe="recipe"
           @click="viewRecipe(recipe.id)"
         />
-      </div>
+      </section>
     </main>
 
-    <footer>
+    <footer class="footer">
       <p>© 2025 Swift Recipe. All rights reserved.</p>
     </footer>
   </div>
 </template>
 
+
 <script>
 import RecipeCard from "@/components/RecipeCard.vue";
-import BackToTop from "@/components/BackToTop.vue";
 import Navbar from "@/components/Navbar.vue";
-import { supabase } from "../supabase.js"; // Import Supabase client
+import { supabase } from "../supabase.js"; 
 
 export default {
   name: "Home",
   components: {
     Navbar,
-    BackToTop,
     RecipeCard,
   },
   data() {
@@ -68,12 +76,10 @@ export default {
     filteredRecipes() {
       let filtered = this.recipes;
 
-      // Filter by category
       if (this.selectedCategory !== "All") {
         filtered = filtered.filter((recipe) => recipe.category === this.selectedCategory);
       }
 
-      // Filter by search query
       if (this.searchQuery) {
         filtered = filtered.filter((recipe) =>
           recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase())
@@ -86,11 +92,7 @@ export default {
   methods: {
     async loadRecipes() {
       try {
-        const { data: recipes, error } = await supabase
-          .from("recipes")
-          .select("*")
-          .order("id", { ascending: true }); // Ensure consistent order by `id`
-
+        const { data: recipes, error } = await supabase.from("recipes").select("*").order("id", { ascending: true });
         if (error) {
           console.error("Error fetching recipes:", error);
           return;
@@ -105,64 +107,140 @@ export default {
     },
   },
   async mounted() {
-    await this.loadRecipes(); // Load recipes from Supabase
+    await this.loadRecipes();
   },
 };
 </script>
 
-
 <style scoped>
-/* Filter Section */
-.filter {
-  margin: 1rem 0;
+
+.header {
+  text-align: center;
+  position: relative;
+}
+
+.search-bar {
+  width: 100%;
   display: flex;
-  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  width: 50%;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+}
+.banner {
+  position: relative;
+  text-align: center;
+}
+
+.banner-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  display: block;
+}
+
+.banner-text {
+  position: absolute;
+  top: 43%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #333;
+  font-size: 2.5rem;
+  font-weight: bold;
+  
+}
+
+main {
+  max-width: 1600px;
+  margin: 2rem auto;
+  padding: 1rem;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .recipe-list {
+    grid-template-columns: 1fr !important;
+    
+  }
+  .filter-section {
+  width: 300px;
+  padding: 15px;
+  background: #f4f4f4;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+}
+
+.filter-section {
+  width: 300px;
+  padding: 15px;
+  background: #f4f4f4;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.filter-section h2 {
+  font-size: 1.2rem;
+  
+  text-align: left;
+}
+
+.filter {
+  margin-bottom: 15px;
 }
 
 .filter label {
-  margin-top: 3px;
-  font-size: 1rem;
+  display: block;
   font-weight: bold;
-  font-family: "Poppins", sans-serif;
+  margin-bottom: 5px;
+  text-align: left;
 }
 
 .filter select {
-  padding: 0.2rem;
+  width: 100%;
+  padding: 8px;
   font-size: 1rem;
-  border-radius: 5px;
+  border-radius: 20px;
   border: 1px solid #ccc;
-  font-family: "Poppins", sans-serif;
 }
 
-.InputContainer {
-  width: 300px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(to bottom, rgb(255, 174, 108), rgb(255, 230, 191));
-  border-radius: 30px;
-  overflow: hidden;
-  cursor: pointer;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  margin: 20px 0;
+.search-container {
+  margin-top: 10px;
 }
 
-.input {
-  width: 280px;
-  height: 40px;
-  border: none;
-  outline: none;
-  caret-color: rgb(255, 81, 0);
-  background-color: rgb(255, 255, 255);
-  border-radius: 30px;
-  padding-left: 15px;
-  letter-spacing: 0.8px;
-  color: rgb(19, 19, 19);
-  font-size: 15px;
+.search-input {
+  width: 94%;
+  padding: 8px;
+  font-size: 1rem;
+  border-radius: 20px;
+  border: 1px solid #ccc;
 }
 
-* {
-  font-family: "Poppins", sans-serif;
+.recipe-list {
+  margin-top: -10px;
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  
 }
+
+
 </style>

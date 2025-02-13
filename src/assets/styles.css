@@ -30,8 +30,7 @@ header.home {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(to right, #ff914d, #ff6f61, #ff9370);
-  color: #333;
+  background: #EAECE2;
   font-family: "Poppins", sans-serif;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   margin: 0;
