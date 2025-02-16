@@ -23,7 +23,7 @@
             v-for="recipe in latestRecipes"
             :key="recipe.id"
             :recipe="recipe"
-            @click="viewRecipe(recipe.id)"
+            
           />
         </div>
         <button class="view-all-button" @click="viewAllRecipes">
@@ -31,11 +31,11 @@
         </button>
       </section>
       <BackToTop />
+      
     </main>
 
-    <footer>
-      <p>© 2025 Swift Recipe. All rights reserved.</p>
-    </footer>
+    <Footer />
+    
   </div>
 </template>
 
@@ -48,6 +48,7 @@
 import RecipeCard from "@/components/RecipeCard.vue";
 import BackToTop from "@/components/BackToTop.vue";
 import Navbar from "@/components/Navbar.vue";
+import Footer from "@/components/Footer.vue";
 import { supabase } from "@/supabase.js"; // Import Supabase client
 
 export default {
@@ -55,6 +56,7 @@ export default {
   components: {
     Navbar,
     BackToTop,
+    Footer,
     RecipeCard,
   },
   data() {
@@ -131,7 +133,7 @@ section h2.christmas {
 section h2{
   font-size: 1.8rem;
   margin-bottom: 1rem;
-  color: #333;
+  color: #1a1a1a;
   font-family: "Poppins", sans-serif;
 }
 .recipes {

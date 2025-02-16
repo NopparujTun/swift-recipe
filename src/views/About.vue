@@ -1,5 +1,6 @@
 <template>
 <Navbar />
+<main>
     <div class="about-container">
       
       <div class="logo-section">
@@ -20,13 +21,18 @@
         </p>
       </div>
     </div>
+  </main>
+    <Footer />
+    
   </template>
   
   <script>
   import Navbar from "@/components/Navbar.vue";
+  import Footer from "@/components/Footer.vue";
   export default {
     components: {
     Navbar,
+    Footer,
   },
 };
   

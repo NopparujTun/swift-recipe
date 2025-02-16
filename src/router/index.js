@@ -4,23 +4,27 @@ import RecipeDetails from "@/views/RecipeDetails.vue";
 import AllRecipes from "@/views/AllRecipes.vue";
 import RecipeDetails_Christmas from "@/views/RecipeDetails_Christmas.vue";
 import AdminPage from "@/views/AdminPage.vue";
-import Login from "@/views/Login.vue";
+import AdminLogin from "@/views/AdminLogin.vue";
 import MainCourse from "@/views/MainCourse.vue";
+
 import Dessert from "@/views/Dessert.vue";
 import Salad from "@/views/Salad.vue"
 import Breakfast from "@/views/Breakfast.vue";
 import Vegetarian from "@/views/Vegetarian.vue";
 import About from "@/views/About.vue";
+
+
 const routes = [
+
   {
     path: "/",
     name: "Home",
     component: Home,
   },
   {
-    path: "/login",
-    name: "Login",
-    component: Login,
+    path: "/admin",
+    name: "Admin",
+    component: AdminLogin,
   },
   {
     path: "/recipe/:id",
@@ -30,7 +34,7 @@ const routes = [
   }
   ,
   {
-    path: "/admin",
+    path: "/admin/dashboard",
     name: "AdminPage",
     component: AdminPage,
     beforeEnter: (to, from, next) => {
@@ -84,11 +88,28 @@ const routes = [
     name: "About",
     component: About,
   },
-  
+  {
+    path: "/login",
+    name: "sign in",
+    component: () => import("@/views/SignIn.vue"),
+  },
+  {
+    path: "/signup",
+    name: "sign up",
+    component: () => import("@/views/SignUp.vue"),
+  },
+  {
+    path: "/favorites",
+    name: "favorties",
+    component: () => import("@/views/Favorites.vue")
+  }
   
 ];
 const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+
+
 export default router;

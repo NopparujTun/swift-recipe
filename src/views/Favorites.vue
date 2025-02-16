@@ -4,19 +4,22 @@
 
     <div class="banner">
       <img src="@/assets/banner.jpg" alt="Banner" class="banner-image" />
-      <h1 class="banner-text">All Recipes</h1>
+      <h1 class="banner-text">Your Favorite Recipes</h1>
     </div>
 
     <main class="container">
-      
       <div class="search-filter-container">
         <aside class="filter-section">
           <h2>Filters</h2>
           <div class="filter">
             <label for="category">Filter by Type:</label>
-            <select id="category" v-model="selectedCategory" @change="filterRecipes">
+            <select id="category" v-model="selectedCategory">
               <option value="All">All</option>
-              <option v-for="category in uniqueCategories" :key="category" :value="category">
+              <option
+                v-for="category in uniqueCategories"
+                :key="category"
+                :value="category"
+              >
                 {{ category }}
               </option>
             </select>
@@ -42,32 +45,26 @@
         />
       </section>
     </main>
-    <BackToTop/>
+
     <Footer />
   </div>
 </template>
 
-
 <script>
-import RecipeCard from "@/components/RecipeCard.vue";
 import Navbar from "@/components/Navbar.vue";
+import RecipeCard from "@/components/RecipeCard.vue";
 import Footer from "@/components/Footer.vue";
-import BackToTop from "@/components/BackToTop.vue";
-import { supabase } from "../supabase.js"; 
+import { supabase } from "@/supabase.js"; // adjust path if needed
 
 export default {
-  name: "Home",
-  components: {
-    Navbar,
-    RecipeCard,
-    Footer,
-    BackToTop,
-  },
+  name: "Favorites",
+  components: { Navbar, RecipeCard, Footer },
   data() {
     return {
       recipes: [],
       selectedCategory: "All",
       searchQuery: "",
+      loading: false,
     };
   },
   computed: {
@@ -76,45 +73,63 @@ export default {
     },
     filteredRecipes() {
       let filtered = this.recipes;
-
       if (this.selectedCategory !== "All") {
-        filtered = filtered.filter((recipe) => recipe.category === this.selectedCategory);
+        filtered = filtered.filter(
+          (recipe) => recipe.category === this.selectedCategory
+        );
       }
-
       if (this.searchQuery) {
         filtered = filtered.filter((recipe) =>
           recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase())
         );
       }
-
       return filtered;
     },
   },
   methods: {
-    async loadRecipes() {
-      try {
-        const { data: recipes, error } = await supabase.from("recipes").select("*").order("id", { ascending: true });
+    async loadFavorites() {
+      this.loading = true;
+      const { data: userData } = await supabase.auth.getUser();
+      if (userData?.user) {
+        const userId = userData.user.id;
+        const { data, error } = await supabase
+          .from("favorite_recipes")
+          .select(`
+            *,
+            recipe:recipes(
+              id,
+              name,
+              image,
+              description,
+              category,
+              created_at,
+              updated_at
+            )
+          `)
+          .eq("user_id", userId);
         if (error) {
-          console.error("Error fetching recipes:", error);
-          return;
+          console.error("Error fetching favorites:", error);
+        } else {
+          console.log("Favorites data:", data);
+          // Map over the favorites to extract the joined recipe data.
+          this.recipes = data
+            .map((fav) => fav.recipe) // if your alias is "recipe"
+            .filter((recipe) => recipe !== null);
         }
-        this.recipes = recipes;
-      } catch (error) {
-        console.error("Error loading recipes:", error);
+      } else {
+        // Redirect to login if no user is logged in.
+        this.$router.push("/login");
       }
-    },
-    viewRecipe(id) {
-      this.$router.push({ name: "RecipeDetails", params: { id } });
+      this.loading = false;
     },
   },
   async mounted() {
-    await this.loadRecipes();
+    await this.loadFavorites();
   },
 };
 </script>
 
 <style scoped>
-
 .header {
   text-align: center;
   position: relative;
@@ -242,6 +257,4 @@ main {
   gap: 20px;
   
 }
-
-
 </style>

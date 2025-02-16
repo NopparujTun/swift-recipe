@@ -8,7 +8,7 @@ body {
 
 header {
   background: linear-gradient(to right, #ff914d, #ff6f61, #ff9370);
-  color:  #333;
+  color:  #1a1a1a;
   padding: 5rem 5rem;
   text-align: center;
   font-family: "poppins", sans-serif;
@@ -30,7 +30,7 @@ header.home {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #EAECE2;
+  background: linear-gradient(to right, #ff914d, #ff6f61, #ff9370);
   font-family: "Poppins", sans-serif;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   margin: 0;
@@ -113,7 +113,7 @@ header.home {
   font-size: 1rem;
   font-family: "poppins", sans-serif;
   font-weight: bold;
-  color: #333;
+  color: #1a1a1a;
   transition: color 0.3s ease;
 }
 
@@ -226,7 +226,7 @@ ul li:hover ul.dropdown {
 .hamburger span {
   width: 25px;
   height: 3px;
-  background: #333;
+  background: #1a1a1a;
 }
 @media (max-width: 768px) {
   .hamburger {

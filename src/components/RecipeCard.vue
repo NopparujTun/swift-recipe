@@ -1,50 +1,144 @@
 <template>
   <div class="card">
-    <img :src="recipe.image" :alt="recipe.name" />
+    <div class="image-wrapper">
+      <img :src="recipe.image" :alt="recipe.name" />
+      <!-- Favorite Button at Top Right of Image -->
+      <button class="favorite-btn" @click="toggleFavorite">
+        <span v-if="isFavorited">❤️</span>
+        <span v-else>🤍</span>
+      </button>
+    </div>
+
     <div class="card-content">
       <h3>{{ recipe.name }}</h3>
       <p>{{ recipe.description }}</p>
-      <button @click="viewDetails">
+    </div>
+
+    <!-- Card Footer: View Recipe (left) and Favorite Count (right) -->
+    <div class="card-footer">
+      <button @click="viewRecipe(recipe.id)">
         View recipe
         <div class="arrow-wrapper">
           <div class="arrow"></div>
         </div>
       </button>
+      <div class="favorite-count">
+        <span>🤍</span> {{ favoriteCount }}
+      </div>
     </div>
   </div>
 </template>
 
-
-
 <script>
+import { supabase } from "@/supabase.js";
+
 export default {
   name: "RecipeCard",
   props: {
     recipe: Object,
   },
+  data() {
+    return {
+      user: null,
+      isFavorited: false,
+      favoriteCount: 0,
+    };
+  },
+  async mounted() {
+    await this.checkUser();
+    if (this.user) {
+      await this.checkIfFavorited();
+    }
+    // Fetch the current favorite count from the database
+    await this.fetchFavoriteCount();
+  },
   methods: {
-    viewDetails() {
-      this.$emit("click");
+    async checkUser() {
+      const { data: authData } = await supabase.auth.getUser();
+      if (authData?.user) {
+        this.user = authData.user;
+      }
+    },
+
+    async fetchFavoriteCount() {
+      const { count, error } = await supabase
+        .from("favorite_recipes")
+        .select("*", { count: "exact", head: true })
+        .eq("recipe_id", this.recipe.id);
+      if (error) {
+        console.error("Error fetching favorite count:", error);
+      } else {
+        this.favoriteCount = count || 0;
+      }
+    },
+
+    async checkIfFavorited() {
+      if (!this.user) return;
+
+      const { data } = await supabase
+        .from("favorite_recipes")
+        .select("id")
+        .eq("user_id", this.user.id)
+        .eq("recipe_id", this.recipe.id)
+        .single();
+
+      if (data) {
+        this.isFavorited = true;
+      }
+    },
+
+    async toggleFavorite() {
+      if (!this.user) {
+        this.$router.push("/login"); // Redirect to login if not authenticated
+        return;
+      }
+
+      if (this.isFavorited) {
+        await this.removeFavorite();
+      } else {
+        await this.addFavorite();
+      }
+      // Refresh the count after toggling
+      await this.fetchFavoriteCount();
+    },
+
+    async addFavorite() {
+      const { error } = await supabase.from("favorite_recipes").insert([
+        {
+          user_id: this.user.id,
+          recipe_id: this.recipe.id,
+        },
+      ]);
+
+      if (!error) {
+        this.isFavorited = true;
+      } else {
+        console.error("Error adding favorite:", error);
+      }
+    },
+
+    async removeFavorite() {
+      const { error } = await supabase
+        .from("favorite_recipes")
+        .delete()
+        .eq("user_id", this.user.id)
+        .eq("recipe_id", this.recipe.id);
+
+      if (!error) {
+        this.isFavorited = false;
+      } else {
+        console.error("Error removing favorite:", error);
+      }
+    },
+
+    viewRecipe(id) {
+      this.$router.push({ name: "RecipeDetails", params: { id } });
     },
   },
 };
 </script>
+
 <style scoped>
-.card {
-  text-align: left; /* Ensure all content aligns to the left */
-  
-}
-
-.recipes {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-}
-.card-content {
-  padding: 1rem; /* Padding only around the text and button */
-}
-
 .card {
   display: inline-block;
   overflow: hidden;
@@ -56,7 +150,11 @@ export default {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.card img {
+/* Image Container */
+.image-wrapper {
+  position: relative;
+}
+.image-wrapper img {
   width: 100%;
   height: 220px; 
   object-fit: cover; 
@@ -66,30 +164,52 @@ export default {
   margin-bottom: -13px;
 }
 
-.card h3 {
+/* Favorite Button at Top Right of Image */
+.favorite-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 0.2rem;
+  border-radius: 100%;
+  background: rgb(226, 226, 226);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Card Content (Title & Description) */
+.card-content {
+  padding: 1rem;
+  flex-grow: 1;
+}
+.card-content h3 {
   margin: 0.5rem 0;
   color: #333;
   font-family: "Poppins", sans-serif;
-  font-size: 1.3rem;
-  
-
+  font-size: 1.2rem;
+  text-align: left;
 }
-
-.card p {
+.card-content p {
   font-family: "Poppins", sans-serif;
   font-size: 12px;
   margin: 0.5rem 0;
-  margin-top: -5px;
   color: #555;
   font-weight: bold;
-  margin-bottom: 12px;
+  text-align: left;
 }
 
+/* Card Footer (View Recipe and Favorite Count) */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  margin-top: -20px;
+  background: #ffffff;
+}
 
 button {
   --primary-color: linear-gradient(to right, #ff914d, #ff6f61, #ff9370);
   --secondary-color: #fff;
-  --hover-color: #111;
   --arrow-width: 8px;
   --arrow-stroke: 2px;
   box-sizing: border-box;
@@ -138,9 +258,7 @@ button .arrow::before {
   transform: rotate(-45deg);
 }
 
-button:hover {
-  background-color: var(--hover-color);
-}
+
 
 button:hover .arrow {
   background: var(--secondary-color);
@@ -149,6 +267,12 @@ button:hover .arrow {
 button:hover .arrow:before {
   right: 0;
 }
-
+/* Favorite Count Display */
+.favorite-count {
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
 
 </style>

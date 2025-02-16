@@ -12,15 +12,13 @@
           v-for="recipe in filteredRecipes"
           :key="recipe.id"
           :recipe="recipe"
-          @click="viewRecipe(recipe.id)"
+          
         />
       </div>
     </main>
 
     <BackToTop />
-    <footer>
-      <p>© 2025 Swift Recipe. All rights reserved.</p>
-    </footer>
+    <Footer/>
   </div>
 </template>
 
@@ -29,6 +27,7 @@ import { supabase } from "@/supabase.js"; // Import Supabase client
 import RecipeCard from "@/components/RecipeCard.vue";
 import BackToTop from "@/components/BackToTop.vue";
 import Navbar from "@/components/Navbar.vue";
+import Footer from "@/components/Footer.vue";
 
 export default {
   name: "MainCourse",
@@ -36,6 +35,7 @@ export default {
     Navbar,
     BackToTop,
     RecipeCard,
+    Footer,
   },
   data() {
     return {
