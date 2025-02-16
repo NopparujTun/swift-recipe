@@ -8,15 +8,18 @@
     </div>
 
     <main class="container">
-      
       <div class="search-filter-container">
         <aside class="filter-section">
           <h2>Filters</h2>
           <div class="filter">
             <label for="category">Filter by Type:</label>
-            <select id="category" v-model="selectedCategory" @change="filterRecipes">
+            <select id="category" v-model="selectedCategory">
               <option value="All">All</option>
-              <option v-for="category in uniqueCategories" :key="category" :value="category">
+              <option
+                v-for="category in uniqueCategories"
+                :key="category"
+                :value="category"
+              >
                 {{ category }}
               </option>
             </select>
@@ -36,17 +39,21 @@
       <!-- Recipe List -->
       <section class="recipe-list">
         <RecipeCard
-          v-for="recipe in filteredRecipes"
+          v-for="recipe in displayedRecipes"
           :key="recipe.id"
           :recipe="recipe"
         />
       </section>
+
+
     </main>
+    <div v-if="itemsToShow < filteredRecipes.length" class="show-more-container">
+        <button @click="showMore" class="show-more-button">Show More</button>
+      </div>
     <BackToTop/>
     <Footer />
   </div>
 </template>
-
 
 <script>
 import RecipeCard from "@/components/RecipeCard.vue";
@@ -68,6 +75,7 @@ export default {
       recipes: [],
       selectedCategory: "All",
       searchQuery: "",
+      itemsToShow: 8, // Start by showing 8 recipes
     };
   },
   computed: {
@@ -78,7 +86,9 @@ export default {
       let filtered = this.recipes;
 
       if (this.selectedCategory !== "All") {
-        filtered = filtered.filter((recipe) => recipe.category === this.selectedCategory);
+        filtered = filtered.filter(
+          (recipe) => recipe.category === this.selectedCategory
+        );
       }
 
       if (this.searchQuery) {
@@ -89,11 +99,18 @@ export default {
 
       return filtered;
     },
+    // Only show recipes up to the itemsToShow count
+    displayedRecipes() {
+      return this.filteredRecipes.slice(0, this.itemsToShow);
+    },
   },
   methods: {
     async loadRecipes() {
       try {
-        const { data: recipes, error } = await supabase.from("recipes").select("*").order("id", { ascending: true });
+        const { data: recipes, error } = await supabase
+          .from("recipes")
+          .select("*")
+          .order("id", { ascending: true });
         if (error) {
           console.error("Error fetching recipes:", error);
           return;
@@ -102,6 +119,10 @@ export default {
       } catch (error) {
         console.error("Error loading recipes:", error);
       }
+    },
+    showMore() {
+      // Increase the number of recipes shown by 8
+      this.itemsToShow += 8;
     },
     viewRecipe(id) {
       this.$router.push({ name: "RecipeDetails", params: { id } });
@@ -114,7 +135,6 @@ export default {
 </script>
 
 <style scoped>
-
 .header {
   text-align: center;
   position: relative;
@@ -134,6 +154,7 @@ export default {
   border-radius: 20px;
   border: 1px solid #ccc;
 }
+
 .banner {
   position: relative;
   text-align: center;
@@ -151,10 +172,9 @@ export default {
   top: 43%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #333;
+  color: #1a1a1a;
   font-size: 2.5rem;
   font-weight: bold;
-  
 }
 
 main {
@@ -178,14 +198,18 @@ main {
 
   .recipe-list {
     grid-template-columns: 1fr !important;
-    
   }
+
   .filter-section {
-  width: 300px;
-  padding: 15px;
-  background: #f4f4f4;
-  border-radius: 20px;
-  margin-bottom: 20px;
+    width: 300px;
+    padding: 15px;
+    background: #f4f4f4;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .show-more-container {
+  
+  text-align: center;
 }
 }
 
@@ -199,7 +223,6 @@ main {
 
 .filter-section h2 {
   font-size: 1.2rem;
-  
   text-align: left;
 }
 
@@ -240,8 +263,27 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
-  
 }
 
+.show-more-container {
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.show-more-button {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 20px;
+  background-color: #1a1a1a;
+  color: #fff;
+  cursor: pointer;
+  
+
+}
+
+.show-more-button:hover {
+  background-color: #555;
+}
 
 </style>
