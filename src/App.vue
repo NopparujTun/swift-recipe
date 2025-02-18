@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { supabase } from '@/supabase';
-import Navbar from '@/components/Navbar.vue';
+
 
 const session = ref(null);
 
@@ -18,10 +18,6 @@ onMounted(() => {
 
 <template>
   <div>
-    <!-- Show Navbar if user is authenticated -->
-    
-
-    <!-- Router view handles different pages (Home, Account, Auth, etc.) -->
     <router-view />
   </div>
 </template>

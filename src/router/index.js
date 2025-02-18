@@ -13,17 +13,21 @@ import Breakfast from "@/views/Breakfast.vue";
 import Vegetarian from "@/views/Vegetarian.vue";
 import About from "@/views/About.vue";
 
+import Dashboard from '@/components/Dashboard.vue';
+import RecipesTable from '@/components/RecipesTable.vue';
+import ReviewsTable from '@/components/ReviewsTable.vue';
+import AddRecipe from '@/views/AddRecipe.vue';
+
 
 const routes = [
-
   {
     path: "/",
     name: "Home",
     component: Home,
   },
   {
-    path: "/admin",
-    name: "Admin",
+    path: "/adminlogin",
+    name: "AdminLogin",
     component: AdminLogin,
   },
   {
@@ -34,18 +38,23 @@ const routes = [
   }
   ,
   {
-    path: "/admin/dashboard",
-    name: "AdminPage",
+    path: "/admin",
     component: AdminPage,
     beforeEnter: (to, from, next) => {
-      // Check if user is authenticated
+      // Simple authentication check
       const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
       if (isAuthenticated) {
-        next(); // Allow access
+        next();
       } else {
-        next("/login"); // Redirect to login page
+        next("/login");
       }
     },
+    children: [
+      { path: "", name: "Dashboard", component: Dashboard },           // /admin
+      { path: "recipes", name: "RecipesTable", component: RecipesTable }, // /admin/recipes
+      { path: "reviews", name: "ReviewsTable", component: ReviewsTable }, // /admin/reviews
+      { path: "addrecipe", name: "AddRecipe", component: AddRecipe },       // /admin/addrecipe
+    ],
   },
   {
     path: "/recipes/all",
