@@ -1,52 +1,61 @@
 <template>
-  <Navbar />
-  <div class="recipe-detail">
-    <main class="main-content">
-      <div v-if="recipe" class="header-section">
-        <h1 class="recipe-title">{{ recipe.name }}</h1>
-        <div class="image-container">
-          <img :src="recipe.image" :alt="recipe.name" class="recipe-image" />
-        </div>
-      </div>
-      <div v-else class="loading">
-        <p>Loading recipe...</p>
-      </div>
-
-      <section v-if="recipe" class="ingredients-section">
-        <h2 class="section-title">Ingredients</h2>
-        <ul class="ingredients-list">
-          <li
-            v-for="(ingredient, index) in ingredients"
-            :key="ingredient.id || index"
-            class="ingredient-item"
-          >
-            <input type="checkbox" class="checkbox" />
-            <span class="ingredient-text">
-              {{ formatIngredient(ingredient) }}
-            </span>
-          </li>
-        </ul>
-      </section>
-
-      <section v-if="recipe" class="instructions-section">
-        <h2 class="section-title">Instructions</h2>
-        <div class="instructions-list">
-          <div
-            v-for="(instruction, index) in instructions"
-            :key="instruction.id || index"
-            class="instruction-item"
-          >
-            <div class="step-number">{{ instruction.step_number }}</div>
-            <p class="instruction-text">{{ instruction.instruction }}</p>
+  <div>
+    <Navbar />
+    <div class="recipe-detail">
+      <main class="main-content">
+        <div v-if="recipe" class="header-section">
+          <h1 class="recipe-title">{{ recipe.name }}</h1>
+          <div class="image-container">
+            <img :src="recipe.image" :alt="recipe.name" class="recipe-image" />
           </div>
         </div>
-      </section>
-      <section v-if="recipe">
-        <ReviewSection :recipe-id="id" />
-      </section>
-    </main>
+        <div v-else class="loading">
+          <p>Loading recipe...</p>
+        </div>
+
+        <!-- Print Button Section -->
+        <section v-if="recipe" class="print-section">
+          <button @click="printRecipe" class="print-button">Print Recipe</button>
+        </section>
+
+        <section v-if="recipe" class="ingredients-section">
+          <h2 class="section-title">Ingredients</h2>
+          <ul class="ingredients-list">
+            <li
+              v-for="(ingredient, index) in ingredients"
+              :key="ingredient.id || index"
+              class="ingredient-item"
+            >
+              <input type="checkbox" class="checkbox" />
+              <span class="ingredient-text">
+                {{ formatIngredient(ingredient) }}
+              </span>
+            </li>
+          </ul>
+        </section>
+
+        <section v-if="recipe" class="instructions-section">
+          <h2 class="section-title">Instructions</h2>
+          <div class="instructions-list">
+            <div
+              v-for="(instruction, index) in instructions"
+              :key="instruction.id || index"
+              class="instruction-item"
+            >
+              <div class="step-number">{{ instruction.step_number }}</div>
+              <p class="instruction-text">{{ instruction.instruction }}</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Review Section wrapped in "no-print" container -->
+        <section v-if="recipe" class="no-print">
+          <ReviewSection :recipe-id="id" />
+        </section>
+      </main>
+    </div>
+    <Footer />
   </div>
-  <Footer />
 </template>
 
 <script>
@@ -131,6 +140,9 @@ export default {
       }
       return ingredient.ingredient;
     },
+    printRecipe() {
+      window.print();
+    },
   },
 };
 </script>
@@ -164,7 +176,6 @@ export default {
   font-size: 1.75rem;
   font-weight: bold;
   margin-bottom: 16px;
-  
 }
 
 .image-container {
@@ -262,6 +273,26 @@ export default {
   line-height: 1.5;
 }
 
+/* Print Section */
+.print-section {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.print-button {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.print-button:hover {
+  background-color: #333333;
+}
+
 /* Loading Text */
 .loading {
   text-align: center;
@@ -293,6 +324,24 @@ export default {
   .main-content {
     max-width: 1200px;
     padding: 24px;
+  }
+}
+
+/* Print-specific styles */
+@media print {
+  /* Hide elements that aren't needed in print */
+  .print-button,
+  .navbar,
+  .footer,
+  .no-print {
+    display: none !important;
+  }
+  
+  /* Adjust the layout for print if necessary */
+  .main-content {
+    width: 100%;
+    margin: 0;
+    padding: 0;
   }
 }
 </style>
