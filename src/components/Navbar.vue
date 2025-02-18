@@ -2,7 +2,7 @@
   <nav class="navbar">
     <div class="nav-logo">
       <img src="/src/assets/logo.jpg" alt="Swift Recipe Logo" />
-      <span>Swift Recipe</span>
+      <span>SwiftRecipe</span>
     </div>
 
     <button class="hamburger" @click="toggleMenu">

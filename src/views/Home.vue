@@ -4,7 +4,7 @@
 
     <header class="home">
       <div class="header-content">
-        <h1>Welcome To Swift Recipe</h1>
+        <h1>Welcome To SwiftRecipe</h1>
         <p>Your simplest and quickest food recipes, all in one place.</p>
       </div>
       <div class="header-logo">
@@ -149,7 +149,7 @@ section h2{
   margin-top: 30px;
   padding: 10px 20px;
   font-size: 1rem;
-  background: linear-gradient(to right, #ff914d, #ff6f61, #ff9370);
+  background: #1a1a1a;
   border-radius: 20px;
   border: none;
   color: white;
@@ -166,8 +166,8 @@ section h2{
 
 .view-all-button:hover {
   background: white;
-  color: #ff6f61;
-  border: 2px solid transparent;
+  color: #1a1a1a;
+  border: 2px solid black;
   background-clip: padding-box;
   position: relative;
 }
@@ -180,7 +180,7 @@ section h2{
   right: -2px;
   bottom: -2px;
   border-radius: 20px;
-  background: linear-gradient(to right, #ff914d, #ff6f61, #ff9370);
+  background: #1a1a1a;
   z-index: -1;
 }
 

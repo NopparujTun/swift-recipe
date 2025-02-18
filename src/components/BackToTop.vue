@@ -25,7 +25,7 @@
   font-size: 20px;
   font-family: Arial, sans-serif;
   color: #ffffff;
-  background-color: #007bff; 
+  background-color: #000000;
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -40,7 +40,10 @@
   }
   
   .back-to-top:hover {
-    background-color: #0056b3; 
+    background-color: #ffffff;
+    color: #000000;
   }
+
+  
   </style>
   

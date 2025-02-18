@@ -271,19 +271,42 @@ main {
 }
 
 .show-more-button {
+  margin-top: 30px;
   padding: 10px 20px;
   font-size: 1.2rem;
-  border: none;
+  background: #1a1a1a;
   border-radius: 20px;
-  background-color: #1a1a1a;
-  color: #fff;
+  border: none;
+  color: white;
   cursor: pointer;
-  
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  border: 2px solid transparent;
 
 }
 
 .show-more-button:hover {
-  background-color: #555;
+  background: white;
+  color: #1a1a1a;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  position: relative;
 }
 
+.show-more-button:hover::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 20px;
+  background: #1a1a1a;
+  z-index: -1;
+}
 </style>
