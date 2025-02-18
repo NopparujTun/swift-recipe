@@ -2,9 +2,6 @@
     <section class="review-section">
       <div class="review-header">
         <h2 class="review-title">Reviews</h2>
-        <div class="sort-section">
-          <!-- Sorting options if needed -->
-        </div>
       </div>
       <!-- Add Review Form -->
       <div class="review-form">
@@ -18,20 +15,20 @@
       </div>
       <!-- Reviews List -->
       <div class="reviews-list">
-        <div
-          v-for="review in reviews"
-          :key="review.id"
-          class="review-item"
-        >
+        <div v-for="review in reviews" :key="review.id" class="review-item">
           <div class="review-header-item">
             <div class="reviewer-info">
               <h4 class="review-user">
                 {{ review.user_name || "Anonymous" }}
+                <span class="review-date-inline">
+                  {{ formatDate(review.created_at) }}
+                </span>
               </h4>
             </div>
-            <span class="review-date">
-              {{ formatDate(review.created_at) }}
-            </span>
+            <!-- Only show delete button if the review belongs to the current user -->
+            <div v-if="review.user_id === currentUserId" class="delete-button-container">
+              <button class="delete-button" @click="deleteReview(review.id)">Delete</button>
+            </div>
           </div>
           <p class="review-comment">{{ review.comment }}</p>
         </div>
@@ -59,10 +56,16 @@
         sortBy: "newest",
         comment: "",
         reviews: [],
+        currentUserId: null, // Will store the authenticated user's ID
         defaultAvatar: "https://via.placeholder.com/40", // Fallback avatar URL
       };
     },
     async created() {
+      // Fetch the current authenticated user and store their ID
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+      if (!userError && userData?.user) {
+        this.currentUserId = userData.user.id;
+      }
       await this.fetchReviews();
     },
     methods: {
@@ -114,13 +117,53 @@
           this.reviews = data;
         }
       },
+      async deleteReview(reviewId) {
+        // Delete the review with the given id
+        const { error } = await supabase
+          .from("reviews")
+          .delete()
+          .eq("id", reviewId);
+        if (error) {
+          console.error("Error deleting review:", error);
+        } else {
+          await this.fetchReviews();
+        }
+      },
       formatDate(dateStr) {
         const date = new Date(dateStr);
-        return date.toLocaleDateString();
+        const seconds = Math.floor((new Date() - date) / 1000);
+  
+        let interval = Math.floor(seconds / 31536000);
+        if (interval >= 1) {
+          return interval + (interval === 1 ? " year ago" : " years ago");
+        }
+        
+        interval = Math.floor(seconds / 2592000);
+        if (interval >= 1) {
+          return interval + (interval === 1 ? " month ago" : " months ago");
+        }
+        
+        interval = Math.floor(seconds / 86400);
+        if (interval >= 1) {
+          return interval + (interval === 1 ? " day ago" : " days ago");
+        }
+        
+        interval = Math.floor(seconds / 3600);
+        if (interval >= 1) {
+          return interval + (interval === 1 ? " hour ago" : " hours ago");
+        }
+        
+        interval = Math.floor(seconds / 60);
+        if (interval >= 1) {
+          return interval + (interval === 1 ? " minute ago" : " minutes ago");
+        }
+        
+        return "Just now";
       },
     },
   };
   </script>
+  
   
   <style scoped>
   .review-section {
@@ -142,13 +185,7 @@
     margin: 0;
   }
   
-
-  .icon-chevron {
-    width: 16px;
-    height: 16px;
-    margin-left: 4px;
-  }
-  
+  /* Review Form Styles */
   .review-form {
     background-color: #fff;
     padding: 16px;
@@ -162,7 +199,6 @@
     font-weight: 600;
     margin-bottom: 12px;
     margin-top: -1px;
-    
   }
   
   .review-textarea {
@@ -190,6 +226,7 @@
     background-color: #ff7d71;
   }
   
+  /* Reviews List Styles */
   .reviews-list {
     display: flex;
     flex-direction: column;
@@ -205,16 +242,8 @@
   
   .review-header-item {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     margin-bottom: 12px;
-  }
-  
-  .review-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 12px;
   }
   
   .reviewer-info {
@@ -226,21 +255,37 @@
     font-weight: 600;
     margin: 0;
     text-align: left;
+    display: inline;
   }
   
-  .review-date {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #000000;
-    
+  .review-date-inline {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #777;
+    margin-left: 4px;
+  }
+  
+  .delete-button-container {
+    margin-left: 8px;
+  }
+  
+  .delete-button {
+    background: none;
+    border: none;
+    color: red;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  
+  .delete-button:hover {
+    text-decoration: underline;
   }
   
   .review-comment {
-    font-size: 14px;
+    font-size: 1rem;
     color: #000000;
     margin: 0;
     text-align: left;
-    font-size: 1rem;
   }
   
   .no-reviews {
@@ -253,4 +298,5 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   </style>
+  
   

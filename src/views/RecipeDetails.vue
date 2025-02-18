@@ -1,7 +1,6 @@
 <template>
   <Navbar />
   <div class="recipe-detail">
-    
     <main class="main-content">
       <div v-if="recipe" class="header-section">
         <h1 class="recipe-title">{{ recipe.name }}</h1>
@@ -46,7 +45,6 @@
         <ReviewSection :recipe-id="id" />
       </section>
     </main>
-    
   </div>
   <Footer />
 </template>
@@ -56,6 +54,7 @@ import { supabase } from "@/supabase.js";
 import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/Footer.vue";
 import ReviewSection from "@/components/ReviewSection.vue";
+
 export default {
   name: "RecipeDetail",
   components: {
@@ -64,7 +63,6 @@ export default {
     ReviewSection,
   },
   props: {
-    // The recipe id should be passed as a prop
     id: {
       type: Number,
       required: true,
@@ -75,7 +73,7 @@ export default {
       recipe: null,
       ingredients: [],
       instructions: [],
-      servings: 4, // default value; can be overwritten if recipe data includes servings
+      servings: 4,
     };
   },
   async created() {
@@ -84,7 +82,6 @@ export default {
   methods: {
     async loadRecipe() {
       try {
-        // Fetch the recipe details
         const { data: recipe, error: recipeError } = await supabase
           .from("recipes")
           .select("*")
@@ -97,12 +94,10 @@ export default {
         }
         this.recipe = recipe;
 
-        // Optionally update servings if your recipe data contains that field
         if (recipe.servings) {
           this.servings = recipe.servings;
         }
 
-        // Fetch the ingredients for this recipe
         const { data: ingredients, error: ingredientsError } = await supabase
           .from("ingredients")
           .select("*")
@@ -114,7 +109,6 @@ export default {
         }
         this.ingredients = ingredients;
 
-        // Fetch the instructions for this recipe
         const { data: instructions, error: instructionsError } = await supabase
           .from("instructions")
           .select("*")
@@ -130,9 +124,7 @@ export default {
         console.error("Unexpected error loading recipe:", error);
       }
     },
-    // Formats the ingredient text, multiplying quantities if needed.
     formatIngredient(ingredient) {
-
       if (ingredient.multiplier && ingredient.unit) {
         const quantity = this.servings * ingredient.multiplier;
         return `${quantity}${ingredient.unit} ${ingredient.ingredient}`;
@@ -144,52 +136,64 @@ export default {
 </script>
 
 <style scoped>
+/* Mobile-first styles */
+
+/* Recipe Detail Container */
 .recipe-detail {
   min-height: 100vh;
-  background-color: #f9fafb; 
+  background-color: #f9fafb;
   display: flex;
   flex-direction: column;
 }
 
+/* Main content container */
 .main-content {
-  max-width: 1024px; 
+  width: 90%;
   margin: 0 auto;
-  padding: 24px; 
+  padding: 16px;
   flex: 1;
 }
 
+/* Header Section */
 .header-section {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
+  text-align: center;
 }
 
 .recipe-title {
-  font-size: 2.5rem; 
+  font-size: 1.75rem;
   font-weight: bold;
   margin-bottom: 16px;
-  text-align: left;
+  
 }
 
 .image-container {
+  display: flex;
+  justify-content: center;
   margin-bottom: 16px;
 }
 
+/* Recipe image fixed at 600px on larger screens, scales on mobile */
 .recipe-image {
   width: 100%;
-  height: 400px;
+  max-width: 600px;
+  height: auto;
   object-fit: cover;
   border-radius: 12px;
 }
 
+/* Section Titles */
 .section-title {
-  font-size: 1.5rem; 
+  font-size: 1.25rem;
   font-weight: bold;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   text-align: left;
 }
 
+/* Ingredients Section */
 .ingredients-section,
 .instructions-section {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .ingredients-list {
@@ -204,7 +208,7 @@ export default {
 .ingredient-item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   padding: 8px 0;
   border-bottom: 1px solid #e5e7eb;
 }
@@ -219,6 +223,7 @@ export default {
   cursor: pointer;
 }
 
+/* Instructions Section */
 .instructions-list {
   background-color: #ffffff;
   padding: 16px;
@@ -228,7 +233,7 @@ export default {
 
 .instruction-item {
   display: flex;
-  gap: 16px;
+  gap: 8px;
   align-items: flex-start;
   margin-bottom: 16px;
   text-align: left;
@@ -257,9 +262,37 @@ export default {
   line-height: 1.5;
 }
 
+/* Loading Text */
 .loading {
   text-align: center;
   margin: 40px 0;
   font-size: 1.2rem;
+}
+
+/* Tablet & Desktop Styles */
+@media (min-width: 768px) {
+  .main-content {
+    max-width: 1024px;
+    padding: 24px;
+  }
+  .recipe-title {
+    font-size: 2.5rem;
+    text-align: left;
+  }
+  .header-section {
+    text-align: left;
+  }
+  .section-title {
+    text-align: left;
+    font-size: 1.5rem;
+  }
+}
+
+/* Desktop Larger Screens */
+@media (min-width: 1024px) {
+  .main-content {
+    max-width: 1200px;
+    padding: 24px;
+  }
 }
 </style>
