@@ -11,7 +11,7 @@
       <span></span>
     </button>
 
-    <ul class="nav-links" :class="{ 'open': isMenuOpen }">
+    <ul class="nav-links" :class="{ open: isMenuOpen }">
       <li><a href="/" @click.prevent="goToHome">Home</a></li>
       <li>
         <a href="/recipes/all" class="dropdown-btn">Recipes</a>
@@ -25,11 +25,19 @@
       </li>
       <li><a href="/about">About</a></li>
 
-      <li v-if="user">
+      <li v-if="user" class="user-avatar">
         <a @click.prevent="navigateTo('/favorites')">Favorites</a>
-        <img v-if="userAvatar" :src="userAvatar" alt="User Avatar" class="avatar" />
-        <div v-else class="avatar-placeholder">{{ avatarInitial }}</div>
-        <button @click="logout" class="logout-btn">Logout</button>
+        <!-- Avatar area that toggles the dropdown -->
+        <div class="avatar-wrapper" @click="toggleAvatarDropdown">
+          <!-- If a user avatar exists, show it; otherwise, show the placeholder with the first letter of Display Name -->
+          <img v-if="userAvatar" :src="userAvatar" alt="User Avatar" class="avatar" />
+          <div v-else class="avatar-placeholder">{{ avatarInitial }}</div>
+        </div>
+        <!-- Dropdown menu -->
+        <ul v-if="isAvatarDropdownOpen" class="avatar-dropdown">
+          <li><a @click.prevent="navigateTo('/editprofile')">Edit Profile</a></li>
+          <li><a @click.prevent="logout">Logout</a></li>
+        </ul>
       </li>
 
       <li v-if="!user" class="auth-links">
@@ -37,7 +45,6 @@
         <a @click.prevent="navigateTo('/login')">Login</a>
       </li>
     </ul>
-
   </nav>
 </template>
 
@@ -49,30 +56,41 @@ export default {
   data() {
     return {
       isMenuOpen: false,
-      user: ref(null),
-      userAvatar: ref(null),
-      userEmail: ref(null),
+      isAvatarDropdownOpen: false,
+      user: null,
+      userAvatar: null,
+      userEmail: null,
     };
   },
   async mounted() {
     await this.checkUser();
     supabase.auth.onAuthStateChange((_, session) => {
       this.user = session?.user || null;
+      // Get the avatar URL from user metadata if available
       this.userAvatar = session?.user?.user_metadata?.avatar_url || null;
       this.userEmail = session?.user?.email || null;
     });
   },
   computed: {
     avatarInitial() {
-      if (this.userEmail) {
-        return this.userEmail.charAt(0).toUpperCase();
+      // If a Display Name exists in user metadata, return its first letter (uppercased).
+      if (
+        this.user &&
+        this.user.user_metadata &&
+        this.user.user_metadata.display_name
+      ) {
+        return this.user.user_metadata.display_name.charAt(0).toUpperCase();
       }
-      return "?"; // Fallback if no email found
+      // Otherwise, fallback to using the first letter of the email.
+      return this.userEmail ? this.userEmail.charAt(0).toUpperCase() : "?";
     },
   },
   methods: {
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
+    },
+    toggleAvatarDropdown() {
+      this.isAvatarDropdownOpen = !this.isAvatarDropdownOpen;
     },
     navigateTo(path) {
       this.$router.push(path);
@@ -83,7 +101,8 @@ export default {
     async checkUser() {
       const { data } = await supabase.auth.getSession();
       this.user = data?.session?.user || null;
-      this.userAvatar = data?.session?.user?.user_metadata?.avatar_url || null;
+      this.userAvatar =
+        data?.session?.user?.user_metadata?.avatar_url || null;
       this.userEmail = data?.session?.user?.email || null;
     },
     async logout() {
@@ -98,8 +117,6 @@ export default {
 </script>
 
 <style scoped>
-
-/* Navbar Styling */
 .navbar {
   display: flex;
   align-items: center;
@@ -112,24 +129,25 @@ export default {
   z-index: 1000;
 }
 
-/* Profile Avatar (Top Right) */
 .user-avatar {
   display: flex;
   align-items: center;
   gap: 10px;
+  position: relative;
 }
 
-/* Actual Avatar Image */
+.avatar-wrapper {
+  cursor: pointer;
+}
+
 .avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #ff6f61;
-  cursor: pointer;
 }
 
-/* Default Letter Avatar */
 .avatar-placeholder {
   width: 40px;
   height: 40px;
@@ -138,28 +156,35 @@ export default {
   justify-content: center;
   font-size: 18px;
   font-weight: bold;
-  color: rgb(0, 0, 0);
-  background-color: #ffffff;
+  color: #000;
+  background-color: #fff;
   border-radius: 50%;
-  border: 2px solid #000000;
-  cursor: pointer;
+  border: 2px solid #000;
 }
 
-/* Logout Button */
-.logout-btn {
-  background: red;
-  color: white;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.avatar-dropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  list-style: none;
+  padding: 0.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 100;
 }
 
-/* Authentication Links */
-.auth-links {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
+.avatar-dropdown li {
+  padding: 0.5rem 1rem;
+}
+
+.avatar-dropdown li a {
+  color: #1a1a1a;
+  font-weight: normal;
+}
+
+.avatar-dropdown li a:hover {
+  color: #ff6f61;
 }
 
 .nav-logo {
@@ -190,40 +215,20 @@ export default {
   font-family: "Poppins", sans-serif;
   font-weight: bold;
   color: #1a1a1a;
-  transition: color 0.3s ease;  
+  transition: color 0.3s ease;
   cursor: pointer;
 }
 
 .nav-links a:hover {
   color: #ff6f61;
 }
+
 .nav-links li {
   display: flex;
   align-items: center;
-  gap: 10px; /* Space between items */
+  gap: 10px;
 }
 
-/* Dropdown menu */
-ul li ul.dropdown {
-  width: 100%;
-  background: #ffffff;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 999;
-  display: none;
-  cursor: pointer;
-}
-
-ul li ul.dropdown li {
-  display: block;
-}
-
-ul li:hover ul.dropdown {
-  display: block;
-}
-
-/* Hamburger Menu for Mobile */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -239,46 +244,24 @@ ul li:hover ul.dropdown {
   background: #1a1a1a;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .hamburger {
     display: flex;
   }
-
   .nav-links {
-    
     display: none;
     flex-direction: column;
     position: absolute;
     top: 100%;
     left: 0;
-    
     background-color: #fff;
-    width: 92.816%;
-    
-    justify-content: center;
+    width: 100%;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
-  .nav-links li {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
   .nav-links.open {
     display: flex;
   }
-
-  .nav-links li {
-    margin: 0.5rem 0;
-  }
-
-  .user-avatar {
-    position: absolute;
-    right: 20px;
-    top: 12px;
-  }
 }
-
 * {
   font-family: "Poppins", sans-serif;
 }

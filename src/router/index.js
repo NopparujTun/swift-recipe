@@ -17,9 +17,15 @@ import Dashboard from '@/components/Dashboard.vue';
 import RecipesTable from '@/components/RecipesTable.vue';
 import ReviewsTable from '@/components/ReviewsTable.vue';
 import AddRecipe from '@/views/AddRecipe.vue';
+import EditProfile from "@/views/EditProfile.vue";
 
 
 const routes = [
+  {
+    path: "/editprofile",
+    name: "EditProfile",
+    component: EditProfile,
+  },
   {
     path: "/",
     name: "Home",

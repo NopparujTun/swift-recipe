@@ -26,7 +26,7 @@
               :key="ingredient.id || index"
               class="ingredient-item"
             >
-              <input type="checkbox" class="checkbox" />
+              
               <span class="ingredient-text">
                 {{ formatIngredient(ingredient) }}
               </span>
