@@ -10,9 +10,9 @@
     <main class="container">
       <div class="search-filter-container">
         <aside class="filter-section">
-          <h2>Filters</h2>
+          <h2>Filter by type:</h2>
           <div class="filter">
-            <label for="category">Filter by Type:</label>
+            
             <select id="category" v-model="selectedCategory">
               <option value="All">All</option>
               <option

@@ -2,9 +2,10 @@
   <div>
     <Navbar />
 
-    <header>
-      <h1>Dessert</h1>
-    </header>
+    <div class="banner">
+      <img src="@/assets/banner.jpg" alt="Banner" class="banner-image" />
+      <h1 class="banner-text">Dessert</h1>
+    </div>
 
     <main>
       <div class="recipes">
@@ -70,4 +71,27 @@ export default {
 };
 </script>
 
+<style>
+.banner {
+  position: relative;
+  text-align: center;
+}
+.banner-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  display: block;
+}
+
+.banner-text {
+  position: absolute;
+  top: 43%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #333;
+  font-size: 2.5rem;
+  font-weight: bold;
+  
+}
+</style>
 

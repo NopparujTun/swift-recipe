@@ -362,7 +362,7 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 20px;
-    text-align: left;
+    text-align: center;
   }
   .table-header {
     display: flex;
@@ -384,9 +384,18 @@
   }
   .filter-section {
     margin: 15px 0;
+    text-align: left;
+    font-family: "Poppins", sans-serif;
+    
   }
   .filter-section label {
     margin-right: 10px;
+    
+    
+  }
+  select{
+    border-radius: 5px;
+    font-size: 1rem;
   }
   table {
     width: 100%;
