@@ -4,7 +4,9 @@ Quick and simple food recipe web application.
 ## Getting Started
 
 ### Prerequisites
-1. Node.js (https://nodejs.org/) (v14 or later)
+1. Node.js (https://nodejs.org/) (v14 or later; npm is included with Node.js)
+2. npm (https://www.npmjs.com/) (npm is included with Node.js by default; install separately only if needed)
+
 
 # Setup Instructions
 
