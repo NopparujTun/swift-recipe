@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/views/Home.vue";
 import RecipeDetails from "@/views/RecipeDetails.vue";
 import AllRecipes from "@/views/AllRecipes.vue";
-import RecipeDetails_Christmas from "@/views/RecipeDetails_Christmas.vue";
+
 import AdminPage from "@/views/AdminPage.vue";
 import AdminLogin from "@/views/AdminLogin.vue";
 import MainCourse from "@/views/MainCourse.vue";
@@ -66,12 +66,6 @@ const routes = [
     path: "/recipes/all",
     name: "AllRecipes",
     component: AllRecipes,
-  },
-  {
-    path: "/christmas-recipe/:id",
-    name: "RecipeDetails_Christmas",
-    component: RecipeDetails_Christmas,
-    props: true,
   },
   {
     path: "/recipes/maincourse",
