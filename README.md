@@ -1,14 +1,10 @@
-# Swift Recipe
-Quick and simple food recipe
+# SwiftRecipe
+Quick and simple food recipe web application.
 
 ## Getting Started
 
 ### Prerequisites
-1. Node.js and npm installed.
-2. JSON Server installed globally:
-    ```bash
-    npm install -g json-server
-    ```
+1. Node.js (https://nodejs.org/) (v14 or later)
 
 # Setup Instructions
 
@@ -30,11 +26,6 @@ To get started with the project, follow these steps:
 
     ```bash
     npm install
-    ```
-4. **Start the JSON Server**: Start the JSON server by running:
-
-    ```bash
-    json-server --watch src/data/recipes.json --port 3000
     ```
 
 4. **Start the Development Server**: Start the development server by running:
