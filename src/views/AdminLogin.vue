@@ -27,7 +27,7 @@
   
         if (this.username === DEFAULT_USERNAME && this.password === DEFAULT_PASSWORD) {
           localStorage.setItem("isAuthenticated", "true");
-          this.$router.push("/admin/dashboard");
+          this.$router.push("/admin");
         } else {
           alert("Invalid username or password.");
         }

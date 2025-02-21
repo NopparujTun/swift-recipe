@@ -36,6 +36,7 @@
         <!-- Dropdown menu -->
         <ul v-if="isAvatarDropdownOpen" class="avatar-dropdown">
           <li><a @click.prevent="navigateTo('/editprofile')">Edit Profile</a></li>
+          
           <li><a @click.prevent="logout">Logout</a></li>
         </ul>
       </li>
@@ -49,6 +50,7 @@
 </template>
 
 <script>
+
 import { ref, computed } from "vue";
 import { supabase } from "@/supabase.js";
 
@@ -169,19 +171,22 @@ export default {
   background: #ffffff;
   border: 1px solid #ddd;
   list-style: none;
-  padding: 0.5rem 0;
+  padding: 0.1rem 0;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   z-index: 100;
+  width: 160px;
+  
 }
 
 .avatar-dropdown li {
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 1rem;
 }
 
 .avatar-dropdown li a {
   color: #000000;
   font-family: "Poppins", serif;
   font-weight: bold;
+  font-size: 1rem;
 }
 
 .avatar-dropdown li a:hover {

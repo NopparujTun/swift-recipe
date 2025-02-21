@@ -51,7 +51,7 @@
           <button type="button" @click="addInstructionStep">Add Step</button>
         </div>
   
-        <button type="submit">Add Recipe</button>
+        <button type="submit" class="addrecipe">Add Recipe</button>
       </form>
     </div>
   </template>
@@ -224,14 +224,16 @@
     font-weight: bold;
   }
   .remove{
-    margin-top: 10px;
+    
     padding: 10px 15px;
     font-size: 1rem;
     border: none;
-    background-color: #ff914d;
+    background-color: #ff4d4d;
     color: white;
     cursor: pointer;
     border-radius: 20px;
+    margin-top: -1px;
+   
   }
   .container {
     background-color: #E5E5E8;
@@ -284,7 +286,16 @@
     align-items: center;
     gap: 10px;
   }
-
+  form button.addrecipe {
+    margin-top: 10px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: none;
+    background-color: #ff914d;
+    color: white;
+    cursor: pointer;
+    border-radius: 20px;
+  }
   * {
     font-family: "Poppins", sans-serif;
   }

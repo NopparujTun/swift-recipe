@@ -32,11 +32,11 @@
     async mounted() {
       // Define the list of categories with their icons
       const categoryList = [
-        { name: "Main Course", icon: "/icons/utensils.png" },
-        { name: "Dessert", icon: "/icons/cake.png" },
-        { name: "Salad", icon: "/icons/salad.png" },
-        { name: "Breakfast", icon: "/icons/coffee.png" },
-        { name: "Vegetarian", icon: "/icons/carrot.png" },
+        { name: "Main Course", icon: "/utensils.png" },
+        { name: "Dessert", icon: "/cake.png" },
+        { name: "Salad", icon: "/salad.png" },
+        { name: "Breakfast", icon: "/coffee.png" },
+        { name: "Vegetarian", icon: "/carrot.png" },
       ];
   
       // Fetch all recipes from Supabase
@@ -114,6 +114,11 @@
   .card-icon {
     margin-top: 10px;
     text-align: right;
+  }
+
+  .card-icon img{
+    width: 20%;
+    height: 20%s;
   }
   </style>
   

@@ -62,11 +62,11 @@
           <div class="footer-section">
             <h3 class="footer-heading">Contact Us</h3>
             <ul class="footer-list">
-              <li>Email: hello@recipehub.com</li>
-              <li>Phone: (555) 123-4567</li>
+              <li>Email: nopparujtunnukij@hotmail.com</li>
+              <li>Phone: 086-353-5263</li>
               <li>
-                Address: 123 Cooking Street,<br />
-                Foodie City, FC 12345
+                Address: 456 LetMeCook Street,<br />
+                KingOfFood City, Foodland 52100
               </li>
             </ul>
           </div>
@@ -86,8 +86,8 @@
   
   <style scoped>
   .footer {
-    background-color: #1a1a1a; /* Dark background */
-    color: #d1d5db; /* Light gray text */
+    background-color: #1a1a1a; 
+    color: #d1d5db; 
     padding: 2rem 0;
   }
   

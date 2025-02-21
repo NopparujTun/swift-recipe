@@ -32,8 +32,8 @@
             <td>{{ formatDate(recipe.updated_at) }}</td>
             <td>{{ recipe.likes }}</td>
             <td>
-              <button @click="editRecipe(recipe)">Edit</button>
-              <button @click="deleteRecipe(recipe.id)">Delete</button>
+              <button @click="editRecipe(recipe)" class="editbutton">Edit</button>
+              <button @click="deleteRecipe(recipe.id)" class="deletebutton">Delete</button>
             </td>
           </tr>
         </tbody>
@@ -105,8 +105,8 @@
             </button>
           </div>
   
-          <button @click="saveRecipe" class="edit-button">Save Changes</button>
-          <button @click="cancelEdit" class="edit-button">Cancel</button>
+          <button @click="saveRecipe" class="edit-buttonsave">Save Changes</button>
+          <button @click="cancelEdit" class="edit-buttoncancel">Cancel</button>
         </div>
       </div>
     </div>
@@ -380,6 +380,7 @@
     border: none;
     border-radius: 20px;
     cursor: pointer;
+    font-size: 1rem;
   }
   .filter-section {
     margin: 15px 0;
@@ -406,6 +407,27 @@
     border: none;
     border-radius: 20px;
     cursor: pointer;
+  }
+  button.editbutton {
+    background-color: #2395ff;
+    margin-right: 5px;
+    padding: 5px 8px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-right: 10px;
+    width: 70px;
+  }
+  button.deletebutton {
+    background-color: #ff4d4d;
+    margin-right: 5px;
+    padding: 5px 8px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 70px;
   }
   
   /* Modal Styles */
@@ -451,21 +473,33 @@
   }
   .modal button {
     margin-right: 10px;
+    background-color: #000000;
     padding: 8px 12px;
     border: none;
     border-radius: 20px;
     cursor: pointer;
   }
   .remove {
-    background-color: #ff914d;
-    color: #fff;
-    border: none;
+
     margin-top: -10px;
     border-radius: 4px;
   }
+  
 .edit-button{
     background-color: #1a1a1a;
-    color:white;
+    color:rgb(255, 255, 255);
+}
+.modal button.edit-buttoncancel{
+    background-color: #4e4e4e;
+    color:rgb(255, 255, 255);
+}
+.modal button.remove{
+    background-color: #ff4d4d;
+    color:rgb(255, 255, 255);
+}
+.modal button.edit-buttonsave{
+    background-color: #ff914d;
+    color:rgb(255, 255, 255);
 }
   </style>
   
