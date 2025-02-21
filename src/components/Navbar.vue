@@ -179,8 +179,9 @@ export default {
 }
 
 .avatar-dropdown li a {
-  color: #1a1a1a;
-  font-weight: normal;
+  color: #000000;
+  font-family: "Poppins", serif;
+  font-weight: bold;
 }
 
 .avatar-dropdown li a:hover {
