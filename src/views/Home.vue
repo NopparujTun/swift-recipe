@@ -13,9 +13,24 @@
     </header>
 
     <main>
-      
+      <!-- Popular Recipes Section -->
+      <section class="popular-section">
+        <h2>Popular Recipes</h2>
+        <div class="popular-recipes">
+          <div
+            v-for="(recipe, index) in popularRecipes"
+            :key="recipe.id"
+            class="popular-card-wrapper"
+          >
+            <div class="rank-icon">
+              <img :src="getRankIcon(index)" :alt="`Rank ${index + 1}`" />
+            </div>
+            <RecipeCard :recipe="recipe" class="popular-card" />
+          </div>
+        </div>
+      </section>
 
-      <!-- All Recipes Section -->
+      <!-- Latest Recipes Section -->
       <section>
         <h2>Latest Recipes</h2>
         <div class="recipes">
@@ -23,7 +38,6 @@
             v-for="recipe in latestRecipes"
             :key="recipe.id"
             :recipe="recipe"
-            
           />
         </div>
         <button class="view-all-button" @click="viewAllRecipes">
@@ -31,19 +45,12 @@
         </button>
       </section>
       <BackToTop />
-      
     </main>
 
     <Footer />
-    
   </div>
 </template>
 
----
-
-### **Script Section (Updated)**
-
-```js
 <script>
 import RecipeCard from "@/components/RecipeCard.vue";
 import BackToTop from "@/components/BackToTop.vue";
@@ -62,12 +69,12 @@ export default {
   data() {
     return {
       recipes: [],
-      christmasRecipes: [],
+      popularRecipes: [],
     };
   },
   computed: {
     latestRecipes() {
-      // Return the latest 8 recipes and reverse them to show the newest at the top-left
+      // Return the latest 8 recipes to display
       return this.recipes.slice(0, 8);
     },
   },
@@ -78,9 +85,8 @@ export default {
         const { data: recipes, error } = await supabase
           .from("recipes")
           .select("*")
-          .order("id", { ascending: false }) // Fetch latest recipes first
+          .order("id", { ascending: false }) // Newest first
           .limit(8);
-
         if (error) {
           console.error("Error fetching recipes:", error);
           return;
@@ -90,21 +96,39 @@ export default {
         console.error("Error loading recipes:", error);
       }
     },
-    async loadChristmasRecipes() {
+    async loadPopularRecipes() {
       try {
-        // Simulating fetching Christmas recipes from a special endpoint or database logic
-        const { data: christmasRecipes, error } = await supabase
+        // Fetch all recipes from the recipes table
+        const { data: recipesData, error: recipesError } = await supabase
           .from("recipes")
-          .select("*")
-          .eq("category", "Christmas");
-
-        if (error) {
-          console.error("Error fetching Christmas recipes:", error);
+          .select("*");
+        if (recipesError) {
+          console.error("Error fetching recipes:", recipesError);
           return;
         }
-        this.christmasRecipes = christmasRecipes;
+        // For each recipe, fetch its like count from favorite_recipes
+        const recipesWithLikes = await Promise.all(
+          recipesData.map(async (recipe) => {
+            const { count, error: countError } = await supabase
+              .from("favorite_recipes")
+              .select("*", { count: "exact", head: true })
+              .eq("recipe_id", recipe.id);
+            if (countError) {
+              console.error(
+                `Error fetching like count for recipe ${recipe.id}:`,
+                countError
+              );
+              return { ...recipe, likes: 0 };
+            }
+            return { ...recipe, likes: count || 0 };
+          })
+        );
+        // Sort recipes by likes in descending order
+        recipesWithLikes.sort((a, b) => b.likes - a.likes);
+        // Take the top 3 recipes
+        this.popularRecipes = recipesWithLikes.slice(0, 3);
       } catch (error) {
-        console.error("Error fetching Christmas recipes:", error);
+        console.error("Error loading popular recipes:", error);
       }
     },
     viewRecipe(id) {
@@ -113,38 +137,85 @@ export default {
     viewAllRecipes() {
       this.$router.push("/recipes/all");
     },
+    // Return the appropriate icon based on ranking index
+    getRankIcon(index) {
+      switch (index) {
+        case 0:
+          return "/first.png";
+        case 1:
+          return "/second.png";
+        case 2:
+          return "/third.png";
+        default:
+          return "";
+      }
+    },
   },
   async mounted() {
-    await this.loadRecipes(); // Load recipes from the database
-    await this.loadChristmasRecipes(); // Load Christmas recipes
+    await this.loadRecipes(); // Load latest recipes
+    await this.loadPopularRecipes(); // Load top 3 popular recipes based on like count
   },
 };
 </script>
 
-
-
 <style scoped>
-section h2.christmas {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
-  color: #d9534f;
-  font-family: "Poppins", sans-serif;
+section  {
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
 }
-section h2{
+section h2 {
   font-size: 1.8rem;
   margin-bottom: 1rem;
   color: #1a1a1a;
   font-family: "Poppins", sans-serif;
 }
-.recipes {
 
+.recipes {
   gap: 10px;
+  background-color: #f5f5f5;
 }
 
+/* Styles for Popular Recipes Section */
+.popular-section {
+  background: #f5f5f5;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 40px;
+  
+}
+
+.popular-recipes {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.popular-card-wrapper {
+  position: relative;
+}
+
+
+
+.rank-icon {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 50px;
+  height: 50px;
+  z-index: 1;
+}
+
+.rank-icon img {
+  width: 100%;
+  height: auto;
+}
 
 * {
   font-family: "Poppins", sans-serif;
 }
+
 .view-all-button {
   margin-top: 30px;
   padding: 10px 20px;
@@ -184,8 +255,15 @@ section h2{
   z-index: -1;
 }
 
-
-
-
-
+/* Responsive Styles for Mobile Devices */
+@media (max-width: 600px) {
+  .popular-recipes {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  .popular-card-wrapper {
+    width: 90%;
+  }
+}
 </style>
