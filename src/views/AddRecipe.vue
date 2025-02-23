@@ -337,6 +337,7 @@ button.exitbutton{
   border-radius: 20px;
   width: 50px;
   font-size: 1rem;
+  cursor: pointer;
 }
 * {
   font-family: "Poppins", sans-serif;

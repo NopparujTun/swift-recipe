@@ -33,7 +33,6 @@
           <td>{{ recipe.likes }}</td>
           <td>
             <button @click="editRecipe(recipe)" class="editbutton">Edit</button>
-            <!-- Call confirmDelete instead of immediately deleting -->
             <button @click="confirmDelete(recipe)" class="deletebutton">Delete</button>
           </td>
         </tr>
@@ -77,7 +76,6 @@
         </select>
         <input type="file" @change="handleEditImageUpload" accept="image/*" />
         
-
         <!-- Dynamic Instructions Input for Editing -->
         <div class="instructions-input">
           <label>Instructions:</label>
@@ -138,19 +136,19 @@ export default {
     const currentPage = ref(1);
     const itemsPerPage = 5;
     const editingRecipe = ref(null);
-    // New reactive property for delete confirmation
     const recipeToDelete = ref(null);
     const router = useRouter();
 
-    // Fetch recipes and attach ingredients, instructions, and favorite count
     const fetchRecipes = async () => {
-      const { data, error } = await supabase.from("recipes").select("*");
+      const { data, error } = await supabase
+        .from("recipes")
+        .select("*")
+        .order("updated_at", { ascending: false });
       if (error) {
         console.error("Error fetching recipes:", error);
       } else {
         const recipesWithDetails = await Promise.all(
           data.map(async (recipe) => {
-            // Fetch ingredients and instructions
             const { data: ingredientsData } = await supabase
               .from("ingredients")
               .select("ingredient")
@@ -159,7 +157,6 @@ export default {
               .from("instructions")
               .select("instruction")
               .eq("recipe_id", recipe.id);
-            // Fetch favorite count
             const { count, error: countError } = await supabase
               .from("favorite_recipes")
               .select("*", { count: "exact", head: true })
@@ -221,14 +218,11 @@ export default {
       return new Date(dateString).toLocaleString();
     };
 
-    // Define available categories
     const uniqueCategories = computed(() => {
       return ["Main Course", "Dessert", "Salad", "Breakfast", "Vegetarian"];
     });
 
-    // Open the inline edit modal
     const editRecipe = async (recipe) => {
-      // Fetch ingredients
       const { data: ingredientsData, error: ingredientsError } =
         await supabase
           .from("ingredients")
@@ -237,16 +231,15 @@ export default {
       if (ingredientsError) {
         console.error("Error fetching ingredients:", ingredientsError);
       }
-      // Fetch instructions
       const { data: instructionsData, error: instructionsError } =
         await supabase
           .from("instructions")
           .select("instruction")
-          .eq("recipe_id", recipe.id);
+          .eq("recipe_id", recipe.id)
+          .order("updated_at", { ascending: false });
       if (instructionsError) {
         console.error("Error fetching instructions:", instructionsError);
       }
-      // Process ingredients and instructions
       let ingredients = "";
       if (ingredientsData && ingredientsData.length > 0) {
         ingredients = ingredientsData.map((item) => item.ingredient).join(", ");
@@ -260,7 +253,6 @@ export default {
       editingRecipe.value = { ...recipe, ingredients, instructions };
     };
 
-    // Instead of deleting immediately, we now confirm deletion
     const confirmDelete = (recipe) => {
       recipeToDelete.value = recipe;
     };
@@ -294,7 +286,6 @@ export default {
       }
     };
 
-    // New method to remove an instruction step in the modal
     const removeEditInstructionStep = (index) => {
       if (editingRecipe.value && editingRecipe.value.instructions.length > 1) {
         editingRecipe.value.instructions.splice(index, 1);
@@ -304,11 +295,9 @@ export default {
     const saveRecipe = async () => {
       if (!editingRecipe.value) return;
       try {
-        // Filter out any empty instruction steps
         const instructionsArray = editingRecipe.value.instructions.filter(
           (instruction) => instruction.trim() !== ""
         );
-        // Update main recipe record
         await supabase
           .from("recipes")
           .update({
@@ -319,8 +308,6 @@ export default {
             updated_at: new Date().toISOString(),
           })
           .eq("id", editingRecipe.value.id);
-
-        // Update ingredients: delete old then insert updated ones
         await supabase
           .from("ingredients")
           .delete()
@@ -335,8 +322,6 @@ export default {
             ingredient,
           }))
         );
-
-        // Update instructions: delete old then insert updated ones
         await supabase
           .from("instructions")
           .delete()
@@ -348,7 +333,6 @@ export default {
             instruction,
           }))
         );
-
         await fetchRecipes();
         editingRecipe.value = null;
         console.log("Recipe updated successfully!");
@@ -371,7 +355,6 @@ export default {
       formatDate,
       uniqueCategories,
       editRecipe,
-      // Remove the old deleteRecipe function in favor of confirmDelete
       confirmDelete,
       recipeToDelete,
       deleteConfirmed,
@@ -429,6 +412,7 @@ select {
 table {
   width: 100%;
   border-collapse: collapse;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 thead {
   background: #1a1a1a;
@@ -437,7 +421,13 @@ thead {
 th,
 td {
   padding: 10px;
-  border: 1px solid #ccc;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+/* Center align only the last column (Actions) */
+th:last-child,
+td:last-child {
+  text-align: center;
 }
 button {
   margin-right: 5px;
@@ -451,13 +441,14 @@ button.editbutton {
   margin-right: 10px;
   width: 70px;
   font-size: 1rem;
+  color: white;
 }
 button.deletebutton {
   background-color: #ff4d4d;
   width: 70px;
   font-size: 1rem;
+  color: white;
 }
-
 
 /* Modal Styles */
 .modal-overlay {
@@ -480,7 +471,6 @@ button.deletebutton {
   max-width: 600px;
   max-height: 80vh;
   overflow-y: auto;
-  
 }
 .modal input[type="text"],
 .modal textarea,
@@ -500,7 +490,6 @@ button.deletebutton {
   gap: 10px;
   margin-bottom: 5px;
 }
-
 .modal button {
   margin-right: 10px;
   padding: 8px 12px;
@@ -510,10 +499,8 @@ button.deletebutton {
   background-color: #000000;
   color: #fff;
 }
-
 .modal button.edit-buttoncancel {
   background-color: #4e4e4e;
-  
 }
 .modal button.deletebutton {
   background-color: #ff4d4d;
@@ -531,9 +518,19 @@ button.delete-button {
   background-color: #ff4d4d;
   width: 70px;
 }
-button.remove-step{
+button.remove-step {
   background-color: #ff4d4d;
   margin-top: -7px;
 }
 
+/* Responsive Styles */
+@media (max-width: 600px) {
+  table th,
+  table td {
+    padding: 8px;
+  }
+  .section-title {
+    font-size: 1.5rem;
+  }
+}
 </style>
