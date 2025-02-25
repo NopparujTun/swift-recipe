@@ -49,6 +49,7 @@ const navigateToSignup = () => {
 </script>
 
 <style scoped>
+
 .container {
   width: 100%;
   max-width: 350px;
@@ -97,7 +98,7 @@ const navigateToSignup = () => {
 }
 
 .btn {
-  background-color: #007bff;
+  background:linear-gradient(to right, #ff914d, #ff6f61, #ff9370);
   color: white;
   width: 100%;
   border: none;
@@ -111,16 +112,6 @@ const navigateToSignup = () => {
   background-color: #0056b3;
 }
 
-.forgot-password {
-  color: #007bff;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.forgot-password:hover {
-  text-decoration: underline;
-}
-
 .signup-link {
   text-align: center;
   margin-top: 15px;
@@ -128,7 +119,7 @@ const navigateToSignup = () => {
 }
 
 .signup-link a {
-  color: #007bff;
+  color: #ff6f61;
   text-decoration: none;
   font-weight: bold;
 }

@@ -277,6 +277,15 @@ ul li:hover ul.dropdown {
     
     font-size: 1.9rem;
   }
+  .user-avatar {
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start;
+  }
+  .user-avatar > a,
+  .user-avatar > .avatar-wrapper {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
 }
 
 * {

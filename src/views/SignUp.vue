@@ -115,7 +115,7 @@ const closeTab = () => {
 }
 
 .btn {
-  background-color: #007bff;
+  background:linear-gradient(to right, #ff914d, #ff6f61, #ff9370);
   width: 100%;
   color: white;
   border: none;
@@ -136,7 +136,7 @@ const closeTab = () => {
 }
 
 .signup-link a {
-  color: #007bff;
+  color:#ff6f61;
   text-decoration: none;
   font-weight: bold;
 }

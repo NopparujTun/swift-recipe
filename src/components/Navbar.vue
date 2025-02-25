@@ -1,9 +1,9 @@
 <template>
   <nav class="navbar">
-    <div class="nav-logo">
+    <router-link to="/" class="nav-logo">
       <img src="/src/assets/logo.jpg" alt="Swift Recipe Logo" />
       <span>SwiftRecipe</span>
-    </div>
+    </router-link>
 
     <button class="hamburger" @click="toggleMenu">
       <span></span>
@@ -24,23 +24,18 @@
         </ul>
       </li>
       <li><a href="/about">About</a></li>
-
+      <!-- Separate Favorites from the Avatar -->
+      <li v-if="user"><a @click.prevent="navigateTo('/favorites')">Favorites</a></li>
       <li v-if="user" class="user-avatar">
-        <a @click.prevent="navigateTo('/favorites')">Favorites</a>
-        <!-- Avatar area that toggles the dropdown -->
         <div class="avatar-wrapper" @click="toggleAvatarDropdown">
-          <!-- If a user avatar exists, show it; otherwise, show the placeholder with the first letter of Display Name -->
           <img v-if="userAvatar" :src="userAvatar" alt="User Avatar" class="avatar" />
           <div v-else class="avatar-placeholder">{{ avatarInitial }}</div>
         </div>
-        <!-- Dropdown menu -->
         <ul v-if="isAvatarDropdownOpen" class="avatar-dropdown">
           <li><a @click.prevent="navigateTo('/editprofile')">Edit Profile</a></li>
-          
           <li><a @click.prevent="logout">Logout</a></li>
         </ul>
       </li>
-
       <li v-if="!user" class="auth-links">
         <a @click.prevent="navigateTo('/signup')">Sign up</a>
         <a @click.prevent="navigateTo('/login')">Login</a>
@@ -196,6 +191,7 @@ export default {
 .nav-logo {
   display: flex;
   align-items: center;
+  text-decoration: none;
 }
 
 .nav-logo img {

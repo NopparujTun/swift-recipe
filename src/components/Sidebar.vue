@@ -19,8 +19,13 @@
     name: "Sidebar",
     methods: {
       logout() {
-        // Implement your logout logic here
-        console.log("Logging out...");
+        // Remove the authentication flag
+        localStorage.removeItem("isAuthenticated");
+        // Optionally, if using a different key for admin authentication, remove it as well:
+        // localStorage.removeItem("isAdminAuthenticated");
+        
+        // Redirect to the admin login page
+        this.$router.push("/adminlogin");
       }
     }
   };

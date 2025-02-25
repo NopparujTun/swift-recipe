@@ -52,7 +52,7 @@ const routes = [
       if (isAuthenticated) {
         next();
       } else {
-        next("/login");
+        next("/adminlogin");
       }
     },
     children: [

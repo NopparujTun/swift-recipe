@@ -59,8 +59,7 @@
   
   .title {
     text-align: center;
-    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-      "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    font-family: "Poppins", sans-serif;
     margin: 10px 0 30px 0;
     font-size: 28px;
     font-weight: 800;
@@ -84,8 +83,7 @@
   
   .form-btn {
     padding: 10px 15px;
-    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-      "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    font-family: "Poppins", sans-serif;
     border-radius: 20px;
     border: 0 !important;
     outline: 0 !important;
