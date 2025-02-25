@@ -6,14 +6,21 @@
       <img src="@/assets/banner.jpg" alt="Banner" class="banner-image" />
       <h1 class="banner-text">Salad</h1>
     </div>
-
+    
     <main>
+      <div class="search-bar">
+        <input
+          v-model="searchQuery"
+          class="search-input"
+          type="text"
+          placeholder="Search recipes..."
+        />
+      </div>
       <div class="recipes">
         <RecipeCard
           v-for="recipe in filteredRecipes"
           :key="recipe.id"
           :recipe="recipe"
-          
         />
       </div>
     </main>
@@ -40,8 +47,20 @@ export default {
   },
   data() {
     return {
-      filteredRecipes: [], // Store only "Salad" recipes
+      saladRecipes: [],  // Holds all salad recipes fetched from the database
+      searchQuery: '',   // The search term entered by the user
     };
+  },
+  computed: {
+    // Filters the full list of recipes based on the search query
+    filteredRecipes() {
+      if (!this.searchQuery) {
+        return this.saladRecipes;
+      }
+      return this.saladRecipes.filter(recipe =>
+        recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    },
   },
   methods: {
     async fetchSaladRecipes() {
@@ -55,7 +74,7 @@ export default {
           console.error("Error fetching recipes:", error);
           return;
         }
-        this.filteredRecipes = recipes;
+        this.saladRecipes = recipes;
       } catch (error) {
         console.error("Error fetching recipes:", error);
       }
@@ -90,7 +109,17 @@ export default {
   color: #333;
   font-size: 2.5rem;
   font-weight: bold;
-  
+}
+
+
+
+
+.search-input {
+  width: 50%;
+  padding: 8px;
+  font-size: 1rem;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
 }
 </style>
-

@@ -245,7 +245,18 @@ export default {
   height: 3px;
   background: #1a1a1a;
 }
+.auth-links a {
+  border-radius: 20px; 
+  padding: 0.5rem 1rem;
+  background-color: #f0f0f0; 
+  text-decoration: none;
+  color: #1a1a1a;
+  transition: background-color 0.3s ease;
+}
 
+.auth-links a:hover {
+  background-color: #e0e0e0; 
+}
 @media (max-width: 768px) {
   .hamburger {
     display: flex;

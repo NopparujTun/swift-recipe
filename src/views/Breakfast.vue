@@ -6,41 +6,61 @@
       <img src="@/assets/banner.jpg" alt="Banner" class="banner-image" />
       <h1 class="banner-text">Breakfast</h1>
     </div>
-
+    
     <main>
+      <div class="search-bar">
+        <input
+          v-model="searchQuery"
+          class="search-input"
+          type="text"
+          placeholder="Search recipes..."
+        />
+      </div>
       <div class="recipes">
         <RecipeCard
           v-for="recipe in filteredRecipes"
           :key="recipe.id"
           :recipe="recipe"
+          @click.native="viewRecipe(recipe.id)"
         />
       </div>
     </main>
 
     <BackToTop />
-<Footer/>
+    <Footer/>
   </div>
 </template>
 
 <script>
 import { supabase } from "@/supabase.js";
 import RecipeCard from "@/components/RecipeCard.vue";
-import BackToTop from "@/components/BackToTop.vue";
 import Navbar from "@/components/Navbar.vue";
+import BackToTop from "@/components/BackToTop.vue";
 import Footer from "@/components/Footer.vue";
 
 export default {
   name: "Breakfast",
   components: {
     Navbar,
-    BackToTop,
     RecipeCard,
+    BackToTop,
     Footer,
   },
   data() {
     return {
-      filteredRecipes: [], // Store only "Salad" recipes
+      breakfastRecipes: [],
+      searchQuery: "",
     };
+  },
+  computed: {
+    filteredRecipes() {
+      if (!this.searchQuery) {
+        return this.breakfastRecipes;
+      }
+      return this.breakfastRecipes.filter((recipe) =>
+        recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    },
   },
   methods: {
     async fetchBreakfastRecipes() {
@@ -54,14 +74,17 @@ export default {
           console.error("Error fetching recipes:", error);
           return;
         }
-        this.filteredRecipes = recipes;
+        this.breakfastRecipes = recipes;
       } catch (error) {
         console.error("Error fetching recipes:", error);
       }
     },
+    viewRecipe(id) {
+      this.$router.push({ name: "RecipeDetails", params: { id } });
+    },
   },
   async mounted() {
-    await this.fetchBreakfastRecipes(); // Fetch salad recipes on mount
+    await this.fetchBreakfastRecipes();
   },
 };
 </script>
@@ -77,7 +100,6 @@ export default {
   object-fit: cover;
   display: block;
 }
-
 .banner-text {
   position: absolute;
   top: 43%;
@@ -86,6 +108,13 @@ export default {
   color: #333;
   font-size: 2.5rem;
   font-weight: bold;
-  
+}
+.search-input {
+  width: 50%;
+  padding: 8px;
+  font-size: 1rem;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
 }
 </style>

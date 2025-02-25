@@ -325,7 +325,7 @@ export default {
   font-size: 0.9rem;
   cursor: pointer;
   padding: 4px 8px;
-  border-radius: 4px;
+  border-radius: 20px;
 }
 
 .edit-button {
@@ -365,9 +365,8 @@ export default {
   gap: 8px;
 }
 
-.save-button,
-.cancel-button {
-  background-color: #1a1a1a;
+.save-button {
+  background-color: #ff6f61;
   color: #fff;
   border: none;
   padding: 6px 12px;
@@ -377,11 +376,17 @@ export default {
 }
 
 .save-button:hover {
-  background-color: #333333;
+  background-color: #ff7d71;
 }
 
 .cancel-button {
   background-color: #777;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  border-radius: 20px;
+  cursor: pointer;
 }
 
 .cancel-button:hover {

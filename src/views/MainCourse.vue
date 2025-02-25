@@ -6,32 +6,40 @@
       <img src="@/assets/banner.jpg" alt="Banner" class="banner-image" />
       <h1 class="banner-text">Main Course</h1>
     </div>
-
+    
     <main>
+      <div class="search-bar">
+        <input
+          v-model="searchQuery"
+          class="search-input"
+          type="text"
+          placeholder="Search recipes..."
+        />
+      </div>
       <div class="recipes">
         <RecipeCard
           v-for="recipe in filteredRecipes"
           :key="recipe.id"
           :recipe="recipe"
-          
+          @click.native="viewRecipe(recipe.id)"
         />
       </div>
     </main>
 
     <BackToTop />
-    <Footer/>
+    <Footer />
   </div>
 </template>
 
 <script>
-import { supabase } from "@/supabase.js"; // Import Supabase client
+import { supabase } from "@/supabase.js";
 import RecipeCard from "@/components/RecipeCard.vue";
 import BackToTop from "@/components/BackToTop.vue";
 import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/Footer.vue";
 
 export default {
-  name: "MainCourse",
+  name: "Maincourse",
   components: {
     Navbar,
     BackToTop,
@@ -40,13 +48,23 @@ export default {
   },
   data() {
     return {
-      filteredRecipes: [], // Store only "Main Course" recipes
+      mainCourseRecipes: [],
+      searchQuery: "",
     };
+  },
+  computed: {
+    filteredRecipes() {
+      if (!this.searchQuery) {
+        return this.mainCourseRecipes;
+      }
+      return this.mainCourseRecipes.filter((recipe) =>
+        recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    },
   },
   methods: {
     async fetchMainCourseRecipes() {
       try {
-        // Fetch recipes from Supabase where category is "Main Course"
         const { data: recipes, error } = await supabase
           .from("recipes")
           .select("*")
@@ -56,7 +74,7 @@ export default {
           console.error("Error fetching recipes:", error);
           return;
         }
-        this.filteredRecipes = recipes; // Store the main course recipes
+        this.mainCourseRecipes = recipes;
       } catch (error) {
         console.error("Error fetching recipes:", error);
       }
@@ -66,10 +84,11 @@ export default {
     },
   },
   async mounted() {
-    await this.fetchMainCourseRecipes(); // Fetch main course recipes on mount
+    await this.fetchMainCourseRecipes();
   },
 };
 </script>
+
 <style>
 .banner {
   position: relative;
@@ -90,7 +109,14 @@ export default {
   color: #333;
   font-size: 2.5rem;
   font-weight: bold;
-  
+}
+
+.search-input {
+  width: 50%;
+  padding: 8px;
+  font-size: 1rem;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
 }
 </style>
-
