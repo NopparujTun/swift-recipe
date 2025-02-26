@@ -143,6 +143,7 @@ export default {
       const { data, error } = await supabase
         .from("recipes")
         .select("*")
+        .is("deleted_at", null)
         .order("updated_at", { ascending: false });
       if (error) {
         console.error("Error fetching recipes:", error);
@@ -258,15 +259,19 @@ export default {
     };
 
     const deleteConfirmed = async () => {
-      if (!recipeToDelete.value) return;
-      try {
-        await supabase.from("recipes").delete().eq("id", recipeToDelete.value.id);
-        fetchRecipes();
-        recipeToDelete.value = null;
-      } catch (error) {
-        console.error("Error deleting recipe:", error);
-      }
-    };
+  if (!recipeToDelete.value) return;
+  try {
+    await supabase
+      .from("recipes")
+      .update({ deleted_at: new Date().toISOString() })
+      .eq("id", recipeToDelete.value.id);
+    fetchRecipes();
+    recipeToDelete.value = null;
+  } catch (error) {
+    console.error("Error deleting recipe:", error);
+  }
+};
+
 
     const cancelDelete = () => {
       recipeToDelete.value = null;

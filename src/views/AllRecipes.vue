@@ -110,6 +110,7 @@ export default {
         const { data: recipes, error } = await supabase
           .from("recipes")
           .select("*")
+          .is("deleted_at", null)
           .order("id", { ascending: true });
         if (error) {
           console.error("Error fetching recipes:", error);

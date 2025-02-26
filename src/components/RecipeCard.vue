@@ -16,7 +16,7 @@
 
     <!-- Card Footer: View Recipe (left) and Favorite Count (right) -->
     <div class="card-footer">
-      <button @click="viewRecipe(recipe.id)">
+      <button @click="viewRecipe(recipe)">
         View recipe
         <div class="arrow-wrapper">
           <div class="arrow"></div>
@@ -131,8 +131,13 @@ export default {
       }
     },
 
-    viewRecipe(id) {
-      this.$router.push({ name: "RecipeDetails", params: { id } });
+    viewRecipe(recipe) {
+      // Extract the file name from the image path, e.g., "khao-tom.jpg"
+      const fileName = recipe.image.split("/").pop();
+      // Remove the file extension to get the slug, e.g., "khao-tom"
+      const slug = fileName.split(".")[0];
+      // Navigate using the slug
+      this.$router.push({ name: "RecipeDetails", params: { slug } });
     },
   },
 };

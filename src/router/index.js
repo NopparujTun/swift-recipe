@@ -37,11 +37,11 @@ const routes = [
     component: AdminLogin,
   },
   {
-    path: "/recipe/:id",
-    name: "RecipeDetails",
-    component: RecipeDetails,
-    props: (route) => ({ id: parseInt(route.params.id) }), // Parse `id` as a number
+    path: '/recipe/:slug',
+    name: 'RecipeDetails',
+    component: RecipeDetails
   }
+  
   ,
   {
     path: "/admin",

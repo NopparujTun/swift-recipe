@@ -68,6 +68,7 @@ export default {
         const { data: recipes, error } = await supabase
           .from("recipes")
           .select("*")
+          .is("deleted_at", null)
           .eq("category", "Breakfast");
 
         if (error) {

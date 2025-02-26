@@ -85,6 +85,7 @@ export default {
         const { data: recipes, error } = await supabase
           .from("recipes")
           .select("*")
+          .is("deleted_at", null)
           .order("id", { ascending: false }) // Newest first
           .limit(8);
         if (error) {
@@ -101,7 +102,8 @@ export default {
         // Fetch all recipes from the recipes table
         const { data: recipesData, error: recipesError } = await supabase
           .from("recipes")
-          .select("*");
+          .select("*")
+          .is("deleted_at", null);
         if (recipesError) {
           console.error("Error fetching recipes:", recipesError);
           return;

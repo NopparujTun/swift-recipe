@@ -26,7 +26,6 @@
               :key="ingredient.id || index"
               class="ingredient-item"
             >
-              
               <span class="ingredient-text">
                 {{ formatIngredient(ingredient) }}
               </span>
@@ -50,7 +49,7 @@
 
         <!-- Review Section wrapped in "no-print" container -->
         <section v-if="recipe" class="no-print">
-          <ReviewSection :recipe-id="id" />
+          <ReviewSection :recipe-id="recipe.id" />
         </section>
       </main>
     </div>
@@ -65,17 +64,11 @@ import Footer from "@/components/Footer.vue";
 import ReviewSection from "@/components/ReviewSection.vue";
 
 export default {
-  name: "RecipeDetail",
+  name: "RecipeDetails",
   components: {
     Navbar,
     Footer,
     ReviewSection,
-  },
-  props: {
-    id: {
-      type: Number,
-      required: true,
-    },
   },
   data() {
     return {
@@ -91,10 +84,14 @@ export default {
   methods: {
     async loadRecipe() {
       try {
+        // Get the slug from the route parameters (e.g., "khao-tom")
+        const slug = this.$route.params.slug;
+        // Query for the recipe using the image field.
+        // This assumes that the image field ends with "/slug.jpg".
         const { data: recipe, error: recipeError } = await supabase
           .from("recipes")
           .select("*")
-          .eq("id", this.id)
+          .ilike("image", `%/${slug}.jpg`)
           .single();
 
         if (recipeError) {
@@ -107,10 +104,11 @@ export default {
           this.servings = recipe.servings;
         }
 
+        // Fetch ingredients associated with the recipe
         const { data: ingredients, error: ingredientsError } = await supabase
           .from("ingredients")
           .select("*")
-          .eq("recipe_id", this.id);
+          .eq("recipe_id", recipe.id);
 
         if (ingredientsError) {
           console.error("Error fetching ingredients:", ingredientsError);
@@ -118,10 +116,11 @@ export default {
         }
         this.ingredients = ingredients;
 
+        // Fetch instructions, ordering them by step_number ascending
         const { data: instructions, error: instructionsError } = await supabase
           .from("instructions")
           .select("*")
-          .eq("recipe_id", this.id)
+          .eq("recipe_id", recipe.id)
           .order("step_number", { ascending: true });
 
         if (instructionsError) {
@@ -148,8 +147,6 @@ export default {
 </script>
 
 <style scoped>
-/* Mobile-first styles */
-
 /* Recipe Detail Container */
 .recipe-detail {
   min-height: 100vh;

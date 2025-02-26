@@ -47,8 +47,8 @@ export default {
   },
   data() {
     return {
-      saladRecipes: [],  // Holds all salad recipes fetched from the database
-      searchQuery: '',   // The search term entered by the user
+      saladRecipes: [],  
+      searchQuery: '',  
     };
   },
   computed: {
@@ -68,6 +68,7 @@ export default {
         const { data: recipes, error } = await supabase
           .from("recipes")
           .select("*")
+          .is("deleted_at", null)
           .eq("category", "Salad");
 
         if (error) {
@@ -110,9 +111,6 @@ export default {
   font-size: 2.5rem;
   font-weight: bold;
 }
-
-
-
 
 .search-input {
   width: 50%;
