@@ -35,7 +35,8 @@
             >
               Edit
             </button>
-            <button class="delete-button" @click="deleteReview(review.id)">
+            <!-- Instead of directly deleting, confirm via modal -->
+            <button class="delete-button" @click="confirmDelete(review)">
               Delete
             </button>
           </div>
@@ -44,7 +45,9 @@
         <div v-if="editingReviewId === review.id" class="edit-review">
           <textarea v-model="editComment" class="edit-textarea"></textarea>
           <div class="edit-buttons">
-            <button class="save-button" @click="updateReview(review.id)">Save</button>
+            <button class="save-button" @click="updateReview(review.id)">
+              Save
+            </button>
             <button class="cancel-button" @click="cancelEditing">Cancel</button>
           </div>
         </div>
@@ -53,6 +56,17 @@
       </div>
       <div v-if="reviews.length === 0" class="no-reviews">
         No reviews yet.
+      </div>
+    </div>
+    <!-- Delete Confirmation Modal -->
+    <div v-if="reviewToDelete" class="modal-overlay">
+      <div class="modal">
+        <h3>Are you sure you want to delete this review?</h3>
+        <p>This action cannot be undone.</p>
+        <div class="modal-actions">
+          <button class="delete-button" @click="deleteConfirmed">Delete</button>
+          <button class="cancel-button" @click="cancelDelete">Cancel</button>
+        </div>
       </div>
     </div>
   </section>
@@ -75,9 +89,11 @@ export default {
       comment: "",
       reviews: [],
       currentUserId: null, // Will store the authenticated user's ID
-      // New properties for editing reviews
+      // For editing reviews
       editingReviewId: null,
       editComment: "",
+      // For delete confirmation modal
+      reviewToDelete: null,
     };
   },
   async created() {
@@ -97,7 +113,6 @@ export default {
       }
       if (!this.comment.trim()) return; // Prevent posting empty reviews
 
-      // Since the user is authenticated, use the current user's ID
       const userId = this.currentUserId;
       // Retrieve display name from the authenticated user's metadata
       const { data: userData, error: userError } = await supabase.auth.getUser();
@@ -120,46 +135,52 @@ export default {
       if (error) {
         console.error("Error posting review:", error);
       } else {
-        // Refresh the reviews list after posting.
         await this.fetchReviews();
         this.comment = "";
       }
     },
     async fetchReviews() {
-      // Fetch all reviews for the given recipe_id.
+      // Fetch all reviews for the given recipe_id that are not soft-deleted.
       const { data, error } = await supabase
         .from("reviews")
         .select("*")
         .eq("recipe_id", this.recipeId)
+        .is("deleted_at", null)
         .order("created_at", { ascending: false });
-
       if (error) {
         console.error("Error fetching reviews:", error);
       } else {
         this.reviews = data;
       }
     },
-    async deleteReview(reviewId) {
-      // Delete the review with the given id
+    // Open the delete confirmation modal.
+    confirmDelete(review) {
+      this.reviewToDelete = review;
+    },
+    async deleteConfirmed() {
+      if (!this.reviewToDelete) return;
+      // Perform a soft delete by updating the deleted_at field.
       const { error } = await supabase
         .from("reviews")
-        .delete()
-        .eq("id", reviewId);
+        .update({ deleted_at: new Date().toISOString() })
+        .eq("id", this.reviewToDelete.id);
       if (error) {
         console.error("Error deleting review:", error);
       } else {
         await this.fetchReviews();
       }
+      this.reviewToDelete = null;
+    },
+    cancelDelete() {
+      this.reviewToDelete = null;
     },
     startEditing(review) {
-      // Set this review as being edited
       this.editingReviewId = review.id;
       this.editComment = review.comment;
     },
     async updateReview(reviewId) {
       if (!this.editComment.trim()) return; // Prevent empty update
 
-      // Update the review comment in the reviews table.
       const { error } = await supabase
         .from("reviews")
         .update({ comment: this.editComment })
@@ -173,7 +194,6 @@ export default {
       }
     },
     cancelEditing() {
-      // Cancel editing mode
       this.editingReviewId = null;
       this.editComment = "";
     },
@@ -408,5 +428,57 @@ export default {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.modal h3 {
+  margin-top: 0;
+}
+
+.modal button {
+  margin: 3px;
+
+}
+
+.modal button.cancel-button {
+  margin-right: 10px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  background-color: #4e4e4e;
+  color: #fff;
+}
+.modal button.delete-button {
+  margin-right: 10px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  background-color: #ff4d4d;
+  color: #fff;
 }
 </style>

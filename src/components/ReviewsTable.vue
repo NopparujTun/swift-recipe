@@ -12,17 +12,27 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="review in reviews" :key="review.id">
+        <!-- Use paginatedReviews instead of full reviews list -->
+        <tr v-for="review in paginatedReviews" :key="review.id">
           <td>{{ review.user_name }}</td>
           <td>{{ review.recipe ? review.recipe.name : "N/A" }}</td>
           <td>{{ review.comment }}</td>
           <td>{{ formatDate(review.created_at) }}</td>
           <td>
-            <button class="delete-button" @click="confirmDelete(review)">Delete</button>
+            <button class="delete-button" @click="confirmDelete(review)">
+              Delete
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
+
+    <!-- Pagination Component -->
+    <Pagination 
+      :currentPage="currentPage" 
+      :totalPages="totalPages" 
+      @pageChange="handlePageChange" 
+    />
 
     <!-- Delete Confirmation Modal -->
     <div v-if="reviewToDelete" class="modal-overlay">
@@ -39,25 +49,44 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { supabase } from "@/supabase.js";
+import Pagination from "@/components/Pagination.vue";
 
 export default {
   name: "ReviewsTable",
+  components: {
+    Pagination,
+  },
   setup() {
     const reviews = ref([]);
     const reviewToDelete = ref(null);
-
+    const currentPage = ref(1);
+    const reviewsPerPage = ref(5);
+    
+    // Compute total pages based on the reviews count.
+    const totalPages = computed(
+      () => Math.ceil(reviews.value.length / reviewsPerPage.value)
+    );
+    
+    // Compute the reviews for the current page.
+    const paginatedReviews = computed(() => {
+      const start = (currentPage.value - 1) * reviewsPerPage.value;
+      return reviews.value.slice(start, start + reviewsPerPage.value);
+    });
+    
     const fetchReviews = async () => {
-      // Use relational embedding to fetch the related recipe name.
+      // Fetch reviews that are not soft-deleted, including the related recipe name.
       const { data, error } = await supabase
         .from("reviews")
         .select("*, recipe:recipes(name)")
+        .is("deleted_at", null)
         .order("created_at", { ascending: false });
       if (error) {
         console.error("Error fetching reviews:", error);
       } else {
         reviews.value = data;
+        currentPage.value = 1; // Reset to first page on new fetch.
       }
     };
 
@@ -67,8 +96,12 @@ export default {
 
     const deleteConfirmed = async () => {
       if (!reviewToDelete.value) return;
-      await supabase.from("reviews").delete().eq("id", reviewToDelete.value.id);
-      fetchReviews();
+      // Perform soft delete by updating the deleted_at field.
+      await supabase
+        .from("reviews")
+        .update({ deleted_at: new Date().toISOString() })
+        .eq("id", reviewToDelete.value.id);
+      await fetchReviews();
       reviewToDelete.value = null;
     };
 
@@ -79,6 +112,10 @@ export default {
     const formatDate = (dateString) => {
       if (!dateString) return "N/A";
       return new Date(dateString).toLocaleString();
+    };
+
+    const handlePageChange = (page) => {
+      currentPage.value = page;
     };
 
     onMounted(() => {
@@ -92,6 +129,10 @@ export default {
       deleteConfirmed,
       cancelDelete,
       formatDate,
+      currentPage,
+      totalPages,
+      paginatedReviews,
+      handlePageChange,
     };
   },
 };
@@ -105,14 +146,12 @@ export default {
   font-family: "Poppins", sans-serif;
   margin: 20px;
 }
-
 .section-title {
   font-size: 1.75rem;
   margin-bottom: 20px;
   color: #1a1a1a;
   text-align: center;
 }
-
 .reviews-table__table {
   width: 100%;
   border-collapse: collapse;
@@ -120,27 +159,22 @@ export default {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
-
 .reviews-table__table thead {
   background-color: #1a1a1a;
   color: #ffffff;
 }
-
 .reviews-table__table th,
 .reviews-table__table td {
   padding: 10px;
   text-align: left;
   border-bottom: 1px solid #e5e7eb;
 }
-
 .reviews-table__table th {
   font-weight: bold;
 }
-
 .reviews-table__table tbody tr:last-child td {
   border-bottom: none;
 }
-
 button {
   padding: 5px 8px;
   border: none;
@@ -148,7 +182,6 @@ button {
   cursor: pointer;
   font-family: "Poppins", sans-serif;
 }
-
 .delete-button {
   background-color: #ff4d4d;
   color: #fff;
@@ -157,7 +190,6 @@ button {
   margin-left: -3px;
   border-radius: 20px;
 }
-
 /* Modal Styles */
 .modal-overlay {
   position: fixed;
@@ -171,7 +203,6 @@ button {
   justify-content: center;
   z-index: 1000;
 }
-
 .modal {
   background: #fff;
   border-radius: 8px;
@@ -180,16 +211,12 @@ button {
   max-width: 500px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
 .modal h3 {
   margin-top: 0;
 }
-
-.modal button{
-  margin:3px;
+.modal button {
+  margin: 3px;
 }
-
-
 .modal button.cancel-button {
   margin-right: 10px;
   padding: 8px 12px;
@@ -199,7 +226,6 @@ button {
   background-color: #4e4e4e;
   color: #fff;
 }
-
 /* Responsive Styles */
 @media (max-width: 600px) {
   .reviews-table__table th,

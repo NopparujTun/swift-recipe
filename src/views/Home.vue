@@ -16,7 +16,11 @@
       <!-- Popular Recipes Section -->
       <section class="popular-section">
         <h2>Popular Recipes</h2>
-        <div class="popular-recipes">
+        <!-- Spinner shown while loading popular recipes -->
+        <div v-if="loadingPopular" class="spinner-container">
+          <div class="spinner"></div>
+        </div>
+        <div v-else class="popular-recipes">
           <div
             v-for="(recipe, index) in popularRecipes"
             :key="recipe.id"
@@ -56,7 +60,7 @@ import RecipeCard from "@/components/RecipeCard.vue";
 import BackToTop from "@/components/BackToTop.vue";
 import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/Footer.vue";
-import { supabase } from "@/supabase.js"; // Import Supabase client
+import { supabase } from "@/supabase.js";
 
 export default {
   name: "Home",
@@ -70,6 +74,7 @@ export default {
     return {
       recipes: [],
       popularRecipes: [],
+      loadingPopular: false, 
     };
   },
   computed: {
@@ -92,13 +97,14 @@ export default {
           console.error("Error fetching recipes:", error);
           return;
         }
-        this.recipes = recipes; // Store fetched recipes
+        this.recipes = recipes;
       } catch (error) {
         console.error("Error loading recipes:", error);
       }
     },
     async loadPopularRecipes() {
       try {
+        this.loadingPopular = true; // Start spinner
         // Fetch all recipes from the recipes table
         const { data: recipesData, error: recipesError } = await supabase
           .from("recipes")
@@ -106,6 +112,7 @@ export default {
           .is("deleted_at", null);
         if (recipesError) {
           console.error("Error fetching recipes:", recipesError);
+          this.loadingPopular = false;
           return;
         }
         // For each recipe, fetch its like count from favorite_recipes
@@ -129,8 +136,10 @@ export default {
         recipesWithLikes.sort((a, b) => b.likes - a.likes);
         // Take the top 3 recipes
         this.popularRecipes = recipesWithLikes.slice(0, 3);
+        this.loadingPopular = false; // Stop spinner
       } catch (error) {
         console.error("Error loading popular recipes:", error);
+        this.loadingPopular = false;
       }
     },
     viewRecipe(id) {
@@ -161,7 +170,7 @@ export default {
 </script>
 
 <style scoped>
-section  {
+section {
   padding: 20px;
   background-color: #f5f5f5;
   border-radius: 10px;
@@ -184,7 +193,6 @@ section h2 {
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 40px;
-  
 }
 
 .popular-recipes {
@@ -197,8 +205,6 @@ section h2 {
 .popular-card-wrapper {
   position: relative;
 }
-
-
 
 .rank-icon {
   position: absolute;
@@ -257,7 +263,33 @@ section h2 {
   z-index: -1;
 }
 
-/* Responsive Styles for Mobile Devices */
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px; 
+}
+
+.spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #1a1a1a;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
 @media (max-width: 600px) {
   .popular-recipes {
     flex-direction: column;

@@ -54,7 +54,7 @@
               <li><a href="/recipes/dessert">Dessert</a></li>
               <li><a href="/recipes/salad">Salad</a></li>
               <li><a href="/recipes/breakfast">Breakfast</a></li>
-              <li><a href="/recipes/vegeterian">Vegeterian</a></li>
+              <li><a href="/recipes/vegetarian">Vegeterian</a></li>
             </ul>
           </div>
   

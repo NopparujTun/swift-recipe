@@ -340,5 +340,9 @@ export default {
     margin: 0;
     padding: 0;
   }
+  .step-number {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }
 </style>

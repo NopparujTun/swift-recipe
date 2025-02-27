@@ -1,7 +1,7 @@
 <template>
     <aside class="sidebar">
       <div class="sidebar-header">
-        <h1>Recipe Admin</h1>
+        <h1>Admin</h1>
       </div>
       <nav class="sidebar-nav">
         <router-link to="/admin" exact-active-class="active">Dashboard</router-link>
@@ -51,6 +51,7 @@
   .sidebar-nav {
     flex: 1;
     padding: 20px;
+
   }
   .sidebar-nav a {
     display: block;

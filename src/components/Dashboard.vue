@@ -42,7 +42,8 @@
       // Fetch all recipes from Supabase
       const { data: recipes, error } = await supabase
         .from("recipes")
-        .select("*");
+        .select("*")
+        .is("deleted_at", null);
   
       if (error) {
         console.error("Error fetching recipes:", error);

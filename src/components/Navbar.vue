@@ -248,14 +248,14 @@ export default {
 .auth-links a {
   border-radius: 20px; 
   padding: 0.5rem 1rem;
-  background-color: #f0f0f0; 
+  background: linear-gradient(to right, #ff914d, #ff6f61, #ff9370);
   text-decoration: none;
-  color: #1a1a1a;
+  color: #ffffff;
   transition: background-color 0.3s ease;
 }
 
 .auth-links a:hover {
-  background-color: #e0e0e0; 
+  color: white;
 }
 @media (max-width: 768px) {
   .hamburger {
