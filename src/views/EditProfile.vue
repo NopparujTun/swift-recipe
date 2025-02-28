@@ -54,12 +54,11 @@ export default {
       }
     });
 
-    // Save profile changes: update auth metadata, profiles table, and reviews.
+    
     const saveProfile = async () => {
-      // Clear any previous error message.
+      
       usernameError.value = "";
-      // Validate that the new display name is alphanumeric.
-      // It must start with a letter or digit and can be followed by letters, digits, or underscores.
+      // Validate that the name is alphanumeric, can include underscores, but cannot start with an underscore.
       const usernameRegex = /^[A-Za-z0-9][A-Za-z0-9_]*$/;
       if (!usernameRegex.test(newDisplayName.value)) {
         usernameError.value =

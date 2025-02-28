@@ -46,11 +46,9 @@ const showModal = ref(false);
 const usernameError = ref("");
 
 const handleSignup = async () => {
-  // Clear previous error (if any)
   usernameError.value = "";
   
-  // Validate that the name (username) is alphanumeric, can include underscores,
-  // but cannot start with an underscore.
+  // Validate that the name is alphanumeric, can include underscores, but cannot start with an underscore.
   const usernameRegex = /^[A-Za-z0-9][A-Za-z0-9_]*$/;
   if (!usernameRegex.test(name.value)) {
     usernameError.value =
