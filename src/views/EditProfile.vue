@@ -11,6 +11,8 @@
           type="text"
           placeholder="Enter your display name"
         />
+        <!-- Inline error message -->
+        <p v-if="usernameError" class="error-message">{{ usernameError }}</p>
       </div>
       <div class="button-group">
         <button @click="saveProfile" class="Savebtn">Save</button>
@@ -27,11 +29,12 @@ import { useRouter } from "vue-router";
 import Navbar from "@/components/Navbar.vue";
 
 export default {
-  components: {Navbar},
+  components: { Navbar },
   setup() {
     const router = useRouter();
     const user = ref(null);
     const newDisplayName = ref("");
+    const usernameError = ref("");
 
     // On mount, load the current user and their profile info.
     onMounted(async () => {
@@ -53,6 +56,17 @@ export default {
 
     // Save profile changes: update auth metadata, profiles table, and reviews.
     const saveProfile = async () => {
+      // Clear any previous error message.
+      usernameError.value = "";
+      // Validate that the new display name is alphanumeric.
+      // It must start with a letter or digit and can be followed by letters, digits, or underscores.
+      const usernameRegex = /^[A-Za-z0-9][A-Za-z0-9_]*$/;
+      if (!usernameRegex.test(newDisplayName.value)) {
+        usernameError.value =
+          "Please only use number, letters, or underscores _ (underscore cannot be the first letter)";
+        return;
+      }
+
       // Update Supabase auth user metadata.
       const { error: authError } = await supabase.auth.updateUser({
         data: { display_name: newDisplayName.value },
@@ -90,6 +104,7 @@ export default {
 
     return {
       newDisplayName,
+      usernameError,
       saveProfile,
       cancelEdit,
     };
@@ -124,10 +139,15 @@ export default {
   border: 1px solid #ccc;
   border-radius: 20px;
 }
+.error-message {
+  color: red;
+  margin-top: 0.5rem;
+  font-size: 14px;
+}
 .button-group {
   display: flex;
-  justify-content: flex-end; 
-  gap: 5px; 
+  justify-content: flex-end;
+  gap: 5px;
 }
 .button-group button {
   padding: 0.5rem 1rem;
@@ -143,7 +163,7 @@ export default {
   background-color: #ccc;
   color: #000;
 }
-button.Savebtn{
-  background:linear-gradient(to right, #ff914d, #ff6f61, #ff9370);
+button.Savebtn {
+  background: linear-gradient(to right, #ff914d, #ff6f61, #ff9370);
 }
 </style>

@@ -4,6 +4,8 @@
     <form class="form" @submit.prevent="handleSignup">
       <div class="form-group">
         <input type="text" id="name" v-model="name" placeholder="Name" required />
+        <!-- Inline error message -->
+        <p v-if="usernameError" class="error-message">{{ usernameError }}</p>
       </div>
       <div class="form-group">
         <input type="email" id="email" v-model="email" placeholder="Email" required />
@@ -41,8 +43,21 @@ const name = ref("");
 const email = ref("");
 const password = ref("");
 const showModal = ref(false);
+const usernameError = ref("");
 
 const handleSignup = async () => {
+  // Clear previous error (if any)
+  usernameError.value = "";
+  
+  // Validate that the name (username) is alphanumeric, can include underscores,
+  // but cannot start with an underscore.
+  const usernameRegex = /^[A-Za-z0-9][A-Za-z0-9_]*$/;
+  if (!usernameRegex.test(name.value)) {
+    usernameError.value =
+      "Please only use number, letters, or underscores _ (underscore cannot be the first letter)";
+    return;
+  }
+
   try {
     const { error } = await supabase.auth.signUp({
       email: email.value,
@@ -50,9 +65,9 @@ const handleSignup = async () => {
       options: {
         emailRedirectTo: "http://localhost:5173/",
         data: {
-          display_name: name.value
-        }
-      }
+          display_name: name.value,
+        },
+      },
     });
     if (error) throw error;
 
@@ -107,6 +122,13 @@ const closeTab = () => {
   font-size: 16px;
 }
 
+/* Error message styling */
+.error-message {
+  color: red;
+  margin-top: 5px;
+  font-size: 14px;
+}
+
 .form-actions {
   display: flex;
   justify-content: space-between;
@@ -115,7 +137,7 @@ const closeTab = () => {
 }
 
 .btn {
-  background:linear-gradient(to right, #ff914d, #ff6f61, #ff9370);
+  background: linear-gradient(to right, #ff914d, #ff6f61, #ff9370);
   width: 100%;
   color: white;
   border: none;
@@ -136,7 +158,7 @@ const closeTab = () => {
 }
 
 .signup-link a {
-  color:#ff6f61;
+  color: #ff6f61;
   text-decoration: none;
   font-weight: bold;
 }
