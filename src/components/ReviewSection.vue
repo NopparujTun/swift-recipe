@@ -69,6 +69,15 @@
         </div>
       </div>
     </div>
+    <!-- Delete Success Modal -->
+    <div v-if="deleteSuccess" class="modal-overlay">
+      <div class="modal">
+        <h3>Review deleted successfully</h3>
+        <div class="modal-actions">
+          <button class="cancel-button" @click="closeSuccessModal">Ok</button>
+        </div>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -94,6 +103,8 @@ export default {
       editComment: "",
       // For delete confirmation modal
       reviewToDelete: null,
+      // For delete success modal
+      deleteSuccess: false,
     };
   },
   async created() {
@@ -168,11 +179,16 @@ export default {
         console.error("Error deleting review:", error);
       } else {
         await this.fetchReviews();
+        // Show the delete success modal
+        this.deleteSuccess = true;
       }
       this.reviewToDelete = null;
     },
     cancelDelete() {
       this.reviewToDelete = null;
+    },
+    closeSuccessModal() {
+      this.deleteSuccess = false;
     },
     startEditing(review) {
       this.editingReviewId = review.id;
@@ -460,7 +476,6 @@ export default {
 
 .modal button {
   margin: 3px;
-
 }
 
 .modal button.cancel-button {
@@ -471,6 +486,7 @@ export default {
   cursor: pointer;
   background-color: #4e4e4e;
   color: #fff;
+  width: 50px;
 }
 .modal button.delete-button {
   margin-right: 10px;
