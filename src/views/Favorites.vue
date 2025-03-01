@@ -38,12 +38,19 @@
 
       <!-- Recipe List -->
       <section class="recipe-list">
-        <RecipeCard
-          v-for="recipe in filteredRecipes"
-          :key="recipe.id"
-          :recipe="recipe"
-        />
-      </section>
+  <div v-if="filteredRecipes.length === 0" class="no-favorites">
+    <p>You don't have your favorite recipes yet.</p>
+  </div>
+  <div v-else class="recipes-container">
+    <RecipeCard
+      v-for="recipe in filteredRecipes"
+      :key="recipe.id"
+      :recipe="recipe"
+    />
+  </div>
+</section>
+
+
     </main>
 
     <Footer />
@@ -185,24 +192,7 @@ main {
   padding: 20px;
 }
 
-@media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-    align-items: center;
-  }
 
-  .recipe-list {
-    grid-template-columns: 1fr !important;
-    
-  }
-  .filter-section {
-  width: 300px;
-  padding: 15px;
-  background: #f4f4f4;
-  border-radius: 20px;
-  margin-bottom: 20px;
-}
-}
 
 .filter-section {
   width: 300px;
@@ -256,5 +246,45 @@ main {
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
   
+}
+
+
+.no-favorites {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px; 
+  width: 100%;
+  margin-left: 300px;
+  font-size: 1.5rem;
+  text-align: center;
+}
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .recipe-list {
+    grid-template-columns: 1fr !important;
+    
+  }
+  .filter-section {
+  width: 300px;
+  padding: 15px;
+  background: #f4f4f4;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+.no-favorites {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px; 
+  width: 100%;
+  margin-left: 0px;
+  font-size: 1.5rem;
+  text-align: center;
+}
 }
 </style>
