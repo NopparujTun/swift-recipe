@@ -38,17 +38,16 @@
 
       <!-- Recipe List -->
       <section class="recipe-list">
-  <div v-if="filteredRecipes.length === 0" class="no-favorites">
+  <div v-if="filteredRecipes.length === 0">
     <p>You don't have your favorite recipes yet.</p>
   </div>
-  <div v-else class="recipes-container">
-    <RecipeCard
-      v-for="recipe in filteredRecipes"
-      :key="recipe.id"
-      :recipe="recipe"
-    />
-  </div>
+  <RecipeCard
+    v-for="recipe in filteredRecipes"
+    :key="recipe.id"
+    :recipe="recipe"
+  />
 </section>
+
 
 
     </main>
@@ -249,7 +248,7 @@ main {
 }
 
 
-.no-favorites {
+.recipe-list p {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -276,7 +275,7 @@ main {
   border-radius: 20px;
   margin-bottom: 20px;
 }
-.no-favorites {
+.recipe-list p{
   display: flex;
   justify-content: center;
   align-items: center;

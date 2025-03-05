@@ -115,12 +115,17 @@ export default {
           (instruction) => instruction.trim() !== ""
         );
 
-        // Insert the main recipe
+        // Generate slug from recipe name (non-nullable text)
+        const slug = this.newRecipe.name.trim().toLowerCase().replace(/\s+/g, '-');
+
+
+        // Insert the main recipe with the slug field
         const { data: recipeData, error: recipeError } = await supabase
           .from("recipes")
           .insert([
             {
               name: this.newRecipe.name,
+              slug: slug, // New slug field
               description: this.newRecipe.description,
               image: this.newRecipe.image,
               category: this.newRecipe.category,
@@ -136,7 +141,7 @@ export default {
 
         const recipeId = recipeData[0].id;
 
-        // Insert ingredients (still comma-separated)
+        // Insert ingredients (comma-separated)
         const ingredientsArray = this.newRecipe.ingredients
           .split(",")
           .map((item) => item.trim())
@@ -190,35 +195,34 @@ export default {
     },
 
     async fetchRecipes() {
-  try {
-    const { data: recipesData, error } = await supabase.from("recipes").select("*");
-    if (error) {
-      console.error("Error fetching recipes:", error);
-      return;
-    }
+      try {
+        const { data: recipesData, error } = await supabase.from("recipes").select("*");
+        if (error) {
+          console.error("Error fetching recipes:", error);
+          return;
+        }
 
-    // Use Promise.all to fetch ingredients and instructions concurrently for all recipes
-    await Promise.all(
-      recipesData.map(async (recipe) => {
-        const [ingredientsResult, instructionsResult] = await Promise.all([
-          supabase.from("ingredients").select("ingredient").eq("recipe_id", recipe.id),
-          supabase.from("instructions").select("instruction").eq("recipe_id", recipe.id)
-        ]);
-        recipe.ingredients = ingredientsResult.data
-          .map((item) => item.ingredient)
-          .join(", ");
-        recipe.instructions = instructionsResult.data
-          .map((item) => item.instruction)
-          .join(" | ");
-      })
-    );
+        // Use Promise.all to fetch ingredients and instructions concurrently for all recipes
+        await Promise.all(
+          recipesData.map(async (recipe) => {
+            const [ingredientsResult, instructionsResult] = await Promise.all([
+              supabase.from("ingredients").select("ingredient").eq("recipe_id", recipe.id),
+              supabase.from("instructions").select("instruction").eq("recipe_id", recipe.id)
+            ]);
+            recipe.ingredients = ingredientsResult.data
+              .map((item) => item.ingredient)
+              .join(", ");
+            recipe.instructions = instructionsResult.data
+              .map((item) => item.instruction)
+              .join(" | ");
+          })
+        );
 
-    this.recipes = recipesData;
-  } catch (error) {
-    console.error("Error fetching recipes:", error);
-  }
-},
-
+        this.recipes = recipesData;
+      } catch (error) {
+        console.error("Error fetching recipes:", error);
+      }
+    },
   },
   async mounted() {
     await this.fetchRecipes();
@@ -310,7 +314,10 @@ form button.addrecipe {
   border-radius: 20px;
   margin-top: -1px;
 }
+form button.remove:hover{
+  background-color: #ff4545;
 
+}
 /* Modal Styles */
 .modal-overlay {
   position: fixed;

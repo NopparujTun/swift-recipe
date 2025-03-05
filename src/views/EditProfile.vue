@@ -56,46 +56,53 @@ export default {
 
     
     const saveProfile = async () => {
-      
-      usernameError.value = "";
-      // Validate that the name is alphanumeric, can include underscores, but cannot start with an underscore.
-      const usernameRegex = /^[A-Za-z0-9][A-Za-z0-9_]*$/;
-      if (!usernameRegex.test(newDisplayName.value)) {
-        usernameError.value =
-          "Please only use number, letters, or underscores _ (underscore cannot be the first letter)";
-        return;
-      }
+  usernameError.value = "";
 
-      // Update Supabase auth user metadata.
-      const { error: authError } = await supabase.auth.updateUser({
-        data: { display_name: newDisplayName.value },
-      });
-      if (authError) {
-        console.error("Error updating auth user:", authError);
-      }
+  // Check for length between 3 and 20 characters.
+  if (newDisplayName.value.length < 3 || newDisplayName.value.length > 20) {
+    usernameError.value = "Display name must be between 3 and 20 characters.";
+    return;
+  }
 
-      // Upsert the record in the profiles table.
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .upsert({
-          id: user.value.id,
-          display_name: newDisplayName.value,
-        });
-      if (profileError) {
-        console.error("Error updating profile:", profileError);
-      } else {
-        // Update reviews with the new display name.
-        const { error: reviewError } = await supabase
-          .from("reviews")
-          .update({ user_name: newDisplayName.value })
-          .eq("user_id", user.value.id);
-        if (reviewError) {
-          console.error("Error updating reviews:", reviewError);
-        }
-        // Redirect to the home page.
-        router.push("/");
-      }
-    };
+  // Validate that the name is alphanumeric, can include underscores, but cannot start with an underscore.
+  const usernameRegex = /^[A-Za-z0-9][A-Za-z0-9_]*$/;
+  if (!usernameRegex.test(newDisplayName.value)) {
+    usernameError.value =
+      "Please only use letters, numbers, or underscores (underscore cannot be the first letter)";
+    return;
+  }
+
+  // Update Supabase auth user metadata.
+  const { error: authError } = await supabase.auth.updateUser({
+    data: { display_name: newDisplayName.value },
+  });
+  if (authError) {
+    console.error("Error updating auth user:", authError);
+  }
+
+  // Upsert the record in the profiles table.
+  const { error: profileError } = await supabase
+    .from("profiles")
+    .upsert({
+      id: user.value.id,
+      display_name: newDisplayName.value,
+    });
+  if (profileError) {
+    console.error("Error updating profile:", profileError);
+  } else {
+    // Update reviews with the new display name.
+    const { error: reviewError } = await supabase
+      .from("reviews")
+      .update({ user_name: newDisplayName.value })
+      .eq("user_id", user.value.id);
+    if (reviewError) {
+      console.error("Error updating reviews:", reviewError);
+    }
+    // Redirect to the home page.
+    router.push("/");
+  }
+};
+
 
     const cancelEdit = () => {
       router.back();

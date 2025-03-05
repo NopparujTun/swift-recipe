@@ -132,13 +132,10 @@ export default {
     },
 
     viewRecipe(recipe) {
-      // Extract the file name from the image path, e.g., "khao-tom.jpg"
-      const fileName = recipe.image.split("/").pop();
-      // Remove the file extension to get the slug, e.g., "khao-tom"
-      const slug = fileName.split(".")[0];
-      // Navigate using the slug
-      this.$router.push({ name: "RecipeDetails", params: { slug } });
-    },
+  // Use the slug from the recipe object instead of extracting from the image file name
+  this.$router.push({ name: "RecipeDetails", params: { slug: recipe.slug } });
+},
+
   },
 };
 </script>

@@ -22,7 +22,7 @@
     },
     methods: {
       handleLogin() {
-        const DEFAULT_USERNAME = "AdminZa";
+        const DEFAULT_USERNAME = "swiftrecipe@admin";
         const DEFAULT_PASSWORD = "1234";
   
         if (this.username === DEFAULT_USERNAME && this.password === DEFAULT_PASSWORD) {

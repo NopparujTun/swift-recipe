@@ -84,14 +84,14 @@ export default {
   methods: {
     async loadRecipe() {
       try {
-        // Get the slug from the route parameters (e.g., "khao-tom")
+        // Get the slug from the route parameters (e.g., "disney-plus")
         const slug = this.$route.params.slug;
-        // Query for the recipe using the image field.
-        // This assumes that the image field ends with "/slug.jpg".
+        // Query for the recipe using the slug field.
         const { data: recipe, error: recipeError } = await supabase
           .from("recipes")
           .select("*")
-          .ilike("image", `%/${slug}.jpg`)
+          .eq("slug", slug)
+          .is("deleted_at", null)
           .single();
 
         if (recipeError) {

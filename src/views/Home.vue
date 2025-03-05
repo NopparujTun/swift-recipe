@@ -16,7 +16,7 @@
       <!-- Popular Recipes Section -->
       <section class="popular-section">
         <h2>Popular Recipes</h2>
-        <!-- Spinner shown while loading popular recipes -->
+        <!-- Spinner shown while loading popular recipes initially -->
         <div v-if="loadingPopular" class="spinner-container">
           <div class="spinner"></div>
         </div>
@@ -86,7 +86,6 @@ export default {
   methods: {
     async loadRecipes() {
       try {
-        // Fetch the latest 8 recipes from the database
         const { data: recipes, error } = await supabase
           .from("recipes")
           .select("*")
@@ -104,42 +103,69 @@ export default {
     },
     async loadPopularRecipes() {
       try {
-        this.loadingPopular = true; // Start spinner
-        // Fetch all recipes from the recipes table
-        const { data: recipesData, error: recipesError } = await supabase
-          .from("recipes")
-          .select("*")
-          .is("deleted_at", null);
-        if (recipesError) {
-          console.error("Error fetching recipes:", recipesError);
-          this.loadingPopular = false;
-          return;
+        this.loadingPopular = true;
+
+        // Try to load from cache first for fast rendering
+        const cachedData = localStorage.getItem("popular_recipes");
+        const cacheTimestamp = localStorage.getItem("popular_recipes_timestamp");
+        const cacheExpiry = 1800 * 1000; // 30 minutes
+
+        if (cachedData && cacheTimestamp && Date.now() - cacheTimestamp < cacheExpiry) {
+          this.popularRecipes = JSON.parse(cachedData);
+          console.log("Loaded popular recipes from cache!");
+          // Revalidate in background
+          this.fetchAndUpdatePopularRecipes();
+        } else {
+          // No valid cache? Fetch from Supabase immediately
+          await this.fetchAndUpdatePopularRecipes();
         }
-        // For each recipe, fetch its like count from favorite_recipes
-        const recipesWithLikes = await Promise.all(
-          recipesData.map(async (recipe) => {
-            const { count, error: countError } = await supabase
-              .from("favorite_recipes")
-              .select("*", { count: "exact", head: true })
-              .eq("recipe_id", recipe.id);
-            if (countError) {
-              console.error(
-                `Error fetching like count for recipe ${recipe.id}:`,
-                countError
-              );
-              return { ...recipe, likes: 0 };
-            }
-            return { ...recipe, likes: count || 0 };
-          })
-        );
-        // Sort recipes by likes in descending order
-        recipesWithLikes.sort((a, b) => b.likes - a.likes);
-        // Take the top 3 recipes
-        this.popularRecipes = recipesWithLikes.slice(0, 3);
-        this.loadingPopular = false; // Stop spinner
+
+        this.loadingPopular = false;
       } catch (error) {
         console.error("Error loading popular recipes:", error);
         this.loadingPopular = false;
+      }
+    },
+    async fetchAndUpdatePopularRecipes() {
+      console.log("Fetching popular recipes from Supabase...");
+      const { data: recipesData, error: recipesError } = await supabase
+        .from("recipes")
+        .select("*")
+        .is("deleted_at", null);
+
+      if (recipesError) {
+        console.error("Error fetching recipes:", recipesError);
+        return;
+      }
+
+      // Get like count for each recipe
+      const recipesWithLikes = await Promise.all(
+        recipesData.map(async (recipe) => {
+          const { count, error: countError } = await supabase
+            .from("favorite_recipes")
+            .select("*", { count: "exact", head: true })
+            .eq("recipe_id", recipe.id);
+          if (countError) {
+            console.error(`Error fetching like count for recipe ${recipe.id}:`, countError);
+            return { ...recipe, likes: 0 };
+          }
+          return { ...recipe, likes: count || 0 };
+        })
+      );
+
+      // Sort recipes by like count (descending) and select top 3
+      recipesWithLikes.sort((a, b) => b.likes - a.likes);
+      const freshPopularRecipes = recipesWithLikes.slice(0, 3);
+
+      // Only update if data has changed
+      if (JSON.stringify(freshPopularRecipes) !== JSON.stringify(this.popularRecipes)) {
+        this.popularRecipes = freshPopularRecipes;
+        // Update the cache
+        localStorage.setItem("popular_recipes", JSON.stringify(this.popularRecipes));
+        localStorage.setItem("popular_recipes_timestamp", Date.now());
+        console.log("Popular recipes updated and cached!");
+      } else {
+        console.log("Popular recipes remain unchanged.");
       }
     },
     viewRecipe(id) {
@@ -148,7 +174,6 @@ export default {
     viewAllRecipes() {
       this.$router.push("/recipes/all");
     },
-    // Return the appropriate icon based on ranking index
     getRankIcon(index) {
       switch (index) {
         case 0:
@@ -164,7 +189,7 @@ export default {
   },
   async mounted() {
     await this.loadRecipes(); // Load latest recipes
-    await this.loadPopularRecipes(); // Load top 3 popular recipes based on like count
+    await this.loadPopularRecipes(); // Load popular recipes with stale-while-revalidate pattern
   },
 };
 </script>
@@ -263,7 +288,6 @@ section h2 {
   z-index: -1;
 }
 
-
 .spinner-container {
   display: flex;
   justify-content: center;
@@ -288,7 +312,6 @@ section h2 {
     transform: rotate(360deg);
   }
 }
-
 
 @media (max-width: 600px) {
   .popular-recipes {

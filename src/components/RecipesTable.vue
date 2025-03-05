@@ -44,6 +44,24 @@
       @pageChange="handlePageChange"
     />
 
+    <!-- Delete Confirmation Modal -->
+    <div v-if="recipeToDelete" class="modal-overlay">
+      <div class="modal">
+        <h3>Are you sure you want to delete this recipe?</h3>
+        <p>This action cannot be undone.</p>
+        <button @click="deleteConfirmed" class="delete-button">Delete</button>
+        <button @click="cancelDelete" class="edit-buttoncancel">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Delete Success Modal -->
+    <div v-if="deleteSuccess" class="modal-overlay">
+      <div class="modal">
+        <h3>Recipe deleted successfully!</h3>
+        <button @click="closeSuccessModal" class="edit-buttoncancel">Close</button>
+      </div>
+    </div>
+
     <!-- Inline Edit Modal -->
     <div v-if="editingRecipe" class="modal-overlay">
       <div class="modal">
@@ -108,16 +126,6 @@
         <button @click="cancelEdit" class="edit-buttoncancel">Cancel</button>
       </div>
     </div>
-
-    <!-- Delete Confirmation Modal -->
-    <div v-if="recipeToDelete" class="modal-overlay">
-      <div class="modal">
-        <h3>Are you sure you want to delete this recipe?</h3>
-        <p>This action cannot be undone.</p>
-        <button @click="deleteConfirmed" class="delete-button">Delete</button>
-        <button @click="cancelDelete" class="edit-buttoncancel">Cancel</button>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -137,6 +145,7 @@ export default {
     const itemsPerPage = 5;
     const editingRecipe = ref(null);
     const recipeToDelete = ref(null);
+    const deleteSuccess = ref(false);
     const router = useRouter();
 
     const fetchRecipes = async () => {
@@ -260,13 +269,29 @@ export default {
 
     const deleteConfirmed = async () => {
   if (!recipeToDelete.value) return;
+  const timestamp = new Date().toISOString();
   try {
+    // Soft delete the recipe
     await supabase
       .from("recipes")
-      .update({ deleted_at: new Date().toISOString() })
+      .update({ deleted_at: timestamp })
       .eq("id", recipeToDelete.value.id);
-    fetchRecipes();
+      
+    // Soft delete associated ingredients
+    await supabase
+      .from("ingredients")
+      .update({ deleted_at: timestamp })
+      .eq("recipe_id", recipeToDelete.value.id);
+      
+    // Soft delete associated instructions
+    await supabase
+      .from("instructions")
+      .update({ deleted_at: timestamp })
+      .eq("recipe_id", recipeToDelete.value.id);
+
+    await fetchRecipes();
     recipeToDelete.value = null;
+    deleteSuccess.value = true;
   } catch (error) {
     console.error("Error deleting recipe:", error);
   }
@@ -275,6 +300,10 @@ export default {
 
     const cancelDelete = () => {
       recipeToDelete.value = null;
+    };
+
+    const closeSuccessModal = () => {
+      deleteSuccess.value = false;
     };
 
     const handleEditImageUpload = (event) => {
@@ -371,6 +400,8 @@ export default {
       saveRecipe,
       cancelEdit,
       fetchRecipes,
+      deleteSuccess,
+      closeSuccessModal,
     };
   },
 };

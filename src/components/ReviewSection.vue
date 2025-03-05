@@ -486,7 +486,7 @@ export default {
   cursor: pointer;
   background-color: #4e4e4e;
   color: #fff;
-  width: 50px;
+  
 }
 .modal button.delete-button {
   margin-right: 10px;

@@ -45,6 +45,14 @@
         </div>
       </div>
     </div>
+
+    <!-- Delete Success Modal -->
+    <div v-if="reviewDeleteSuccess" class="modal-overlay">
+      <div class="modal">
+        <h3>Review deleted successfully!</h3>
+        <button class="cancel-button" @click="closeReviewSuccessModal">Close</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -61,6 +69,7 @@ export default {
   setup() {
     const reviews = ref([]);
     const reviewToDelete = ref(null);
+    const reviewDeleteSuccess = ref(false);
     const currentPage = ref(1);
     const reviewsPerPage = ref(5);
     
@@ -103,10 +112,15 @@ export default {
         .eq("id", reviewToDelete.value.id);
       await fetchReviews();
       reviewToDelete.value = null;
+      reviewDeleteSuccess.value = true;
     };
 
     const cancelDelete = () => {
       reviewToDelete.value = null;
+    };
+
+    const closeReviewSuccessModal = () => {
+      reviewDeleteSuccess.value = false;
     };
 
     const formatDate = (dateString) => {
@@ -133,6 +147,8 @@ export default {
       totalPages,
       paginatedReviews,
       handlePageChange,
+      reviewDeleteSuccess,
+      closeReviewSuccessModal,
     };
   },
 };
@@ -213,6 +229,9 @@ button {
 }
 .modal h3 {
   margin-top: 0;
+}
+.modal .modal-actions {
+  margin-top: 15px;
 }
 .modal button {
   margin: 3px;
