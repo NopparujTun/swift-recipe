@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <!-- Add Recipe Form -->
+    <!-- Add Recipe -->
     <form @submit.prevent="addRecipe">
       <label class="title">
         Recipe Name
@@ -32,7 +32,7 @@
       </label>
       <input type="file" @change="handleImageUpload" accept="image/*" required />
 
-      <!-- Dynamic Instructions Input -->
+      <!-- Instructions -->
       <div class="instructions-input">
         <label>Instructions:</label>
         <div v-for="(instruction, index) in newRecipe.instructions" :key="index" class="instruction-step">
@@ -52,7 +52,7 @@
       <button type="submit" class="addrecipe">Add Recipe</button>
     </form>
 
-    <!-- Modal -->
+    <!-- Added Successfully Modal -->
     <div v-if="showModal" class="modal-overlay">
       <div class="modal">
         <p>Recipe added!</p>
@@ -79,7 +79,7 @@ export default {
       },
       editingRecipe: null,
       imageFile: null,
-      showModal: false, // Modal visibility control
+      showModal: false, 
     };
   },
   computed: {
@@ -110,22 +110,22 @@ export default {
       try {
         console.log("Adding new recipe with the following details:", this.newRecipe);
 
-        // Process instructions array (filtering out any empty steps)
+        
         const instructionsArray = this.newRecipe.instructions.filter(
           (instruction) => instruction.trim() !== ""
         );
 
-        // Generate slug from recipe name (non-nullable text)
+        // Generate slug from recipe name 
         const slug = this.newRecipe.name.trim().toLowerCase().replace(/\s+/g, '-');
 
 
-        // Insert the main recipe with the slug field
+        
         const { data: recipeData, error: recipeError } = await supabase
           .from("recipes")
           .insert([
             {
               name: this.newRecipe.name,
-              slug: slug, // New slug field
+              slug: slug,
               description: this.newRecipe.description,
               image: this.newRecipe.image,
               category: this.newRecipe.category,
@@ -141,7 +141,7 @@ export default {
 
         const recipeId = recipeData[0].id;
 
-        // Insert ingredients (comma-separated)
+        // ingredients (comma-separated)
         const ingredientsArray = this.newRecipe.ingredients
           .split(",")
           .map((item) => item.trim())
@@ -152,7 +152,7 @@ export default {
             ingredientsArray.map((ingredient) => ({ recipe_id: recipeId, ingredient }))
           );
 
-        // Insert instructions with step numbers
+        // instructions
         const { error: instructionsError } = await supabase
           .from("instructions")
           .insert(
@@ -170,7 +170,7 @@ export default {
           console.error("Error adding instructions:", instructionsError);
         }
 
-        // Clear the form
+        // clear the form after submit
         this.newRecipe = {
           name: "",
           description: "",
@@ -181,9 +181,9 @@ export default {
         };
         this.imageFile = null;
 
-        await this.fetchRecipes(); // Refresh the recipes list
+        await this.fetchRecipes();
 
-        // Show modal on successful addition
+        // modal when error
         this.showModal = true;
       } catch (error) {
         console.error("Error adding recipe:", error);
@@ -202,7 +202,6 @@ export default {
           return;
         }
 
-        // Use Promise.all to fetch ingredients and instructions concurrently for all recipes
         await Promise.all(
           recipesData.map(async (recipe) => {
             const [ingredientsResult, instructionsResult] = await Promise.all([
@@ -318,7 +317,7 @@ form button.remove:hover{
   background-color: #ff4545;
 
 }
-/* Modal Styles */
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -340,12 +339,14 @@ form button.remove:hover{
   font-weight: bold;
   color: #000000;
 }
+
 button.exitbutton{
   border-radius: 20px;
   width: 50px;
   font-size: 1rem;
   cursor: pointer;
 }
+
 * {
   font-family: "Poppins", sans-serif;
 }

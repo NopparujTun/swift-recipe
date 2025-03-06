@@ -47,7 +47,6 @@
     margin: 0;
   }
   
-  
   .form-container {
     width: 350px;
     background-color: #fff;

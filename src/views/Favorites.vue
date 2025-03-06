@@ -60,7 +60,7 @@
 import Navbar from "@/components/Navbar.vue";
 import RecipeCard from "@/components/RecipeCard.vue";
 import Footer from "@/components/Footer.vue";
-import { supabase } from "@/supabase.js"; // adjust path if needed
+import { supabase } from "@/supabase.js"; 
 
 export default {
   name: "Favorites",
@@ -119,7 +119,7 @@ export default {
           console.log("Favorites data:", data);
           // Map over the favorites to extract the joined recipe data.
           this.recipes = data
-            .map((fav) => fav.recipe) // if your alias is "recipe"
+            .map((fav) => fav.recipe) 
             .filter((recipe) => recipe !== null);
         }
       } else {

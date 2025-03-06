@@ -62,7 +62,7 @@
       </div>
     </div>
 
-    <!-- Inline Edit Modal -->
+    <!-- Edit Modal -->
     <div v-if="editingRecipe" class="modal-overlay">
       <div class="modal">
         <h3>Edit Recipe</h3>
@@ -94,7 +94,7 @@
         </select>
         <input type="file" @change="handleEditImageUpload" accept="image/*" />
         
-        <!-- Dynamic Instructions Input for Editing -->
+        <!-- Instructions Input for Editing -->
         <div class="instructions-input">
           <label>Instructions:</label>
           <div
@@ -277,13 +277,13 @@ export default {
       .update({ deleted_at: timestamp })
       .eq("id", recipeToDelete.value.id);
       
-    // Soft delete associated ingredients
+    // Soft delete ingredients
     await supabase
       .from("ingredients")
       .update({ deleted_at: timestamp })
       .eq("recipe_id", recipeToDelete.value.id);
       
-    // Soft delete associated instructions
+    // Soft delete instructions
     await supabase
       .from("instructions")
       .update({ deleted_at: timestamp })
@@ -460,7 +460,7 @@ td {
   border-bottom: 1px solid #e5e7eb;
   text-align: left;
 }
-/* Center align only the last column (Actions) */
+
 th:last-child,
 td:last-child {
   text-align: center;
@@ -486,7 +486,7 @@ button.deletebutton {
   color: white;
 }
 
-/* Modal Styles */
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -559,7 +559,6 @@ button.remove-step {
   margin-top: -7px;
 }
 
-/* Responsive Styles */
 @media (max-width: 600px) {
   table th,
   table td {

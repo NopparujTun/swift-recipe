@@ -11,7 +11,7 @@
           type="text"
           placeholder="Enter your display name"
         />
-        <!-- Inline error message -->
+        <!-- error message -->
         <p v-if="usernameError" class="error-message">{{ usernameError }}</p>
       </div>
       <div class="button-group">
@@ -36,13 +36,13 @@ export default {
     const newDisplayName = ref("");
     const usernameError = ref("");
 
-    // On mount, load the current user and their profile info.
+    
     onMounted(async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
         user.value = session.user;
         newDisplayName.value = session.user.user_metadata.display_name || "";
-        // Load existing profile details (if any)
+        
         const { data, error } = await supabase
           .from("profiles")
           .select("display_name")
@@ -58,13 +58,13 @@ export default {
     const saveProfile = async () => {
   usernameError.value = "";
 
-  // Check for length between 3 and 20 characters.
+  // Check length between 3 and 20 characters.
   if (newDisplayName.value.length < 3 || newDisplayName.value.length > 20) {
     usernameError.value = "Display name must be between 3 and 20 characters.";
     return;
   }
 
-  // Validate that the name is alphanumeric, can include underscores, but cannot start with an underscore.
+  // Validate the name 
   const usernameRegex = /^[A-Za-z0-9][A-Za-z0-9_]*$/;
   if (!usernameRegex.test(newDisplayName.value)) {
     usernameError.value =
@@ -72,7 +72,7 @@ export default {
     return;
   }
 
-  // Update Supabase auth user metadata.
+  
   const { error: authError } = await supabase.auth.updateUser({
     data: { display_name: newDisplayName.value },
   });
@@ -80,7 +80,7 @@ export default {
     console.error("Error updating auth user:", authError);
   }
 
-  // Upsert the record in the profiles table.
+  
   const { error: profileError } = await supabase
     .from("profiles")
     .upsert({
@@ -98,7 +98,7 @@ export default {
     if (reviewError) {
       console.error("Error updating reviews:", reviewError);
     }
-    // Redirect to the home page.
+    
     router.push("/");
   }
 };

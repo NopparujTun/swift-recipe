@@ -3,7 +3,7 @@
     <footer class="footer">
       <div class="footer-container">
         <div class="footer-grid">
-          <!-- Brand Section -->
+          <!-- Contact Section -->
           <div class="footer-section">
             <h2 class="brand-title">SwiftRecipe</h2>
             <p class="brand-description">
@@ -109,8 +109,6 @@
     }
   }
   
-
-  
   .brand-title {
   font-size: 1.5rem;
   font-weight: bold;
@@ -121,7 +119,6 @@
   text-align: left;
 }
 
-  
   .brand-description {
     font-size: 0.875rem;
     margin-bottom: 1rem;

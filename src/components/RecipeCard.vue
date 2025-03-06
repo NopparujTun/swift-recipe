@@ -2,7 +2,7 @@
   <div class="card">
     <div class="image-wrapper">
       <img :src="recipe.image" :alt="recipe.name" />
-      <!-- Favorite Button at Top Right of Image -->
+      
       <button class="favorite-btn" @click="toggleFavorite">
         <span v-if="isFavorited">❤️</span>
         <span v-else>🤍</span>
@@ -14,7 +14,7 @@
       <p>{{ recipe.description }}</p>
     </div>
 
-    <!-- Card Footer: View Recipe (left) and Favorite Count (right) -->
+    
     <div class="card-footer">
       <button @click="viewRecipe(recipe)">
         View recipe
@@ -132,7 +132,7 @@ export default {
     },
 
     viewRecipe(recipe) {
-  // Use the slug from the recipe object instead of extracting from the image file name
+  // Use the slug from the recipe
   this.$router.push({ name: "RecipeDetails", params: { slug: recipe.slug } });
 },
 

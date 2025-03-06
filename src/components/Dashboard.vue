@@ -12,7 +12,7 @@
             <span>{{ category.count }} recipes</span>
           </div>
           <div class="card-icon">
-            <!-- Replace with your icon logic or images -->
+            
             <img :src="category.icon" alt="icon" />
           </div>
         </div>
@@ -30,7 +30,7 @@
       };
     },
     async mounted() {
-      // Define the list of categories with their icons
+      
       const categoryList = [
         { name: "Main Course", icon: "/utensils.png" },
         { name: "Dessert", icon: "/cake.png" },
@@ -39,7 +39,7 @@
         { name: "Vegetarian", icon: "/carrot.png" },
       ];
   
-      // Fetch all recipes from Supabase
+      // Fetch all recipes
       const { data: recipes, error } = await supabase
         .from("recipes")
         .select("*")
@@ -50,7 +50,7 @@
         return;
       }
   
-      // For each category, count the number of recipes that match the category name
+      // For each category
       const categories = categoryList.map(category => {
         const count = recipes.filter(
           recipe => recipe.category === category.name

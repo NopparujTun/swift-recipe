@@ -3,7 +3,7 @@
     <div class="review-header">
       <h2 class="review-title">Reviews</h2>
     </div>
-    <!-- Add Review Form -->
+    <!-- Review Form -->
     <div class="review-form">
       <h3 class="form-title">Write a Review</h3>
       <textarea
@@ -27,7 +27,7 @@
           </div>
           <!-- Action buttons for current user's reviews -->
           <div v-if="review.user_id === currentUserId" class="action-buttons">
-            <!-- Show edit button only if not editing this review -->
+            <!-- edit button -->
             <button
               v-if="editingReviewId !== review.id"
               class="edit-button"
@@ -35,13 +35,13 @@
             >
               Edit
             </button>
-            <!-- Instead of directly deleting, confirm via modal -->
+            <!-- deleting -->
             <button class="delete-button" @click="confirmDelete(review)">
               Delete
             </button>
           </div>
         </div>
-        <!-- If this review is being edited, show textarea with Save/Cancel -->
+        <!-- show textarea with Save/Cancel -->
         <div v-if="editingReviewId === review.id" class="edit-review">
           <textarea v-model="editComment" class="edit-textarea"></textarea>
           <div class="edit-buttons">
@@ -51,7 +51,7 @@
             <button class="cancel-button" @click="cancelEditing">Cancel</button>
           </div>
         </div>
-        <!-- Otherwise show the review comment normally -->
+        
         <p v-else class="review-comment">{{ review.comment }}</p>
       </div>
       <div v-if="reviews.length === 0" class="no-reviews">
@@ -97,18 +97,15 @@ export default {
       sortBy: "newest",
       comment: "",
       reviews: [],
-      currentUserId: null, // Will store the authenticated user's ID
-      // For editing reviews
+      currentUserId: null, 
       editingReviewId: null,
       editComment: "",
-      // For delete confirmation modal
       reviewToDelete: null,
-      // For delete success modal
       deleteSuccess: false,
     };
   },
   async created() {
-    // Fetch the current authenticated user and store their ID
+    
     const { data: userData, error: userError } = await supabase.auth.getUser();
     if (!userError && userData?.user) {
       this.currentUserId = userData.user.id;
@@ -122,10 +119,10 @@ export default {
         this.$router.push("/login");
         return;
       }
-      if (!this.comment.trim()) return; // Prevent posting empty reviews
+      if (!this.comment.trim()) return; 
 
       const userId = this.currentUserId;
-      // Retrieve display name from the authenticated user's metadata
+      
       const { data: userData, error: userError } = await supabase.auth.getUser();
       if (userError || !userData?.user?.user_metadata) {
         console.error("Error retrieving user data:", userError);
@@ -134,7 +131,7 @@ export default {
       const displayName =
         userData.user.user_metadata.display_name || "Anonymous";
 
-      // Insert the new review into the reviews table along with user_name.
+      
       const { error } = await supabase.from("reviews").insert([
         {
           user_id: userId,
@@ -151,7 +148,7 @@ export default {
       }
     },
     async fetchReviews() {
-      // Fetch all reviews for the given recipe_id that are not soft-deleted.
+      // reviews 
       const { data, error } = await supabase
         .from("reviews")
         .select("*")
@@ -164,13 +161,13 @@ export default {
         this.reviews = data;
       }
     },
-    // Open the delete confirmation modal.
+    // delete confirmation modal.
     confirmDelete(review) {
       this.reviewToDelete = review;
     },
     async deleteConfirmed() {
       if (!this.reviewToDelete) return;
-      // Perform a soft delete by updating the deleted_at field.
+      // soft delete 
       const { error } = await supabase
         .from("reviews")
         .update({ deleted_at: new Date().toISOString() })
@@ -195,7 +192,7 @@ export default {
       this.editComment = review.comment;
     },
     async updateReview(reviewId) {
-      if (!this.editComment.trim()) return; // Prevent empty update
+      if (!this.editComment.trim()) return; 
 
       const { error } = await supabase
         .from("reviews")
@@ -268,7 +265,6 @@ export default {
   margin: 0;
 }
 
-/* Review Form Styles */
 .review-form {
   background-color: #fff;
   padding: 16px;
@@ -309,7 +305,6 @@ export default {
   background-color: #ff7d71;
 }
 
-/* Reviews List Styles */
 .reviews-list {
   display: flex;
   flex-direction: column;
@@ -348,7 +343,6 @@ export default {
   margin-left: 4px;
 }
 
-/* Action Buttons Styles */
 .action-buttons {
   display: flex;
   gap: 8px;
@@ -380,7 +374,6 @@ export default {
   text-decoration: underline;
 }
 
-/* Edit Review Styles */
 .edit-review {
   margin-top: 8px;
 }
@@ -446,7 +439,6 @@ export default {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Modal Styles */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -486,7 +478,6 @@ export default {
   cursor: pointer;
   background-color: #4e4e4e;
   color: #fff;
-  
 }
 .modal button.delete-button {
   margin-right: 10px;

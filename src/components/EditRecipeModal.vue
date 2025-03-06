@@ -78,19 +78,19 @@
     },
     data() {
       return {
-        // Initialize as empty; will be set via the watcher
+        
         editedRecipe: {},
         instructions: []
       };
     },
     watch: {
-      // Update local data when the recipe prop changes
+      
       recipe: {
         immediate: true,
         handler(newRecipe) {
           if (newRecipe) {
             this.editedRecipe = { ...newRecipe };
-            // Ensure instructions is an array; if not provided, default to three empty steps
+            
             this.instructions = newRecipe.instructions
               ? [...newRecipe.instructions]
               : ["", "", ""];
@@ -108,14 +108,14 @@
       handleEditImageUpload(event) {
         const file = event.target.files[0];
         if (file) {
-          // Extract the file name (without extension)
+          
           const imageName = file.name.split('.')[0];
-          // Automatically update the image URL
+          
           this.editedRecipe.image = `/src/assets/${imageName}.jpg`;
         }
       },
       handleSubmit() {
-        // Pass back the updated recipe including instructions
+        
         this.onSave({ ...this.editedRecipe, instructions: this.instructions });
       }
     }

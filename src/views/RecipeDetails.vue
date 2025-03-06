@@ -13,7 +13,7 @@
           <p>Loading recipe...</p>
         </div>
 
-        <!-- Print Button Section -->
+        <!-- Print Button -->
         <section v-if="recipe" class="print-section">
           <button @click="printRecipe" class="print-button">Print Recipe</button>
         </section>
@@ -47,7 +47,7 @@
           </div>
         </section>
 
-        <!-- Review Section wrapped in "no-print" container -->
+        <!-- Review Section in "no-print" -->
         <section v-if="recipe" class="no-print">
           <ReviewSection :recipe-id="recipe.id" />
         </section>
@@ -84,9 +84,9 @@ export default {
   methods: {
     async loadRecipe() {
       try {
-        // Get the slug from the route parameters (e.g., "disney-plus")
+        // Get the slug 
         const slug = this.$route.params.slug;
-        // Query for the recipe using the slug field.
+        
         const { data: recipe, error: recipeError } = await supabase
           .from("recipes")
           .select("*")
@@ -104,7 +104,7 @@ export default {
           this.servings = recipe.servings;
         }
 
-        // Fetch ingredients associated with the recipe
+        // Fetch ingredients
         const { data: ingredients, error: ingredientsError } = await supabase
           .from("ingredients")
           .select("*")
@@ -116,7 +116,7 @@ export default {
         }
         this.ingredients = ingredients;
 
-        // Fetch instructions, ordering them by step_number ascending
+        // Fetch instructions
         const { data: instructions, error: instructionsError } = await supabase
           .from("instructions")
           .select("*")
@@ -147,7 +147,7 @@ export default {
 </script>
 
 <style scoped>
-/* Recipe Detail Container */
+
 .recipe-detail {
   min-height: 100vh;
   background-color: #f9fafb;
@@ -155,7 +155,6 @@ export default {
   flex-direction: column;
 }
 
-/* Main content container */
 .main-content {
   width: 90%;
   margin: 0 auto;
@@ -163,7 +162,6 @@ export default {
   flex: 1;
 }
 
-/* Header Section */
 .header-section {
   margin-bottom: 24px;
   text-align: center;
@@ -181,7 +179,6 @@ export default {
   margin-bottom: 16px;
 }
 
-/* Recipe image fixed at 600px on larger screens, scales on mobile */
 .recipe-image {
   width: 100%;
   max-width: 600px;
@@ -190,7 +187,6 @@ export default {
   border-radius: 12px;
 }
 
-/* Section Titles */
 .section-title {
   font-size: 1.25rem;
   font-weight: bold;
@@ -198,7 +194,6 @@ export default {
   text-align: left;
 }
 
-/* Ingredients Section */
 .ingredients-section,
 .instructions-section {
   margin-bottom: 24px;
@@ -231,7 +226,6 @@ export default {
   cursor: pointer;
 }
 
-/* Instructions Section */
 .instructions-list {
   background-color: #ffffff;
   padding: 16px;
@@ -270,7 +264,6 @@ export default {
   line-height: 1.5;
 }
 
-/* Print Section */
 .print-section {
   text-align: center;
   margin-bottom: 24px;
@@ -290,14 +283,12 @@ export default {
   background-color: #333333;
 }
 
-/* Loading Text */
 .loading {
   text-align: center;
   margin: 40px 0;
   font-size: 1.2rem;
 }
 
-/* Tablet & Desktop Styles */
 @media (min-width: 768px) {
   .main-content {
     max-width: 1024px;
@@ -316,7 +307,6 @@ export default {
   }
 }
 
-/* Desktop Larger Screens */
 @media (min-width: 1024px) {
   .main-content {
     max-width: 1200px;
@@ -324,17 +314,14 @@ export default {
   }
 }
 
-/* Print-specific styles */
 @media print {
-  /* Hide elements that aren't needed in print */
   .print-button,
   .navbar,
   .footer,
   .no-print {
     display: none !important;
   }
-  
-  /* Adjust the layout for print if necessary */
+
   .main-content {
     width: 100%;
     margin: 0;

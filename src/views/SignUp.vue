@@ -4,7 +4,7 @@
     <form class="form" @submit.prevent="handleSignup">
       <div class="form-group">
         <input type="text" id="name" v-model="name" placeholder="Name" required />
-        <!-- Inline error message -->
+        
         <p v-if="usernameError" class="error-message">{{ usernameError }}</p>
       </div>
       <div class="form-group">
@@ -22,7 +22,7 @@
       </p>
     </form>
 
-    <!-- Modal Popup -->
+    <!-- Confirm link modal -->
     <div v-if="showModal" class="modal-overlay">
       <div class="modal">
         <p class="modal-message">
@@ -48,7 +48,7 @@ const usernameError = ref("");
 const handleSignup = async () => {
   usernameError.value = "";
   
-  // Validate that the name is alphanumeric, can include underscores, but cannot start with an underscore.
+  // Validate the name
   const usernameRegex = /^[A-Za-z0-9][A-Za-z0-9_]*$/;
   if (!usernameRegex.test(name.value)) {
     usernameError.value =
@@ -69,7 +69,7 @@ const handleSignup = async () => {
     });
     if (error) throw error;
 
-    // Show modal popup after successful signup
+    // Show modal popup after signup
     showModal.value = true;
   } catch (error) {
     alert(error.error_description || error.message);
@@ -120,7 +120,6 @@ const closeTab = () => {
   font-size: 16px;
 }
 
-/* Error message styling */
 .error-message {
   color: red;
   margin-top: 5px;
@@ -165,7 +164,6 @@ const closeTab = () => {
   text-decoration: underline;
 }
 
-/* Modal Styling */
 .modal-overlay {
   position: fixed;
   top: 0;

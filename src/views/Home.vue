@@ -16,7 +16,7 @@
       <!-- Popular Recipes Section -->
       <section class="popular-section">
         <h2>Popular Recipes</h2>
-        <!-- Spinner shown while loading popular recipes initially -->
+        
         <div v-if="loadingPopular" class="spinner-container">
           <div class="spinner"></div>
         </div>
@@ -138,7 +138,7 @@ export default {
         return;
       }
 
-      // Get like count for each recipe
+      // like count for each recipe
       const recipesWithLikes = await Promise.all(
         recipesData.map(async (recipe) => {
           const { count, error: countError } = await supabase
@@ -153,7 +153,7 @@ export default {
         })
       );
 
-      // Sort recipes by like count (descending) and select top 3
+      // Sort recipes by like count and select top 3
       recipesWithLikes.sort((a, b) => b.likes - a.likes);
       const freshPopularRecipes = recipesWithLikes.slice(0, 3);
 
@@ -188,8 +188,8 @@ export default {
     },
   },
   async mounted() {
-    await this.loadRecipes(); // Load latest recipes
-    await this.loadPopularRecipes(); // Load popular recipes with stale-while-revalidate pattern
+    await this.loadRecipes(); 
+    await this.loadPopularRecipes();
   },
 };
 </script>
@@ -212,7 +212,6 @@ section h2 {
   background-color: #f5f5f5;
 }
 
-/* Styles for Popular Recipes Section */
 .popular-section {
   background: #f5f5f5;
   padding: 20px;

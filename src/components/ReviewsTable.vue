@@ -12,7 +12,7 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Use paginatedReviews instead of full reviews list -->
+        
         <tr v-for="review in paginatedReviews" :key="review.id">
           <td>{{ review.user_name }}</td>
           <td>{{ review.recipe ? review.recipe.name : "N/A" }}</td>
@@ -27,7 +27,7 @@
       </tbody>
     </table>
 
-    <!-- Pagination Component -->
+    
     <Pagination 
       :currentPage="currentPage" 
       :totalPages="totalPages" 
@@ -73,19 +73,19 @@ export default {
     const currentPage = ref(1);
     const reviewsPerPage = ref(5);
     
-    // Compute total pages based on the reviews count.
+    
     const totalPages = computed(
       () => Math.ceil(reviews.value.length / reviewsPerPage.value)
     );
     
-    // Compute the reviews for the current page.
+    
     const paginatedReviews = computed(() => {
       const start = (currentPage.value - 1) * reviewsPerPage.value;
       return reviews.value.slice(start, start + reviewsPerPage.value);
     });
     
     const fetchReviews = async () => {
-      // Fetch reviews that are not soft-deleted, including the related recipe name.
+      // Fetch reviews 
       const { data, error } = await supabase
         .from("reviews")
         .select("*, recipe:recipes(name)")
@@ -95,7 +95,7 @@ export default {
         console.error("Error fetching reviews:", error);
       } else {
         reviews.value = data;
-        currentPage.value = 1; // Reset to first page on new fetch.
+        currentPage.value = 1; 
       }
     };
 
@@ -105,7 +105,7 @@ export default {
 
     const deleteConfirmed = async () => {
       if (!reviewToDelete.value) return;
-      // Perform soft delete by updating the deleted_at field.
+      // soft delete 
       await supabase
         .from("reviews")
         .update({ deleted_at: new Date().toISOString() })
@@ -206,7 +206,7 @@ button {
   margin-left: -3px;
   border-radius: 20px;
 }
-/* Modal Styles */
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -245,7 +245,7 @@ button {
   background-color: #4e4e4e;
   color: #fff;
 }
-/* Responsive Styles */
+
 @media (max-width: 600px) {
   .reviews-table__table th,
   .reviews-table__table td {

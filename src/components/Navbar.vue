@@ -24,7 +24,7 @@
         </ul>
       </li>
       <li><a href="/about">About</a></li>
-      <!-- Separate Favorites from the Avatar -->
+      
       <li v-if="user"><a @click.prevent="navigateTo('/favorites')">Favorites</a></li>
       <li v-if="user" class="user-avatar">
         <div class="avatar-wrapper" @click="toggleAvatarDropdown">
@@ -63,7 +63,6 @@ export default {
     await this.checkUser();
     supabase.auth.onAuthStateChange((_, session) => {
       this.user = session?.user || null;
-      // Get the avatar URL from user metadata if available
       this.userAvatar = session?.user?.user_metadata?.avatar_url || null;
       this.userEmail = session?.user?.email || null;
     });
@@ -78,7 +77,6 @@ export default {
       ) {
         return this.user.user_metadata.display_name.charAt(0).toUpperCase();
       }
-      // Otherwise, fallback to using the first letter of the email.
       return this.userEmail ? this.userEmail.charAt(0).toUpperCase() : "?";
     },
   },

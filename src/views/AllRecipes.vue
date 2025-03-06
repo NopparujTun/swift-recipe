@@ -99,7 +99,7 @@ export default {
 
       return filtered;
     },
-    // Only show recipes up to the itemsToShow count
+    
     displayedRecipes() {
       return this.filteredRecipes.slice(0, this.itemsToShow);
     },
